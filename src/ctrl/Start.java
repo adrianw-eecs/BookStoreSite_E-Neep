@@ -5,11 +5,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import model.model;
 
 /**
  * Servlet implementation class Start
@@ -17,7 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/Start")
 public class Start extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-
+	private model theModel;
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
@@ -25,6 +28,18 @@ public class Start extends HttpServlet {
 		super();
 		// TODO Auto-generated constructor stub
 	}
+	
+	 public void init() throws ServletException {
+			ServletContext context = getServletContext();
+			try {
+				theModel = new model();
+				context.setAttribute("model", theModel);
+			} catch (Exception e) {
+				e.printStackTrace();
+				System.out.println("Excpetion has occured");
+			}
+
+		}
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
@@ -38,6 +53,13 @@ public class Start extends HttpServlet {
 		 * Fiction
 		 * Engineering
 		 */
+		
+		try {
+			theModel.retrieveAddress("1");
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		HashMap<Integer, String> out = new HashMap<Integer, String> () {{
 			put(1, "book1");
 			put(2, "book2");
@@ -118,6 +140,8 @@ public class Start extends HttpServlet {
 
 		request.getRequestDispatcher("/MainPage.jspx").forward(request,response); //always redirect to the main bookstore page
 		response.getWriter().append("Served at: ").append(request.getContextPath());
+		
+		
 	}
 
 	/**

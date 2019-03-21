@@ -7,15 +7,15 @@ public class AddressBean {
 	private String province;
 	private String country;
 	private String zip;
-	private String telephone;
+	private String phone;
 	
-	public AddressBean(int id, String street, String province, String country, String zip, String telephone) {
+	public AddressBean(int id, String street, String province, String country, String zip, String phone) {
 		this.id = id;
 		this.street = street;
 		this.province = province;
 		this.country = country;
 		this.zip = zip;
-		this.telephone = telephone;
+		this.phone = phone;
 	}
 	
 	public AddressBean() {
@@ -24,7 +24,7 @@ public class AddressBean {
 		this.province = "";
 		this.country = "";
 		this.zip = "";
-		this.telephone = "000000000";
+		this.phone = "000000000";
 	}
 	
 	public int getId() {
@@ -67,11 +67,11 @@ public class AddressBean {
 		this.zip = zip;
 	}
 
-	public String getTelephone() {
-		return telephone;
+	public String getphone() {
+		return phone;
 	}
 
-	public void setTelephone(String telephone) {
-		this.telephone = telephone;
+	public void setphone(String phone) {
+		this.phone = phone;
 	}
 }
