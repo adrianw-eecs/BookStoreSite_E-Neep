@@ -1,5 +1,63 @@
 package dao;
 
+import javax.sql.DataSource;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.*;
+
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+
+import bean.AddressBean;
+
+
 public class AddressDAO {
+	
+	private DataSource ds;
+	
+	public AddressDAO() throws ClassNotFoundException {
+		try {
+			ds = (DataSource) (new InitialContext()).lookup("java:/comp/env/jdbc/EECS");
+		} catch (NamingException e) {
+			e.printStackTrace();
+		}
+
+	}
+	
+	public ArrayList<AddressBean> retrieveAddressUsingID(String id) throws SQLException {
+		//String query = "select * from students where surname like ? and credit_taken >= ?";
+		String query = "Select * FROM ADDRESS WHERE ID = ?";
+//		Map<String, AddressBean> rv = new HashMap<String, AddressBean>();
+		ArrayList<AddressBean> arraylist = new ArrayList<AddressBean>();
+		Connection con = this.ds.getConnection();
+		PreparedStatement sanatizedQuery = con.prepareStatement(query);
+		try {
+			sanatizedQuery.setInt(1, Integer.parseInt(id));
+			ResultSet r = sanatizedQuery.executeQuery();
+			while (r.next()) {
+				int result_id = r.getInt("ID");
+				String result_street = r.getString("STREET");
+				String result_province = r.getString("PROVINCE");
+				String result_country = r.getString("COUNTRY");
+				String result_zip = r.getString("ZIP");
+				String result_phone = r.getString("PHONE");
+
+				//CHANGE Querey for the current credits
+				AddressBean person = new AddressBean(result_id, result_street, result_province, result_country, result_zip, result_phone);
+				arraylist.add(person);
+			}
+		} catch(SQLException e){
+			System.out.println("Query in AddressDAO failed");
+			throw new SQLException("");
+		}
+		
+		
+		sanatizedQuery.close();
+		con.close();
+		return arraylist;
+	}
 
 }
