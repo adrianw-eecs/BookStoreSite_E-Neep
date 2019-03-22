@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import bean.BookBean;
 import model.model;
 
 /**
@@ -54,12 +55,25 @@ public class Start extends HttpServlet {
 		 * Engineering
 		 */
 		
+		
+		/// For the purposes of testing Adrians Part
 		try {
 			theModel.retrieveAddress("1");
+			theModel.retrieveSingleBook("b002");
+			theModel.retrieveBookCat("Engineering");
+			ArrayList<String> bids = new ArrayList<String>();
+			bids.add("b002");
+			bids.add("b003");
+			ArrayList<BookBean> data = theModel.retrieveShoppingCart(bids);
+			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		///
+		
+		
+		
 		HashMap<Integer, String> out = new HashMap<Integer, String> () {{
 			put(1, "book1");
 			put(2, "book2");
