@@ -42,11 +42,12 @@ public class BookDAO {
 			query = query + "WHERE CATEGORY = ?";
 			queryValueString = category;
 		} else if(!bids.isEmpty()) {
-			query = query + "WHERE BID IN (?)";
+			query = query + "WHERE BID IN (";
 			for(String temp : bids) {
-				queryValueString = queryValueString + "'" + temp + "',";
+				query = query + "?,";
 			}
-			queryValueString = queryValueString.substring(0, queryValueString.length() -1);
+			query = query.substring(0, query.length() -1);
+			query = query + ")";
 		} else {
 			System.out.println("All Parameters passed to the BookDAO are empty");
 		}
@@ -56,8 +57,15 @@ public class BookDAO {
 		
 		PreparedStatement sanatizedQuery = con.prepareStatement(query);
 		try {
+			if(bids != null) {
+				for(int i = 0; i < bids.size(); i++) {
+					sanatizedQuery.setString(i + 1, bids.get(i));
+				}
+			} else {
+				sanatizedQuery.setString(1, queryValueString);
+			}
 //			sanatizedQuery.setInt(1, Integer.parseInt(id));
-			sanatizedQuery.setString(1, queryValueString);
+			
 			ResultSet r = sanatizedQuery.executeQuery();
 			while (r.next()) {
 				int result_price = r.getInt("PRICE");
