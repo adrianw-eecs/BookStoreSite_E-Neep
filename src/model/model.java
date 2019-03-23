@@ -34,5 +34,8 @@ public class model {
 		return bookinfo.retrieveAnyBookOrBooks("", "", bids);
 	}
 
+	public ArrayList<BookBean> searchBooks(String search) throws Exception{
+		return bookinfo.findBooks(search);
+	}
 	
 }
