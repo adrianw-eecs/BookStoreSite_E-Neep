@@ -41,15 +41,16 @@ public class BookDAO {
 		} else if (!category.equals("")) {
 			query = query + "WHERE CATEGORY = ?";
 			queryValueString = category;
-		} else if (!bids.isEmpty()) {
+		} else if (bids != null) {
 			query = query + "WHERE BID IN (";
 			for (String temp : bids) {
 				query = query + "?,";
 			}
 			query = query.substring(0, query.length() - 1);
 			query = query + ")";
+			
 		} else {
-			System.out.println("All Parameters passed to the BookDAO are empty");
+			System.out.println("Requesting all Books");
 		}
 
 //		Map<String, AddressBean> rv = new HashMap<String, AddressBean>();
@@ -61,10 +62,11 @@ public class BookDAO {
 				for (int i = 0; i < bids.size(); i++) {
 					sanatizedQuery.setString(i + 1, bids.get(i));
 				}
-			} else {
+			} else if (bids != null || !bid.equals("") || !category.equals("")) {
 				sanatizedQuery.setString(1, queryValueString);
+			}	else {
+				//No preperation needed
 			}
-//			sanatizedQuery.setInt(1, Integer.parseInt(id));
 
 			ResultSet r = sanatizedQuery.executeQuery();
 			while (r.next()) {

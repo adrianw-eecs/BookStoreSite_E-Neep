@@ -59,5 +59,52 @@ public class AddressDAO {
 		con.close();
 		return arraylist;
 	}
+	
+	public int addAddress(String street, String prov, String country, String post, String phone) throws SQLException {
+		
+		int id = getID() + 1;
+		String query = "INSERT INTO Address (id, street, province, country, zip, phone) VALUES (?,?,?,?,?,?)";
+		Connection con = this.ds.getConnection();
+		PreparedStatement sanatizedQuery = con.prepareStatement(query);
+		try {
+			sanatizedQuery.setInt(1, id);
+			sanatizedQuery.setString(2, street);
+			sanatizedQuery.setString(3, prov);
+			sanatizedQuery.setString(4, country);
+			sanatizedQuery.setString(5, post);
+			sanatizedQuery.setString(6, phone);
+			
+			sanatizedQuery.executeUpdate();
+			
+		} catch(SQLException e){
+			System.out.println("Update in AddressDAO failed");
+			throw new SQLException(e.getMessage());
+		}
+		
+		sanatizedQuery.close();
+		con.close();
+		return id;
+	}
+
+	private int getID() throws SQLException {
+
+		String query = "Select MAX(id) as ID from ADDRESS";
+		try {
+			Connection con = this.ds.getConnection();
+			PreparedStatement sanatizedQuery = con.prepareStatement(query);
+			ResultSet r = sanatizedQuery.executeQuery();
+			r.next();
+			int result_id = r.getInt("ID");
+			sanatizedQuery.close();
+			con.close();
+			return result_id;
+		} catch(SQLException e){
+			System.out.println("Failed to get ID in AddressDAO");
+			throw new SQLException("Failed to get ID in AddressDAO");
+		}
+		
+
+
+	}
 
 }
