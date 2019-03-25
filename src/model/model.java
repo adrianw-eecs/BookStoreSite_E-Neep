@@ -4,17 +4,21 @@ import java.util.ArrayList;
 
 import bean.AddressBean;
 import bean.BookBean;
+import bean.POBean;
 import dao.AddressDAO;
 import dao.BookDAO;
+import dao.PODAO;
 
 public class model {
 	
 	private AddressDAO addressinfo;
 	private BookDAO bookinfo;
+	private PODAO poinfo;
 	
 	public model() throws ClassNotFoundException {
 		addressinfo = new AddressDAO();
 		bookinfo = new BookDAO();
+		poinfo = new PODAO();
 
 	}
 	/////////////////////////////////////////////////////////////////////////
@@ -32,19 +36,23 @@ public class model {
 	
 	/////////////////////////////////////////////////////////////////////////
 	// BOOK DB														   	   //
-	public ArrayList<BookBean> retrieveSingleBook(String bid) throws Exception{
-		return bookinfo.retrieveAnyBookOrBooks(bid, "", null);
+	//// returns BookBean that matches the bid provided 
+	public BookBean retrieveSingleBook(String bid) throws Exception{
+		return bookinfo.retrieveAnyBookOrBooks(bid, "", null).get(0);
 	}
 	
+	// returns arraylist of POBean that has all books
 	public ArrayList<BookBean> retrieveAllBooks() throws Exception{
 		return bookinfo.retrieveAnyBookOrBooks("", "", null);
 
 	}
 	
+	// returns arraylist of BookBean that matches the category provided 
 	public ArrayList<BookBean> retrieveBookCat(String category) throws Exception{
 		return bookinfo.retrieveAnyBookOrBooks("", category, null);
 	}
 	
+	// returns arraylist of BookBean that matches the category provided 
 	public ArrayList<BookBean> retrieveShoppingCart(ArrayList<String> bids) throws Exception{
 		return bookinfo.retrieveAnyBookOrBooks("", "", bids);
 	}
@@ -53,6 +61,20 @@ public class model {
 		return bookinfo.findBooks(search);
 	}
 	// END OF BOOK DB COMMANDS											   //
+	/////////////////////////////////////////////////////////////////////////
+	
+	/////////////////////////////////////////////////////////////////////////
+	// ADDRESS DB														   //
+	// returns arraylist of POBean that matches the id provided 
+	public ArrayList<POBean> retrievePO(String id) throws Exception{
+	return poinfo.retrievePOUsingID(id);
+	}
+	
+	//Adds the PO to the table and returns the id(number) of the PO added
+	public int addPO(String lname, String fname, String status, String address) throws Exception{
+	return poinfo.addPO(lname, fname, status, address);
+	}
+	// END OF ADDRESS DB COMMANDS										   //
 	/////////////////////////////////////////////////////////////////////////
 	
 }
