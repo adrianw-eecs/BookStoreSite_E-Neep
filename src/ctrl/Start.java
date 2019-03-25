@@ -50,12 +50,24 @@ public class Start extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 
+
+		
+		/// For the purposes of testing Adrians Part
+
 		try {
 			theModel.retrieveAddress("1");
+			theModel.retrieveSingleBook("b002");
+			theModel.retrieveBookCat("Engineering");
+			ArrayList<String> bids = new ArrayList<String>();
+			bids.add("b002");
+			bids.add("b003");
+			ArrayList<BookBean> data = theModel.retrieveShoppingCart(bids);
+			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+
 		
 		/*
 		 * Map containing bid -> quantity to be rerouted to response
@@ -81,6 +93,7 @@ public class Start extends HttpServlet {
 		 */
 
 		HashMap<Integer, String> outMap = new HashMap<Integer, String> () {{
+
 			put(1, "book1");
 			put(2, "book2");
 			put(3, "maybe");

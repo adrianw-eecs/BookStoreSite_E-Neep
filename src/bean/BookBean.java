@@ -1,10 +1,18 @@
 package bean;
 
+import javax.xml.bind.annotation.*;
+
+@XmlRootElement(name="sisReport")
+@XmlAccessorType(XmlAccessType.FIELD)
 public class BookBean {
 
+	@XmlElement(name="bid")
 	private String bid;
+	@XmlElement(name="title")
 	private String title;
+	@XmlElement(name="price")
 	private double price;
+	@XmlElement(name="category")
 	private String category;
 
 	public BookBean(String bid, String title, double price, String category) {
