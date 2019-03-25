@@ -15,6 +15,6 @@ public class model {
 	}
 
 	public ArrayList<AddressBean> retrieveAddress(String id) throws Exception{
-		return addressinfo.retrieveAddressUsingID("1");
+		return addressinfo.retrieveAddressUsingID(id);
 	}
 }

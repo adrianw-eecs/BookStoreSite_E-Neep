@@ -12,15 +12,18 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import bean.BookBean;
 import model.model;
 
 /**
  * Servlet implementation class Start
  */
-@WebServlet("/Start")
+@WebServlet({"/Start", "/Start/*"})
 public class Start extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private model theModel;
+	HashMap<Integer, ArrayList<String>> bookReviews = new HashMap<Integer, ArrayList<String>>();
+	ArrayList<String> shoppingCart = new ArrayList<String>();
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
@@ -28,18 +31,18 @@ public class Start extends HttpServlet {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	
-	 public void init() throws ServletException {
-			ServletContext context = getServletContext();
-			try {
-				theModel = new model();
-				context.setAttribute("model", theModel);
-			} catch (Exception e) {
-				e.printStackTrace();
-				System.out.println("Excpetion has occured");
-			}
 
+	public void init() throws ServletException {
+		ServletContext context = getServletContext();
+		try {
+			theModel = new model();
+			context.setAttribute("model", theModel);
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("Excpetion has occured");
 		}
+
+	}
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
@@ -47,20 +50,37 @@ public class Start extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 
-		/*This map represents all the books that have the category chosen by the user.
-		 * Category is one of the following
-		 * Science
-		 * Fiction
-		 * Engineering
-		 */
-		
 		try {
 			theModel.retrieveAddress("1");
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		HashMap<Integer, String> out = new HashMap<Integer, String> () {{
+		
+		/*
+		 * Map containing bid -> quantity to be rerouted to response
+		 */
+		ArrayList<ArrayList<String>> scInfo = new ArrayList<ArrayList<String>>();
+		
+		scInfo.add(new ArrayList<String> (
+				Arrays.asList("1", "3", "69")
+				));
+		scInfo.add(new ArrayList<String> (
+				Arrays.asList("2", "4", "0.99")
+				));
+		scInfo.add(new ArrayList<String> (
+				Arrays.asList("3", "1", "999")
+				));
+		
+		
+		/*This map represents all the books that have the category chosen by the user.
+		 * Category is one of the following
+		 * Science
+		 * Fiction
+		 * Engineering
+		 */
+
+		HashMap<Integer, String> outMap = new HashMap<Integer, String> () {{
 			put(1, "book1");
 			put(2, "book2");
 			put(3, "maybe");
@@ -73,34 +93,9 @@ public class Start extends HttpServlet {
 		 * rating
 		 * as elements in an arraylist.
 		 */
-		HashMap<Integer, ArrayList<String>> bookInfo = new HashMap<Integer, ArrayList<String>> () {{
-			ArrayList<String> temp = new ArrayList<String> ();
-			temp.addAll(Arrays.asList("building memes", "$69", "5/7"));
-			//cloning done to avoid reference overwrite for multiple books.
-			//for the actual implementation, we don't need these as there will only be one choice for the book and it's information
-			//this is for representation purposes
-			put(1, (ArrayList<String>) temp.clone()); 
-			temp.clear();
-			temp.addAll(Arrays.asList("this one is for you Vlad", "$101", "10/1"));
-			put(2, (ArrayList<String>) temp.clone());
-			temp.clear();
-			temp.addAll(Arrays.asList("The Diaries of Ostroff and Jack", "$0.5", "0/100"));
-			put(3, (ArrayList<String>) temp.clone());
-		}};
-		
-		//debugging print statements
-		System.out.println(request.getParameter("bookCategories")); //get the category that was selected by the user
-		System.out.println(request.getParameter("bookChosen")); //get the book that was chosen by the user
-		
-		/*
-		 * using one category for the whole session until the user decides to change it
-		 */
-		String cat = request.getParameter("bookCategories");
-		
-		/*
-		 * using one bookId for the session until the user changes it
-		 */
-		String bookId = request.getParameter("bookChosen");
+		ArrayList<String> bookInfo = new ArrayList<String> ( 
+				Arrays.asList("1", "building memes", "5/7", "69")
+				);
 		
 		
 		/*
@@ -109,45 +104,97 @@ public class Start extends HttpServlet {
 		 * 
 		 * I don't know what to do with the reviews but we're saving it for later
 		 */
-		HashMap<Integer, ArrayList<String>> bookReviews = new HashMap<Integer, ArrayList<String>>();
-		if (request.getParameter("review") != null && request.getParameter("bookReview") != "" && bookId != null) {
-			System.out.println(request.getParameter("bookReview"));
-			ArrayList<String> temp = bookReviews.getOrDefault(Integer.parseInt(bookId), new ArrayList<String>());
-			temp.add(request.getParameter("bookReview"));
-			bookReviews.put(Integer.parseInt(request.getParameter("bookChosen")), temp);
+		
+
+		System.out.println(request.getPathInfo() + " " + request.getQueryString());
+		if (request.getPathInfo() != null && request.getPathInfo().contains("Ajax")) {
+			System.out.println(bookReviews);
+			System.out.println(shoppingCart);
+			if (request.getParameter("category") != null) {
+				String[] out = new String [outMap.size()];
+				int i = 0;
+				for (int k : outMap.keySet()) {
+					out[i] = k + "|" + outMap.get(k);
+					i++;
+				}
+				//System.out.println(Arrays.toString(out));
+				response.getWriter().write(Arrays.toString(out));
+			}else if (request.getParameter("bid") != null){
+				String out = "";
+				for (String k : bookInfo) {
+					out += k + "|"; 
+				}
+				response.getWriter().write(out);
+			}else if (request.getParameter("quantity") != null) {
+				String[] out = new String [scInfo.size()];
+				int i = 0;
+				while (i < scInfo.size()) {
+					out[i] = scInfo.get(i).toString().replaceAll(",", "|");
+					i++;
+				}
+				//System.out.println(Arrays.toString(out));
+				response.getWriter().write(Arrays.toString(out));
+			}
+
+
+		}else if (request.getParameter("shoppingCart")!=null) {
+			//response.sendRedirect(this.getServletContext().getContextPath() + "/Start/ShoppingCart.jspx");
+			request.getRequestDispatcher("/ShoppingCart.jspx").forward(request,response);
+		}else {
+
+
+			//debugging print statements
+//			System.out.println(request.getParameter("bookCategories")); //get the category that was selected by the user
+//			System.out.println(request.getParameter("bookTitles")); //get the book that was chosen by the user
+//
+//			/*
+//			 * using one category for the whole session until the user decides to change it
+//			 */
+//			String cat = request.getParameter("bookCategories");
+
+
+			/*
+			 * this is here to make sure that the value for the Book Title is what the user picked everytime
+			 * otherwise it has the default message "Click Here"
+			 */
+			//		if (bookId != null) {
+			//			request.setAttribute("previousSelectedBook", out.get(Integer.parseInt(bookId)));
+			//		}
+			//		else request.setAttribute("previousSelectedBook", "Click Here");
+
+
+//			request.setAttribute("books_by_cat", outMap); //setting the books that have the chosen category to requestScope
+//			request.setAttribute("previousSelectedCat", cat); //keep track of the category for the whole session (or until it's changed)
+//			request.setAttribute("catChosen", request.getParameter("bookCategories") != null); //boolean to show if a category has already been chosen
+//
+//			request.setAttribute("bookInfo", bookInfo); //setting the map to the requestScope to make the table of the book, category and its inormation
+//
+//			//request.setAttribute("oldBookId", bookId); //keeping track of the chosen book ID to use for the current requestScope
+//
+//			request.setAttribute("bkChosen", request.getParameter("bookTitles")!=null); //boolean to represent that a book has been chosen to make the table
+
+			request.getRequestDispatcher("/MainPage.jspx").forward(request,response); //always redirect to the main bookstore page
+			response.getWriter().append("Served at: ").append(request.getContextPath());
+
 		}
 
-		
-		/*
-		 * this is here to make sure that the value for the Book Title is what the user picked everytime
-		 * otherwise it has the default message "Click Here"
-		 */
-		if (bookId != null) {
-			request.setAttribute("previousSelectedBook", out.get(Integer.parseInt(bookId)));
-		}
-		else request.setAttribute("previousSelectedBook", "Click Here");
-		
-		
-		request.setAttribute("books_by_cat", out); //setting the books that have the chosen category to requestScope
-		request.setAttribute("previousSelectedCat", cat); //keep track of the category for the whole session (or until it's changed)
-		request.setAttribute("catChosen", request.getParameter("bookCategories") != null); //boolean to show if a category has already been chosen
 
-		request.setAttribute("bookInfo", bookInfo); //setting the map to the requestScope to make the table of the book, category and its inormation
-		
-		request.setAttribute("oldBookId", bookId); //keeping track of the chosen book ID to use for the current requestScope
-		
-		request.setAttribute("bkChosen", request.getParameter("bookChosen")!=null); //boolean to represent that a book has been chosen to make the table
 
-		request.getRequestDispatcher("/MainPage.jspx").forward(request,response); //always redirect to the main bookstore page
-		response.getWriter().append("Served at: ").append(request.getContextPath());
-		
-		
+
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		if (request.getParameter("review") != null){
+			String bookId = request.getParameter("bid");
+			ArrayList<String> temp = bookReviews.getOrDefault(Integer.parseInt(bookId), new ArrayList<String>());
+			temp.add(request.getParameter("review"));
+			bookReviews.put(Integer.parseInt(bookId), temp);
+		}else if (request.getParameter("addBid") != null) {
+			shoppingCart.add(request.getParameter("addBid"));
+		}
 		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
