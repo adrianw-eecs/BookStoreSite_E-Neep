@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import bean.BookBean;
+import bean.POBean;
 import model.model;
 
 /**
@@ -68,10 +69,20 @@ public class Start extends HttpServlet {
 			System.out.println(data.get(0).toStringArray()[1]);
 			System.out.println(data.get(0).toStringArray()[2]);
 			int id = theModel.addAddress("ABC Street", "Test ON", "CANADA", "L4K3Y7" , "905-434-5258");
+			System.out.println(id);
+			int id2 = theModel.addPO("FakeNameHERE", "FakeFIRSTNameHERE", "PROCESSED", "2");
+			System.out.println(id2);
+			POBean po = theModel.retrieveSinglePO("2");
+			System.out.println(po.poStringArray()[0]);
+			System.out.println(po.poStringArray()[1]);
+			System.out.println(po.poStringArray()[2]);
+			System.out.println(po.poStringArray()[3]);
+			System.out.println(po.poStringArray()[4]);
 			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			System.out.println(e.getMessage());
 		}
 
 		
