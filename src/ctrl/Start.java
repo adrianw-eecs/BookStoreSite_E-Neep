@@ -111,18 +111,19 @@ public class Start extends HttpServlet {
 				);
 		
 		
-		/*
-		 * bookReviews keeps track of all the reviews that were submitted on a particular book (with Id)
-		 * just keep appending reviews to the end and then saving them
-		 * 
-		 * I don't know what to do with the reviews but we're saving it for later
-		 */
-		
 
 		System.out.println(request.getPathInfo() + " " + request.getQueryString());
 		if (request.getPathInfo() != null && request.getPathInfo().contains("Ajax")) {
 			System.out.println(bookReviews);
 			System.out.println(shoppingCart);
+			
+			/*
+			 * Information passed to front end of the following format:
+			 * for one string (i.e. the information of one specific book) it is:
+			 * 	Title | Rating | Price
+			 * otherwise, for any arraylists it is:
+			 * 	an array of strings with similar format as above. They should be comma-separated by default as arrays
+			 */
 			if (request.getParameter("category") != null) {
 				String[] out = new String [outMap.size()];
 				int i = 0;
@@ -145,46 +146,17 @@ public class Start extends HttpServlet {
 					out[i] = scInfo.get(i).toString().replaceAll(",", "|");
 					i++;
 				}
-				//System.out.println(Arrays.toString(out));
 				response.getWriter().write(Arrays.toString(out));
 			}
 
 
 		}else if (request.getParameter("shoppingCart")!=null) {
-			//response.sendRedirect(this.getServletContext().getContextPath() + "/Start/ShoppingCart.jspx");
+			//when shopping cart button is clicked, we move to shopping cart page
 			request.getRequestDispatcher("/ShoppingCart.jspx").forward(request,response);
+		}else if (request.getParameter("checkOut")!=null) {
+			//when check out button is clicked, we move to payment page
+			request.getRequestDispatcher("/Payment.jspx").forward(request,response);
 		}else {
-
-
-			//debugging print statements
-//			System.out.println(request.getParameter("bookCategories")); //get the category that was selected by the user
-//			System.out.println(request.getParameter("bookTitles")); //get the book that was chosen by the user
-//
-//			/*
-//			 * using one category for the whole session until the user decides to change it
-//			 */
-//			String cat = request.getParameter("bookCategories");
-
-
-			/*
-			 * this is here to make sure that the value for the Book Title is what the user picked everytime
-			 * otherwise it has the default message "Click Here"
-			 */
-			//		if (bookId != null) {
-			//			request.setAttribute("previousSelectedBook", out.get(Integer.parseInt(bookId)));
-			//		}
-			//		else request.setAttribute("previousSelectedBook", "Click Here");
-
-
-//			request.setAttribute("books_by_cat", outMap); //setting the books that have the chosen category to requestScope
-//			request.setAttribute("previousSelectedCat", cat); //keep track of the category for the whole session (or until it's changed)
-//			request.setAttribute("catChosen", request.getParameter("bookCategories") != null); //boolean to show if a category has already been chosen
-//
-//			request.setAttribute("bookInfo", bookInfo); //setting the map to the requestScope to make the table of the book, category and its inormation
-//
-//			//request.setAttribute("oldBookId", bookId); //keeping track of the chosen book ID to use for the current requestScope
-//
-//			request.setAttribute("bkChosen", request.getParameter("bookTitles")!=null); //boolean to represent that a book has been chosen to make the table
 
 			request.getRequestDispatcher("/MainPage.jspx").forward(request,response); //always redirect to the main bookstore page
 			response.getWriter().append("Served at: ").append(request.getContextPath());
@@ -200,12 +172,23 @@ public class Start extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+		/*
+		 * bookReviews keeps track of all the reviews that were submitted on a particular book (with Id)
+		 * just keep appending reviews to the end and then saving them
+		 * 
+		 * I don't know what to do with the reviews but we're saving it for later
+		 * 
+		 */
 		if (request.getParameter("review") != null){
 			String bookId = request.getParameter("bid");
 			ArrayList<String> temp = bookReviews.getOrDefault(Integer.parseInt(bookId), new ArrayList<String>());
 			temp.add(request.getParameter("review"));
 			bookReviews.put(Integer.parseInt(bookId), temp);
 		}else if (request.getParameter("addBid") != null) {
+			/*
+			 * adding a bookId to the running shoppingCart list to play around with
+			 */
 			shoppingCart.add(request.getParameter("addBid"));
 		}
 		// TODO Auto-generated method stub
