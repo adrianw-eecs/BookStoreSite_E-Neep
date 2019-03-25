@@ -58,10 +58,16 @@ public class Start extends HttpServlet {
 			theModel.retrieveAddress("1");
 			theModel.retrieveSingleBook("b002");
 			theModel.retrieveBookCat("Engineering");
+			theModel.retrieveAllBooks();
 			ArrayList<String> bids = new ArrayList<String>();
 			bids.add("b002");
 			bids.add("b003");
 			ArrayList<BookBean> data = theModel.retrieveShoppingCart(bids);
+			theModel.searchBooks(" ");
+			System.out.println(data.get(0).toStringArray()[0]);
+			System.out.println(data.get(0).toStringArray()[1]);
+			System.out.println(data.get(0).toStringArray()[2]);
+			int id = theModel.addAddress("ABC Street", "Test ON", "CANADA", "L4K3Y7" , "905-434-5258");
 			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
