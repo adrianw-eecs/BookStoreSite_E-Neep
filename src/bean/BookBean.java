@@ -60,4 +60,15 @@ public class BookBean {
 	public void setCategory(String category) {
 		this.category = category;
 	}
+	
+	public String[] toStringArray() {
+		//String[] stringArray = new String[this.bid, this.title, this.price, this.category];
+		String[] stringArray = new String[4];
+		stringArray[0] = this.bid;
+		stringArray[1] = this.title;
+		stringArray[2] = Double.toString(this.price);
+		stringArray[3] = this.category;
+		return stringArray;
+		
+	}
 }
