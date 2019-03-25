@@ -21,6 +21,7 @@ public class model {
 	// ADDRESS DB														   //
 	public ArrayList<AddressBean> retrieveAddress(String id) throws Exception{
 		return addressinfo.retrieveAddressUsingID(id);
+
 	}
 	public int addAddress(String street, String prov, String country, String post, String phone) throws Exception{
 		return addressinfo.addAddress(street, prov, country, post, phone);
@@ -37,6 +38,7 @@ public class model {
 	
 	public ArrayList<BookBean> retrieveAllBooks() throws Exception{
 		return bookinfo.retrieveAnyBookOrBooks("", "", null);
+
 	}
 	
 	public ArrayList<BookBean> retrieveBookCat(String category) throws Exception{

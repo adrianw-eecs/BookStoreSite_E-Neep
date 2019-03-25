@@ -14,67 +14,78 @@
 <link rel="StyleSheet"
 	href="${pageContext.request.contextPath}/res/mc.css" type="text/css"
 	title="cse4413" media="screen, print" />
+<script type="text/javascript" src="res/mc.js">
+	;
+</script>
 <title>Bookstore Main Page</title>
 </head>
 <body>
-	<form action='' method='GET'>
+	<form action='' method='POST'>
 		<legend>Selecting a Book</legend>
-		
-		<button type='submit' name='shoppingCart' label='shoppingCart' class='shoppingCart'>Shopping Cart</button>
-		
-		
-		<select name="bookCategories" onchange='this.form.submit()'>
-			<option selected="selected">${previousSelectedCat}</option>
+
+		<button type='submit' name='shoppingCart' label='shoppingCart'
+			class='shoppingCart'>Shopping Cart</button>
+
+		<select id="bookCategories" name="bookCategories"
+			onchange="populateAndShow(this.id, 'bookTitles', '/BookStoreSite_E-Neep/Start/Ajax')">
+			<option selected="selected"></option>
 			<option value="Science">Science</option>
 			<option value="Fiction">Fiction</option>
 			<option value="Engineering">Engineering</option>
+
+		</select> <select id="bookTitles" name="bookTitles" hidden="true"
+			onchange="createTableForBook(this.id, '/BookStoreSite_E-Neep/Start/Ajax')">
+			<option></option>
 		</select>
 
-		
-		<c:if test="${catChosen}">
-			<select name="bookChosen" onchange='this.form.submit()'>
-				<option selected="selected" value="${oldBookId}">${previousSelectedBook}</option>
-				<c:forEach var="current" items="${books_by_cat}">
-					<option value="${current.key}">${current.value}</option>
-				</c:forEach>
-			</select>
-			<c:if test="${bkChosen}">
-				<table>
-					<tr>
-						<th>Id</th>
-						<th>Title</th>
-						<th>Price</th>
-						<th>Rating</th>
-					</tr>
+		<table style="display: none" id="btable" class="btable">
 
-					<c:forEach var="book" items="${bookInfo}">
-						<tr>
-							<td align="center"><c:out value="${book.key}" /></td>
-							<td align="center"><c:out value="${book.value[0]}" /></td>
-							<td align="center"><c:out value="${book.value[1]}" /></td>
-							<td align="center"><c:out value="${book.value[2]}" /></td>
-						</tr>
-					</c:forEach>
-					
-					<tr>
-						<td>
-							<input id="bookReview" name="bookReview" type="text" />
-						</td>
-						<td>
-							<button type='submit' name='review' label='review'>Submit Review</button>
-						</td>
-					</tr>
-					<tr>
-					<td></td>
-					<td></td>
-					<td></td>
-						<td align="right">
-							<button type='submit' name='addToCart' label='addToCart'>Add to Shopping Cart</button>
-						</td>
-					</tr>
-				</table>
-			</c:if>
-		</c:if>
+			<tr>
+				<td><b>Id</b></td>
+				<td><label for="bid" id="bid"></label></td>
+			</tr>
+			<tr>
+				<td><b>Title</b></td>
+				<td><label for="btitle" id="btitle"></label></td>
+			</tr>
+			<tr>
+				<td><b>Rating</b></td>
+				<td><label id="brating" for="brating"></label></td>
+			</tr>
+			<tr>
+				<td><b>Price</b></td>
+				<td><label for="bprice" id="bprice"></label></td>
+			</tr>
+
+			<tr>
+				<td><input id="bookReview" name="bookReview" type="text" /></td>
+				<td>
+					<button type='submit' name='review' label='review'
+						onclick="addReview('/BookStoreSite_E-Neep/Start/Ajax', 'bookTitles');return false;">Submit
+						Review</button>
+				</td>
+			</tr>
+			<tr>
+				<td><p id='bookResult' style="color: #0C3; font-size: 15px"></p></td>
+			</tr>
+
+			<tr>
+				<td></td>
+				<td align="right">
+					<button type='submit' name='cart' label='cart'
+						onclick="addToCart('/BookStoreSite_E-Neep/Start/Ajax', 'bookTitles');return false;">Add
+						to Shopping Cart</button>
+				</td>
+			</tr>
+
+
+
+
+
+
+
+		</table>
+
 	</form>
 </body>
 	</html>
