@@ -65,5 +65,15 @@ public class POBean {
 		this.address = address;
 	}
 	
+	public String[] poStringArray() {
+		String[] stringArray = new String[5];
+		stringArray[0] = Integer.toString(this.id);
+		stringArray[1] = this.fname;
+		stringArray[2] = this.lname;
+		stringArray[3] = this.status;
+		stringArray[4] = Integer.toString(this.address);
+		return stringArray;
+	}
+	
 
 }

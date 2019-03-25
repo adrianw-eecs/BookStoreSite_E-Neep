@@ -28,9 +28,7 @@ public class PODAO {
 	}
 	
 	public ArrayList<POBean> retrievePOUsingID(String id) throws SQLException {
-		//String query = "select * from students where surname like ? and credit_taken >= ?";
 		String query = "Select * FROM PO WHERE ID = ?";
-//		Map<String, AddressBean> rv = new HashMap<String, AddressBean>();
 		ArrayList<POBean> arraylist = new ArrayList<POBean>();
 		Connection con = this.ds.getConnection();
 		PreparedStatement sanatizedQuery = con.prepareStatement(query);
@@ -43,8 +41,6 @@ public class PODAO {
 				String result_fname = r.getString("FNAME");
 				String result_status = r.getString("STATUS");
 				int result_addr = r.getInt("ADDRESS");
-
-				//CHANGE Querey for the current credits
 				POBean po = new POBean(result_id, result_lname, result_fname, result_status, result_addr);
 				arraylist.add(po);
 			}
@@ -100,9 +96,6 @@ public class PODAO {
 			System.out.println("Failed to get ID in PODAO");
 			throw new SQLException("Failed to get ID in PODAO");
 		}
-		
-
-
 	}
 
 }

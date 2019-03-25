@@ -64,17 +64,17 @@ public class model {
 	/////////////////////////////////////////////////////////////////////////
 	
 	/////////////////////////////////////////////////////////////////////////
-	// ADDRESS DB														   //
+	// ADDRESS PO														   //
 	// returns arraylist of POBean that matches the id provided 
-	public ArrayList<POBean> retrievePO(String id) throws Exception{
-	return poinfo.retrievePOUsingID(id);
+	public POBean retrieveSinglePO(String id) throws Exception{
+	return poinfo.retrievePOUsingID(id).get(0);
 	}
 	
 	//Adds the PO to the table and returns the id(number) of the PO added
 	public int addPO(String lname, String fname, String status, String address) throws Exception{
 	return poinfo.addPO(lname, fname, status, address);
 	}
-	// END OF ADDRESS DB COMMANDS										   //
+	// END OF PO DB COMMANDS										   //
 	/////////////////////////////////////////////////////////////////////////
 	
 }
