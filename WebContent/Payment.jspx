@@ -21,15 +21,128 @@
 </head>
 <body>
 	<form action='' method='POST'>
-	
+
 		<legend>Payment</legend>
-		
-		<button type='button' name='login' label='login' class='login'>Already
-			have an account? Login!</button>
+		<table>
 
+			<tr>
+				<td>
+					<button type='button' name='loginButton' label='loginButton'
+						class='loginButton'
+						onclick="login('/BookStoreSite_E-Neep/Start/Ajax');return false;">
+						Already have an account?<br />Login!
+					</button>
+				</td>
 
-		<button type='button' name='create' label='create' class='create'>Don't
-			have an account? Create one now!</button>
+				<td>
+					<button type='button' name='createButton' label='createButton'
+						class='createButton'
+						onclick="create('/BookStoreSite_E-Neep/Start/Ajax')">
+						Don't have an account?<br />Create one now!
+					</button>
+				</td>
+			</tr>
+
+		</table>
+		<table style="display: none" id="pTable" class="pTable">
+			<tr>
+				<td colspan="2" align="center">User Name:</td>
+			</tr>
+			<tr>
+				<td colspan="2" align="center"><input id="userName"
+					name="userName" type="text" /></td>
+			</tr>
+			<tr>
+				<td colspan="2" align="center">Password:</td>
+			</tr>
+			<tr>
+				<td colspan="2" align="center"><input id="pwd" name="pwd"
+					type="password" /></td>
+			</tr>
+			<tr>
+				<td></td>
+				<td align="right"><button type='button' name='createNow'
+						label='createNow' class='createNow' id="createNow" hidden="true"
+						onclick="create2('/BookStoreSite_E-Neep/Start/Ajax')">
+						Create!</button>
+
+					<button type='button' name='loginNow' label='loginNow'
+						class='loginNow' id="loginNow" hidden="true"
+						onclick="login2('/BookStoreSite_E-Neep/Start/Ajax')">
+						Login!</button></td>
+			</tr>
+		</table>
+
+		<table style="display: none" id="infoTable" class="infoTable">
+			<tr>
+				<td>First Name:</td>
+				<td>Last Name:</td>
+			</tr>
+			<tr>
+				<td><input id="fnameInp" name="fnameInp" type="text"
+					hidden="true" /> <label id="fnameLabel" for="fnameLabel"
+					hidden="true"></label></td>
+				<td><input id="lnameInp" name="lnameInp" type="text"
+					hidden="true" /> <label id="lnameLabel" for="lnameLabel"
+					hidden="true"></label></td>
+			</tr>
+			
+			<tr>
+				<td colspan="2">Street Name:</td>
+			</tr>
+			<tr>
+				<td colspan="2"><input id="streetNameInp" name="streetNameInp"
+					type="text" hidden="true" /> <label id="streetNameLabel"
+					for="streetNameLabel" hidden="true"></label></td>
+			</tr>
+			<tr>
+				<td>Province:</td>
+				<td>Country:</td>
+			</tr>
+			<tr>
+				<td><input id="provInp" name="provInp" type="text"
+					hidden="true" /> <label id="provLabel" for="provLabel"
+					hidden="true"></label></td>
+				<td><input id="ctInp" name="ctInp" type="text" hidden="true" />
+					<label id="ctLabel" for="ctLabel" hidden="true"></label></td>
+			</tr>
+			
+			<tr>
+				<td>ZIP Code:</td>
+				<td>Phone Number:</td>
+			</tr>
+			
+			<tr>
+				<td><input id="zipInp" name="zipInp" type="text" hidden="true" />
+					<label id="zipLabel" for="zipLabel" hidden="true"></label></td>
+				<td><input id="phnInp" name="phnInp" type="text" hidden="true" />
+					<label id="phnLabel" for="phnLabel" hidden="true"></label></td>
+			</tr>
+			
+			<tr>
+				<td></td>
+				<td align="right"><button type='button' name='confirmAndPay'
+						label='confirmAndPay' class='confirmAndPay' id="confirmAndPay"
+						hidden="true"
+						onclick="showCreditCard('/BookStoreSite_E-Neep/Start/Ajax')">
+						Confirm Information</button></td>
+			</tr>
+			
+			<tr>
+				<td colspan="2"><label id="credit" for="credit" hidden="true">Credit
+						Card Number:</label> <br /> <input id="creditNum" name="creditNum"
+					type="number" hidden="true" /></td>
+			</tr>
+			<tr>
+				<td></td>
+				<td align="right"><button type='button' name='confirmOrder'
+						label='confirmOrder' class='confirmOrder' id="confirmOrder"
+						hidden="true"
+						onclick="finalize('/BookStoreSite_E-Neep/Start/Ajax')">
+						Confirm Order</button></td>
+			</tr>
+		</table>
+
 
 	</form>
 </body>
