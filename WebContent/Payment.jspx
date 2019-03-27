@@ -23,6 +23,7 @@
 	<form action='' method='POST'>
 
 		<legend>Payment</legend>
+
 		<table>
 
 			<tr>
@@ -75,8 +76,8 @@
 
 		<table style="display: none" id="infoTable" class="infoTable">
 			<tr>
-				<td>First Name:</td>
-				<td>Last Name:</td>
+				<td><label id="fname" for="fname">First Name:</label></td>
+				<td><label id="lname" for="lname">Last Name:</label></td>
 			</tr>
 			<tr>
 				<td><input id="fnameInp" name="fnameInp" type="text"
@@ -86,9 +87,10 @@
 					hidden="true" /> <label id="lnameLabel" for="lnameLabel"
 					hidden="true"></label></td>
 			</tr>
-			
+
 			<tr>
-				<td colspan="2">Street Name:</td>
+				<td colspan="2"><label id="stname" for="stname">Street
+						Name:</label></td>
 			</tr>
 			<tr>
 				<td colspan="2"><input id="streetNameInp" name="streetNameInp"
@@ -96,8 +98,8 @@
 					for="streetNameLabel" hidden="true"></label></td>
 			</tr>
 			<tr>
-				<td>Province:</td>
-				<td>Country:</td>
+				<td><label id="provname" for="provname">Province:</label></td>
+				<td><label id="ctname" for="ctname">Country:</label></td>
 			</tr>
 			<tr>
 				<td><input id="provInp" name="provInp" type="text"
@@ -106,35 +108,37 @@
 				<td><input id="ctInp" name="ctInp" type="text" hidden="true" />
 					<label id="ctLabel" for="ctLabel" hidden="true"></label></td>
 			</tr>
-			
+
 			<tr>
-				<td>ZIP Code:</td>
-				<td>Phone Number:</td>
+				<td><label id="zipname" for="zipname">ZIP Code:</label></td>
+				<td><label id="phnname" for="phnname">Phone Number:</label></td>
 			</tr>
-			
+
 			<tr>
 				<td><input id="zipInp" name="zipInp" type="text" hidden="true" />
 					<label id="zipLabel" for="zipLabel" hidden="true"></label></td>
 				<td><input id="phnInp" name="phnInp" type="text" hidden="true" />
 					<label id="phnLabel" for="phnLabel" hidden="true"></label></td>
 			</tr>
-			
+
 			<tr>
-				<td></td>
+				<td><p id='accResult' style="color: #0C3; font-size: 15px"
+						hidden="true"></p></td>
 				<td align="right"><button type='button' name='confirmAndPay'
 						label='confirmAndPay' class='confirmAndPay' id="confirmAndPay"
 						hidden="true"
 						onclick="showCreditCard('/BookStoreSite_E-Neep/Start/Ajax')">
 						Confirm Information</button></td>
 			</tr>
-			
+
 			<tr>
 				<td colspan="2"><label id="credit" for="credit" hidden="true">Credit
 						Card Number:</label> <br /> <input id="creditNum" name="creditNum"
 					type="number" hidden="true" /></td>
 			</tr>
 			<tr>
-				<td></td>
+				<td><p id='creditResult' style="color: #0C3; font-size: 15px"
+						hidden="true"></p></td>
 				<td align="right"><button type='button' name='confirmOrder'
 						label='confirmOrder' class='confirmOrder' id="confirmOrder"
 						hidden="true"

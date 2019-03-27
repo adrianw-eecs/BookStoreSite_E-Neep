@@ -25,6 +25,8 @@ public class Start extends HttpServlet {
 	private model theModel;
 	HashMap<Integer, ArrayList<String>> bookReviews = new HashMap<Integer, ArrayList<String>>();
 	ArrayList<String> shoppingCart = new ArrayList<String>();
+	ArrayList<String> dummyInfo = new ArrayList<String>();
+	String creditNumber = "";
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
@@ -128,6 +130,8 @@ public class Start extends HttpServlet {
 				);
 		
 		
+		
+		
 		/*
 		 * bookReviews keeps track of all the reviews that were submitted on a particular book (with Id)
 		 * just keep appending reviews to the end and then saving them
@@ -140,6 +144,9 @@ public class Start extends HttpServlet {
 		if (request.getPathInfo() != null && request.getPathInfo().contains("Ajax")) {
 			System.out.println(bookReviews);
 			System.out.println(shoppingCart);
+			System.out.println(dummyInfo);
+			System.out.println(creditNumber);
+			
 			
 			/*
 			 * Information passed to front end of the following format:
@@ -171,6 +178,16 @@ public class Start extends HttpServlet {
 					i++;
 				}
 				response.getWriter().write(Arrays.toString(out));
+			}else if (request.getParameter("username") != null) {
+				/*
+				 * get address info based on username and password
+				 * and then convert it to String array
+				 */
+				String out = "";
+				out += "Steve|Irwin|42 Wallaby Way|Sydney|Australia|L4J 4Z5|647-989-5484";
+				
+				response.getWriter().write(out);
+				
 			}
 
 
@@ -214,6 +231,24 @@ public class Start extends HttpServlet {
 			 * adding a bookId to the running shoppingCart list to play around with
 			 */
 			shoppingCart.add(request.getParameter("addBid"));
+		}else if (request.getParameter("fname") != null) {
+			String fname = request.getParameter("fname");
+			String lname = request.getParameter("lname");
+			String street = request.getParameter("street");
+			String prov = request.getParameter("prov");
+			String country = request.getParameter("country");
+			String zip = request.getParameter("zip");
+			String phone = request.getParameter("phone");
+			
+			dummyInfo.add("First name: " + fname 
+					+ "\nLast Name: " + lname
+					+ "\nStreet: " + street
+					+ "\nProvince: " + prov
+					+ "\nCountry: " + country
+					+ "\nZIP Code: " + zip
+					+ "\nPhone Number: " + phone);
+		}else if (request.getParameter("creditNum") != null) {
+			creditNumber = request.getParameter("creditNum");
 		}
 		// TODO Auto-generated method stub
 		doGet(request, response);
