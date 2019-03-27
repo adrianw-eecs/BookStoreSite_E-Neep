@@ -27,6 +27,11 @@ public class Start extends HttpServlet {
 	ArrayList<String> shoppingCart = new ArrayList<String>();
 	ArrayList<String> dummyInfo = new ArrayList<String>();
 	String creditNumber = "";
+	
+	//no sessionScope with AJAX so pseudo session scope is done with map of current sessionId -> shopping cart
+	//when username and password are received, can just store in login table the shopping cart of current sessionId
+	//with the inputted username/password and then dump the sessionId from the map to be used again later
+	HashMap<String, ArrayList<String>> userSessionToShoppingCart = new HashMap<String, ArrayList<String>>();
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
@@ -142,11 +147,11 @@ public class Start extends HttpServlet {
 
 		System.out.println(request.getPathInfo() + " " + request.getQueryString());
 		if (request.getPathInfo() != null && request.getPathInfo().contains("Ajax")) {
-			System.out.println(bookReviews);
-			System.out.println(shoppingCart);
-			System.out.println(dummyInfo);
-			System.out.println(creditNumber);
-			
+//			System.out.println(bookReviews);
+			System.out.println("global shopping cart:" + shoppingCart);
+//			System.out.println(dummyInfo);
+//			System.out.println(creditNumber);
+			System.out.println("session map: " +userSessionToShoppingCart);
 			
 			/*
 			 * Information passed to front end of the following format:
@@ -230,7 +235,9 @@ public class Start extends HttpServlet {
 			/*
 			 * adding a bookId to the running shoppingCart list to play around with
 			 */
+			shoppingCart = userSessionToShoppingCart.getOrDefault(request.getSession().getId(), new ArrayList<String>());
 			shoppingCart.add(request.getParameter("addBid"));
+			userSessionToShoppingCart.put(request.getSession().getId(), shoppingCart);
 		}else if (request.getParameter("fname") != null) {
 			String fname = request.getParameter("fname");
 			String lname = request.getParameter("lname");
