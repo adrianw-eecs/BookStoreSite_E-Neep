@@ -5,20 +5,24 @@ import java.util.ArrayList;
 import bean.AddressBean;
 import bean.BookBean;
 import bean.POBean;
+import bean.AccountBean;
 import dao.AddressDAO;
 import dao.BookDAO;
 import dao.PODAO;
+import dao.AccountDAO;
 
 public class model {
 	
 	private AddressDAO addressinfo;
 	private BookDAO bookinfo;
 	private PODAO poinfo;
+	private AccountDAO accountinfo;
 	
 	public model() throws ClassNotFoundException {
 		addressinfo = new AddressDAO();
 		bookinfo = new BookDAO();
 		poinfo = new PODAO();
+		accountinfo = new AccountDAO();
 
 	}
 	/////////////////////////////////////////////////////////////////////////
@@ -64,7 +68,7 @@ public class model {
 	/////////////////////////////////////////////////////////////////////////
 	
 	/////////////////////////////////////////////////////////////////////////
-	// ADDRESS PO														   //
+	//  PO	DB													   //
 	// returns arraylist of POBean that matches the id provided 
 	public POBean retrieveSinglePO(String id) throws Exception{
 	return poinfo.retrievePOUsingID(id).get(0);
@@ -74,7 +78,19 @@ public class model {
 	public int addPO(String lname, String fname, String status, String address) throws Exception{
 	return poinfo.addPO(lname, fname, status, address);
 	}
-	// END OF PO DB COMMANDS										   //
+	// END OF PO DB COMMANDS											   //
 	/////////////////////////////////////////////////////////////////////////
+	
+	/////////////////////////////////////////////////////////////////////////
+	// ADDRESS PO														   //
+	// returns arraylist of POBean that matches the id provided 
+	public AccountBean createAccount(String username, String password, String street, String prov, String country, String post, String phone) throws Exception{
+		
+		return accountinfo.addAccount(username,password, addAddress(street, prov, country, post, phone));
+	}
+
+	// END OF PO DB COMMANDS											   //
+	/////////////////////////////////////////////////////////////////////////
+
 	
 }
