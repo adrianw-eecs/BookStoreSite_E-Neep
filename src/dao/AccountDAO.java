@@ -27,7 +27,7 @@ public class AccountDAO {
 	}
 
 	public AccountBean verifyAccount(String username, String password) throws SQLException {
-		
+
 		AccountBean account = null;
 		String query = "SELECT * FROM ACCOUNT WHERE USERNAME = ? and PASSWORD = ?";
 		Connection con = this.ds.getConnection();
@@ -37,11 +37,11 @@ public class AccountDAO {
 			sanatizedQuery.setString(2, password);
 
 			ResultSet r = sanatizedQuery.executeQuery();
-			if(r.next()) {
-			String result_name= r.getString("USERNAME");
-			int result_addr_id = r.getInt("ADDRESS");
-			// CHANGE Querey for the current credits
-			account = new AccountBean(result_name, result_addr_id);
+			if (r.next()) {
+				String result_name = r.getString("USERNAME");
+				int result_addr_id = r.getInt("ADDRESS");
+				// CHANGE Querey for the current credits
+				account = new AccountBean(result_name, result_addr_id);
 			}
 		} catch (SQLException e) {
 			System.out.println("Verification in AccountDAO failed");
@@ -55,7 +55,7 @@ public class AccountDAO {
 
 	public AccountBean addAccount(String username, String password, int address) throws SQLException {
 		AccountBean acc = null;
-		String query = "INSERT INTO ACCOUNT (username, password, address) VALUES (?,?,?,?)";
+		String query = "INSERT INTO ACCOUNT (username, password, address) VALUES (?,?,?)";
 		Connection con = this.ds.getConnection();
 		PreparedStatement sanatizedQuery = con.prepareStatement(query);
 		try {
@@ -64,7 +64,7 @@ public class AccountDAO {
 			sanatizedQuery.setInt(3, address);
 
 			sanatizedQuery.executeUpdate();
-			
+
 			acc = new AccountBean(username, address);
 
 		} catch (SQLException e) {

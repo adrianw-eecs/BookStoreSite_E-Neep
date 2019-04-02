@@ -13,11 +13,10 @@ import javax.naming.NamingException;
 
 import bean.POBean;
 
-
 public class PODAO {
-	
+
 	private DataSource ds;
-	
+
 	public PODAO() throws ClassNotFoundException {
 		try {
 			ds = (DataSource) (new InitialContext()).lookup("java:/comp/env/jdbc/EECS");
@@ -26,7 +25,7 @@ public class PODAO {
 		}
 
 	}
-	
+
 	public ArrayList<POBean> retrievePOUsingID(String id) throws SQLException {
 		String query = "Select * FROM PO WHERE ID = ?";
 		ArrayList<POBean> arraylist = new ArrayList<POBean>();
@@ -44,19 +43,18 @@ public class PODAO {
 				POBean po = new POBean(result_id, result_lname, result_fname, result_status, result_addr);
 				arraylist.add(po);
 			}
-		} catch(SQLException e){
+		} catch (SQLException e) {
 			System.out.println("Query in PODAO failed");
 			throw new SQLException("");
 		}
-		
-		
+
 		sanatizedQuery.close();
 		con.close();
 		return arraylist;
 	}
-	
+
 	public int addPO(String lname, String fname, String status, String address) throws SQLException {
-		
+
 		int id = getID() + 1;
 		String query = "INSERT INTO PO (id, lname, fname, status, address) VALUES (?,?,?,?,?)";
 		Connection con = this.ds.getConnection();
@@ -67,14 +65,14 @@ public class PODAO {
 			sanatizedQuery.setString(3, fname);
 			sanatizedQuery.setString(4, status);
 			sanatizedQuery.setString(5, address);
-			
+
 			sanatizedQuery.executeUpdate();
-			
-		} catch(SQLException e){
+
+		} catch (SQLException e) {
 			System.out.println("Update in PODAO failed");
 			throw new SQLException(e.getMessage());
 		}
-		
+
 		sanatizedQuery.close();
 		con.close();
 		return id;
@@ -92,7 +90,7 @@ public class PODAO {
 			sanatizedQuery.close();
 			con.close();
 			return result_id;
-		} catch(SQLException e){
+		} catch (SQLException e) {
 			System.out.println("Failed to get ID in PODAO");
 			throw new SQLException("Failed to get ID in PODAO");
 		}
