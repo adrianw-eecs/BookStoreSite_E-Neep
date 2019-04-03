@@ -90,6 +90,10 @@ public class model {
 
 		return queryResult;
 	}
+	
+	public BookBean retrieveSingleBookBOOKBEAN(String bid) throws SQLException, Exception {
+		return bookInfo.retrieveAnyBookOrBooks(bid, "", null).get(0);
+	}
 
 	// returns arraylist of POBean that has all books
 	public ArrayList<BookBean> retrieveAllBooks() throws Exception {
