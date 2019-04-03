@@ -26,8 +26,6 @@ import model.model;
 public class Start extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private model theModel;
-	HashMap<Integer, ArrayList<String>> bookReviews = new HashMap<Integer, ArrayList<String>>();
-	ArrayList<String> shoppingCart = new ArrayList<String>();
 	ArrayList<String> dummyInfo = new ArrayList<String>();
 	String creditNumber = "";
 
@@ -42,6 +40,10 @@ public class Start extends HttpServlet {
 	// with the inputted username/password and then dump the sessionId from the map
 	// to be used again later
 	HashMap<String, ArrayList<String>> userSessionToShoppingCart = new HashMap<String, ArrayList<String>>();
+	
+	//Reviews are handled
+	HashMap<String, ArrayList<String>> bookReviews = new HashMap<String, ArrayList<String>>();
+	ArrayList<String> shoppingCart = new ArrayList<String>();
 
 	/**
 	 * @see HttpServlet#HttpServlet()
@@ -207,9 +209,9 @@ public class Start extends HttpServlet {
 		 */
 		if (request.getParameter("review") != null) {
 			String bookId = request.getParameter("bid");
-			ArrayList<String> temp = bookReviews.getOrDefault(Integer.parseInt(bookId), new ArrayList<String>());
+			ArrayList<String> temp = bookReviews.getOrDefault(bookId, new ArrayList<String>());
 			temp.add(request.getParameter("review"));
-			bookReviews.put(Integer.parseInt(bookId), temp);
+			bookReviews.put(bookId, temp);
 
 			/*
 			 * adding a bookId to the running shoppingCart list for this session - for this
