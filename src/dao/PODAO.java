@@ -44,8 +44,7 @@ public class PODAO {
 				arraylist.add(po);
 			}
 		} catch (SQLException e) {
-			System.out.println("Query in PODAO failed");
-			throw new SQLException("");
+			throw new SQLException("Failed to retrieve PO form DB");
 		}
 
 		sanatizedQuery.close();
@@ -69,8 +68,7 @@ public class PODAO {
 			sanatizedQuery.executeUpdate();
 
 		} catch (SQLException e) {
-			System.out.println("Update in PODAO failed");
-			throw new SQLException(e.getMessage());
+			throw new SQLException("Failed to create PO");
 		}
 
 		sanatizedQuery.close();
@@ -91,8 +89,7 @@ public class PODAO {
 			con.close();
 			return result_id;
 		} catch (SQLException e) {
-			System.out.println("Failed to get ID in PODAO");
-			throw new SQLException("Failed to get ID in PODAO");
+			throw new SQLException("Failed to get POID");
 		}
 	}
 
