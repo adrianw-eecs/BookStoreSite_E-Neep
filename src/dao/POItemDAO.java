@@ -37,8 +37,7 @@ public class POItemDAO {
 
 			sanatizedQuery.executeUpdate();
 		} catch (SQLException e) {
-			System.out.println("Create POItem in POItemDAO failed");
-			throw new SQLException(e.getMessage());
+			throw new SQLException("Create POItem in POItemDAO failed");
 		}
 
 		sanatizedQuery.close();
