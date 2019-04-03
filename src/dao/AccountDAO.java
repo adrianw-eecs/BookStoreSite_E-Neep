@@ -44,8 +44,8 @@ public class AccountDAO {
 				account = new AccountBean(result_name, result_addr_id);
 			}
 		} catch (SQLException e) {
-			System.out.println("Verification in AccountDAO failed");
-			throw new SQLException(e.getMessage());
+//			System.out.println("Verification in AccountDAO failed");
+			throw new SQLException("Verification in AccountDAO failed");
 		}
 
 		sanatizedQuery.close();
@@ -68,8 +68,8 @@ public class AccountDAO {
 			acc = new AccountBean(username, address);
 
 		} catch (SQLException e) {
-			System.out.println("Create account in AccountDAO failed");
-			throw new SQLException(e.getMessage());
+//			System.out.println("Create account in AccountDAO failed");
+			throw new SQLException("Create account in AccountDAO failed");
 		}
 
 		sanatizedQuery.close();

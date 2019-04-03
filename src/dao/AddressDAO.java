@@ -50,8 +50,8 @@ public class AddressDAO {
 				arraylist.add(person);
 			}
 		} catch(SQLException e){
-			System.out.println("Query in AddressDAO failed");
-			throw new SQLException("");
+//			System.out.println("Query in AddressDAO failed");
+			throw new SQLException("Query in AddressDAO failed");
 		}
 		
 		
@@ -77,8 +77,8 @@ public class AddressDAO {
 			sanatizedQuery.executeUpdate();
 			
 		} catch(SQLException e){
-			System.out.println("Update in AddressDAO failed");
-			throw new SQLException(e.getMessage());
+//			System.out.println("Update in AddressDAO failed");
+			throw new SQLException("Update in AddressDAO failed");
 		}
 		
 		sanatizedQuery.close();
@@ -99,7 +99,7 @@ public class AddressDAO {
 			con.close();
 			return result_id;
 		} catch(SQLException e){
-			System.out.println("Failed to get ID in AddressDAO");
+//			System.out.println("Failed to get ID in AddressDAO");
 			throw new SQLException("Failed to get ID in AddressDAO");
 		}
 		
