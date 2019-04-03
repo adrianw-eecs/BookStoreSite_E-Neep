@@ -40,10 +40,7 @@
 
 		<table style="display: none" id="btable" class="btable">
 
-			<tr>
-				<td><b>Id</b></td>
-				<td><label for="bid" id="bid"></label></td>
-			</tr>
+			
 			<tr>
 				<td><b>Title</b></td>
 				<td><label for="btitle" id="btitle"></label></td>
