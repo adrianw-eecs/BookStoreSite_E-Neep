@@ -141,7 +141,6 @@ public class model {
 	// END OF BOOK DB COMMANDS //
 	/////////////////////////////////////////////////////////////////////////
 
-
 	/**
 	 * Check if the query return an empty array of BookBeans
 	 * 
@@ -152,6 +151,7 @@ public class model {
 	private boolean checkResultArraySize(ArrayList<BookBean> queryArray) {
 		return queryArray.isEmpty();
 	}
+
 	/////////////////////////////////////////////////////////////////////////
 	// PO DB //
 	// returns arraylist of POBean that matches the id provided
@@ -184,10 +184,10 @@ public class model {
 
 	/////////////////////////////////////////////////////////////////////////
 	// POItem COMMANDS //
-  // Added an item to the POITEM table and return true if sucessful
+	// Added an item to the POITEM table and return true if sucessful
 	public boolean addItemsToPO(int id, ArrayList<String> bids, double price) throws Exception {
-		
-		for(String bid : bids) {
+
+		for (String bid : bids) {
 			poItemInfo.addItemToPO(id, bid, price);
 		}
 		return true;
