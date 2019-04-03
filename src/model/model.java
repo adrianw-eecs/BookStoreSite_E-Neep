@@ -103,6 +103,7 @@ public class model {
 
 	/////////////////////////////////////////////////////////////////////////
 	// POItem COMMANDS //
+	// Added an item to the POITEM table and r	eturn true if sucessful 
 	public boolean addItemsToPO(int id, ArrayList<String> bids, double price) throws Exception {
 		
 		for(String bid : bids) {
