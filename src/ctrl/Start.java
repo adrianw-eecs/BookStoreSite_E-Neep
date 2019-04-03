@@ -33,6 +33,7 @@ public class Start extends HttpServlet {
 
 	private int bookCategoryError = 0;
 	private int singleBookInfoError = 0;
+	private int addingTheBookToShoppingCart = 0;
 
 	// no sessionScope with AJAX so pseudo session scope is done with map of current
 	// sessionId -> shopping cart
@@ -107,17 +108,14 @@ public class Start extends HttpServlet {
 		}
 
 		/*
-		 * Map containing bid -> quantity to be rerouted to response
+		 * Map containing bid -> quantity to be rerouted to response Check is the
+		 * session ID if it exists in the map, and make sure it is there before
+		 * executing the method
 		 */
 		ArrayList<ArrayList<String>> scInfo = new ArrayList<ArrayList<String>>();
-		if (userSessionToShoppingCart.get(request.getSession().getId()) != null )
-				scInfo = quantityOfBooksForShoppingCart(userSessionToShoppingCart.get(request.getSession().getId()));/* new ArrayList<ArrayList<String>>(); */
-
-		/*
-		 * scInfo.add(new ArrayList<String>(Arrays.asList("1", "3", "69")));
-		 * scInfo.add(new ArrayList<String>(Arrays.asList("2", "4", "0.99")));
-		 * scInfo.add(new ArrayList<String>(Arrays.asList("3", "1", "999")));
-		 */
+		if (userSessionToShoppingCart.get(request.getSession().getId()) != null)
+			scInfo = quantityOfBooksForShoppingCart(userSessionToShoppingCart.get(request.getSession().getId()),
+					request);
 
 		/*
 		 * bookInfo map that allows HTML access to all the information in the format
@@ -141,17 +139,22 @@ public class Start extends HttpServlet {
 			System.out.println("session map: " + userSessionToShoppingCart);
 			System.out.println(scInfo);
 			System.out.println(request.getQueryString());
+
 			/*
 			 * Information passed to front end of the following format: for one string (i.e.
 			 * the information of one specific book) it is: Title | Rating | Price
 			 * otherwise, for any arraylists it is: an array of strings with similar format
 			 * as above. They should be comma-separated by default as arrays
 			 */
+			// Here we just show the books in this category
 			if (request.getParameter("category") != null) {
 				displayBooksByCategory(request, response);
+				// here we select the book info based on its ID
 			} else if (request.getParameter("bid") != null) {
 				displaySelectedBookInformation(request, response);
 			} else if (request.getParameter("quantity") != null) {
+				// here we look into the list of book IDs added to the shopping cart and send
+				// them to the shooping cart page
 				String[] out = new String[scInfo.size()];
 				int i = 0;
 				while (i < scInfo.size()) {
@@ -207,10 +210,12 @@ public class Start extends HttpServlet {
 			ArrayList<String> temp = bookReviews.getOrDefault(Integer.parseInt(bookId), new ArrayList<String>());
 			temp.add(request.getParameter("review"));
 			bookReviews.put(Integer.parseInt(bookId), temp);
-		} else if (request.getParameter("addBid") != null) {
+
 			/*
-			 * adding a bookId to the running shoppingCart list to play around with
+			 * adding a bookId to the running shoppingCart list for this session - for this
+			 * UserID
 			 */
+		} else if (request.getParameter("addBid") != null) {
 			shoppingCart = userSessionToShoppingCart.getOrDefault(request.getSession().getId(),
 					new ArrayList<String>());
 			shoppingCart.add(request.getParameter("addBid"));
@@ -234,41 +239,70 @@ public class Start extends HttpServlet {
 	}
 
 	/**
-	 * @param listOfBookIDs
-	 * @return
+	 * This method grabs the book IDs that are currently in the shopping cart for
+	 * this session (per user log in) and retrieves the price and title of the books
+	 * that were added to the shopping cart on Main Page.
+	 * 
+	 * If the "Add to Shopping cart" was clicked multiple times on the Main page,
+	 * then the quantity of this book will be incremented accordingly.
+	 * 
+	 * Everything is translated into useful Strings that the front end uses to get
+	 * the information.
+	 * 
+	 * @param listOfBookIDs - the ArrayList of book IDs that were added to the
+	 *                      shopping cart in this session.
+	 * @return the ArrayList of information about the books (title, quantity and
+	 *         price) represented in an ArrayList as well
 	 */
-	private ArrayList<ArrayList<String>> quantityOfBooksForShoppingCart(ArrayList<String> listOfBookIDs) {
-		ArrayList<ArrayList<String>> bookIDsAndQuantities = new ArrayList<ArrayList<String>>();
+	private ArrayList<ArrayList<String>> quantityOfBooksForShoppingCart(ArrayList<String> listOfBookIDs,
+			HttpServletRequest request) {
+		// Array to return
+		ArrayList<ArrayList<String>> bookIDsAndTheirQuantities = new ArrayList<ArrayList<String>>();
 		HashMap<String, ArrayList<String>> tempMap = new HashMap<String, ArrayList<String>>();
 
+		// grab the book IDs that were added to shopping cart in this session
 		for (String bookID : listOfBookIDs) {
+
+			// if the ID is already in the map that means that this book was already added,
+			// so grab the middle entry that represents the count and increment it by one.
 			if (tempMap.containsKey(bookID)) {
 				int currentQuantity = Integer.parseInt(tempMap.get(bookID).get(1)) + 1;
 				tempMap.get(bookID).set(1, String.valueOf(currentQuantity));
 			} else {
+				// Otherwise create a temporary array where we are going to store the title and
+				// price we get from the database. Quantity goes as the middle entry to serve
+				// the front end accordingly
 				ArrayList<String> bookInfoForThisID;
 				try {
+					// get the info from the database
 					bookInfoForThisID = theModel.retrieveSingleBook(bookID);
 
+					// form the temporary array that we add the info and the quantity to.
 					ArrayList<String> infoAndQuantityForThisID = new ArrayList<String>();
+					// add the retrieved title
 					infoAndQuantityForThisID.add(0, bookInfoForThisID.get(0));
+					// quantity is 1
 					infoAndQuantityForThisID.add(1, "1");
+					// add the price
 					infoAndQuantityForThisID.add(2, bookInfoForThisID.get(1));
 
 					tempMap.put(bookID, infoAndQuantityForThisID);
+					request.setAttribute("addingTheBookToShoppingCart", addingTheBookToShoppingCart);
 
 				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					System.out.println(
+							"There was something wrong with retrieveing the book information from the database when adding it ot the shopping cart. Please try again.");
+					addingTheBookToShoppingCart = 1;
+					request.setAttribute("addingTheBookToShoppingCart", addingTheBookToShoppingCart);
 				}
 			}
 		}
 
 		for (String bookID : tempMap.keySet()) {
-			bookIDsAndQuantities.add(tempMap.get(bookID));
+			bookIDsAndTheirQuantities.add(tempMap.get(bookID));
 		}
 
-		return bookIDsAndQuantities;
+		return bookIDsAndTheirQuantities;
 	}
 
 	/**
@@ -314,7 +348,8 @@ public class Start extends HttpServlet {
 
 	/**
 	 * This method retrieves all the information about this book from the database.
-	 * Uses the respective method from the model to do so.
+	 * Uses the respective method from the model to do so. It also adds a random
+	 * rating to this book out of 10.
 	 * 
 	 * @param request  this HttpServlet request
 	 * @param response this HttpServlet response
