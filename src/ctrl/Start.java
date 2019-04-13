@@ -165,8 +165,8 @@ public class Start extends HttpServlet {
 					i++;
 				}
 				response.getWriter().write(Arrays.toString(out));
-				
-				//Here we check if the username entered on the login page already exists or not
+
+				// Here we check if the username entered on the login page already exists or not
 			} else if (request.getParameter("verify") != null) {
 				checkUserNameTakenOrNot(request, response);
 			} else if (request.getParameter("username") != null) {
@@ -240,9 +240,28 @@ public class Start extends HttpServlet {
 					+ prov + "\nCountry: " + country + "\nZIP Code: " + zip + "\nPhone Number: " + phone);
 		} else if (request.getParameter("creditNum") != null) {
 			creditNumber = request.getParameter("creditNum");
+			// For analytics page update
+			purchaseConfirmed(request);
 		}
+
 		// TODO Auto-generated method stub
 		doGet(request, response);
+	}
+
+	private String[] updateTopTenTable() {
+		String[] data = null;
+		try {
+		data = theModel.analyticsTopTen();
+		
+		} catch (Exception e) {
+			System.out.println("Failed to get top ten analytics");
+		}
+		return data;
+	}
+
+	private void purchaseConfirmed(HttpServletRequest request) {
+		request.setAttribute("purchaseFlag", 1);
+		request.setAttribute("purchaseFlag", 0);
 	}
 
 	/**
@@ -386,11 +405,13 @@ public class Start extends HttpServlet {
 	}
 
 	/**
-	 * The method that uses the model to check if the given username already exists in database or not
+	 * The method that uses the model to check if the given username already exists
+	 * in database or not
 	 * 
-	 * @param request this HttpServlet request 
+	 * @param request  this HttpServlet request
 	 * @param response this HttpServlet response
-	 * @throws IOException is thrown in case if response runs into writing exceptions
+	 * @throws IOException is thrown in case if response runs into writing
+	 *                     exceptions
 	 */
 	private void checkUserNameTakenOrNot(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		String userName = request.getParameter("username");
@@ -409,8 +430,5 @@ public class Start extends HttpServlet {
 			response.getWriter().write("taken");
 		}
 	}
-	
-	
-	
-	
+
 }

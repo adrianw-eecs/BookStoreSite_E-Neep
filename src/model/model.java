@@ -209,6 +209,10 @@ public class model {
 		}
 		return true;
 	}
+	
+	public String[] analyticsTopTen( ) throws SQLException {
+		return poItemInfo.topTen();
+	}
 	// END OF POITEM COMMANDS //
 	/////////////////////////////////////////////////////////////////////////
 
