@@ -45,7 +45,7 @@ public class AddressDAO {
 				String result_zip = r.getString("ZIP");
 				String result_phone = r.getString("PHONE");
 
-				//CHANGE Querey for the current credits
+				//CHANGE Query for the current credits
 				AddressBean person = new AddressBean(result_id, result_street, result_province, result_country, result_zip, result_phone);
 				arraylist.add(person);
 			}
