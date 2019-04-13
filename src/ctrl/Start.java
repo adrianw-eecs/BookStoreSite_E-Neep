@@ -166,6 +166,8 @@ public class Start extends HttpServlet {
 				response.getWriter().write(Arrays.toString(out));
 			}else if (request.getParameter("verify") != null) {
 				System.out.println("HERE");
+				System.out.println("++++"+request.getParameter("username"));
+				System.out.println("===="+request.getParameter("passowrd"));
 				
 				
 				response.getWriter().write("taken");
