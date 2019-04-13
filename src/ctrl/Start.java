@@ -32,6 +32,7 @@ public class Start extends HttpServlet {
 	private int bookCategoryError = 0;
 	private int singleBookInfoError = 0;
 	private int addingTheBookToShoppingCart = 0;
+	private int userNameCheckError = 0;
 
 	// no sessionScope with AJAX so pseudo session scope is done with map of current
 	// sessionId -> shopping cart
@@ -40,8 +41,8 @@ public class Start extends HttpServlet {
 	// with the inputted username/password and then dump the sessionId from the map
 	// to be used again later
 	HashMap<String, ArrayList<String>> userSessionToShoppingCart = new HashMap<String, ArrayList<String>>();
-	
-	//Reviews are handled
+
+	// Reviews are handled
 	HashMap<String, ArrayList<String>> bookReviews = new HashMap<String, ArrayList<String>>();
 	ArrayList<String> shoppingCart = new ArrayList<String>();
 
@@ -164,14 +165,10 @@ public class Start extends HttpServlet {
 					i++;
 				}
 				response.getWriter().write(Arrays.toString(out));
-			}else if (request.getParameter("verify") != null) {
-				System.out.println("HERE");
-				System.out.println("++++"+request.getParameter("username"));
-				System.out.println("===="+request.getParameter("passowrd"));
 				
-				
-				response.getWriter().write("taken");
-//				response.getWriter().write("");
+				//Here we check if the username entered on the login page already exists or not
+			} else if (request.getParameter("verify") != null) {
+				checkUserNameTakenOrNot(request, response);
 			} else if (request.getParameter("username") != null) {
 				/*
 				 * get address info based on username and password and then convert it to String
@@ -388,4 +385,32 @@ public class Start extends HttpServlet {
 
 	}
 
+	/**
+	 * The method that uses the model to check if the given username already exists in database or not
+	 * 
+	 * @param request this HttpServlet request 
+	 * @param response this HttpServlet response
+	 * @throws IOException is thrown in case if response runs into writing exceptions
+	 */
+	private void checkUserNameTakenOrNot(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		String userName = request.getParameter("username");
+		String checkIfUserExists = "";
+		try {
+			checkIfUserExists = theModel.checkUserName(userName);
+			request.setAttribute("userNameCheckError", userNameCheckError);
+		} catch (SQLException e) {
+			userNameCheckError = 1;
+			request.setAttribute("userNameCheckError", userNameCheckError);
+		}
+
+		if (checkIfUserExists.equals("")) {
+			response.getWriter().write("");
+		} else {
+			response.getWriter().write("taken");
+		}
+	}
+	
+	
+	
+	
 }
