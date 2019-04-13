@@ -164,6 +164,12 @@ public class Start extends HttpServlet {
 					i++;
 				}
 				response.getWriter().write(Arrays.toString(out));
+			}else if (request.getParameter("verify") != null) {
+				System.out.println("HERE");
+				
+				
+				response.getWriter().write("taken");
+//				response.getWriter().write("");
 			} else if (request.getParameter("username") != null) {
 				/*
 				 * get address info based on username and password and then convert it to String
