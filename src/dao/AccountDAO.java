@@ -71,8 +71,9 @@ public class AccountDAO {
 			if (r.next()) {
 				String result_name = r.getString("USERNAME");
 				int result_addr_id = r.getInt("ADDRESS");
+				boolean result_admin = r.getBoolean("ADMIN");
 				// CHANGE Querey for the current credits
-				account = new AccountBean(result_name, result_addr_id);
+				account = new AccountBean(result_name, result_addr_id, result_admin);
 			}
 		} catch (SQLException e) {
 //			System.out.println("Verification in AccountDAO failed");
@@ -84,19 +85,20 @@ public class AccountDAO {
 		return account;
 	}
 
-	public AccountBean addAccount(String username, String password, int address) throws SQLException {
+	public AccountBean addAccount(String username, String password, int address, boolean admin) throws SQLException {
 		AccountBean acc = null;
-		String query = "INSERT INTO ACCOUNT (username, password, address) VALUES (?,?,?)";
+		String query = "INSERT INTO ACCOUNT (username, password, address) VALUES (?,?,?,?)";
 		Connection con = this.ds.getConnection();
 		PreparedStatement sanatizedQuery = con.prepareStatement(query);
 		try {
 			sanatizedQuery.setString(1, username);
 			sanatizedQuery.setString(2, password);
 			sanatizedQuery.setInt(3, address);
+			sanatizedQuery.setBoolean(4, admin);
 
 			sanatizedQuery.executeUpdate();
 
-			acc = new AccountBean(username, address);
+			acc = new AccountBean(username, address, admin);
 
 		} catch (SQLException e) {
 //			System.out.println("Create account in AccountDAO failed");
