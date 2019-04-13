@@ -25,6 +25,7 @@ public class AddressBean {
 		this.country = "";
 		this.zip = "";
 		this.phone = "000000000";
+		System.out.println("Bean not populated");
 	}
 	
 	public int getId() {

@@ -45,13 +45,13 @@ function populateAndShow(s1, s2, address){
 	document.getElementById("addToCart").hidden = true;
 	var request = new XMLHttpRequest();
 	if(l_s1.value == "Science"){
-		request.open("GET", (address + "?category=science"), true);
+		request.open("GET", (address + "?category=Science"), true);
 	}
 	if(l_s1.value == "Fiction"){
-		request.open("GET", (address + "?category=fiction"), true);
+		request.open("GET", (address + "?category=Fiction"), true);
 	}
 	if(l_s1.value == "Engineering"){
-		request.open("GET", (address + "?category=engineering"), true);
+		request.open("GET", (address + "?category=Engineering"), true);
 	}
 	request.onreadystatechange = function() {
 		dropDownHandler(request, l_s2);

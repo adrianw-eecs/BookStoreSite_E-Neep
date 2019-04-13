@@ -1,80 +1,203 @@
 package model;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
+import bean.AccountBean;
 import bean.AddressBean;
 import bean.BookBean;
 import bean.POBean;
+import dao.AccountDAO;
 import dao.AddressDAO;
 import dao.BookDAO;
 import dao.PODAO;
+import dao.POItemDAO;
 
 public class model {
-	
-	private AddressDAO addressinfo;
-	private BookDAO bookinfo;
-	private PODAO poinfo;
-	
+
+	private AddressDAO addressInfo;
+	private BookDAO bookInfo;
+	private PODAO poInfo;
+	private AccountDAO accountInfo;
+	private POItemDAO poItemInfo;
+
 	public model() throws ClassNotFoundException {
-		addressinfo = new AddressDAO();
-		bookinfo = new BookDAO();
-		poinfo = new PODAO();
+		addressInfo = new AddressDAO();
+		bookInfo = new BookDAO();
+		poInfo = new PODAO();
+		accountInfo = new AccountDAO();
+		poItemInfo = new POItemDAO();
 
 	}
+
 	/////////////////////////////////////////////////////////////////////////
-	// ADDRESS DB														   //
-	public ArrayList<AddressBean> retrieveAddress(String id) throws Exception{
-		return addressinfo.retrieveAddressUsingID(id);
+	// ADDRESS DB //
+	public ArrayList<AddressBean> retrieveAddress(String id) throws Exception {
+		return addressInfo.retrieveAddressUsingID(id);
 
 	}
-	public int addAddress(String street, String prov, String country, String post, String phone) throws Exception{
-		return addressinfo.addAddress(street, prov, country, post, phone);
+
+	public int addAddress(String street, String prov, String country, String post, String phone) throws Exception {
+		return addressInfo.addAddress(street, prov, country, post, phone);
 	}
-	// END OF ADDRESS DB COMMANDS										   //
+	// END OF ADDRESS DB COMMANDS //
 	/////////////////////////////////////////////////////////////////////////
-	
-	
+
 	/////////////////////////////////////////////////////////////////////////
-	// BOOK DB														   	   //
-	//// returns BookBean that matches the bid provided 
-	public BookBean retrieveSingleBook(String bid) throws Exception{
-		return bookinfo.retrieveAnyBookOrBooks(bid, "", null).get(0);
+	// BOOK DB //
+	//// returns BookBean that matches the bid provided
+	/**
+	 * This method retrieves the book from the database by the book ID. Throws
+	 * respective exceptions if anything is wrong.
+	 * 
+	 * @param bid book ID of the book in the database
+	 * @return ArrayList of Strings containing the title and the price of the book
+	 *         in String format
+	 * @throws SQLException is thrown if there is something wrong on the database
+	 *                      end in DAO
+	 * @throws Exception    is thrown in case if there is something wrong with the
+	 *                      retrieved results from the database - i.e. if one the
+	 *                      fields is empy or null
+	 */
+	public ArrayList<String> retrieveSingleBook(String bid) throws SQLException, Exception {
+		ArrayList<String> queryResult = new ArrayList<String>();
+		BookBean retrievedBook = bookInfo.retrieveAnyBookOrBooks(bid, "", null).get(0);
+
+		if (retrievedBook.getBid().equals("")) {
+			System.out.println(
+					"The system returned a book with an empty ID. There was something wrong, please try again");
+			throw new Exception("");
+		}
+		if (retrievedBook.getTitle().equals("")) {
+			System.out.println(
+					"The system returned a book with an empty Name. There was something wrong, please try again");
+			throw new Exception("");
+		}
+		if (retrievedBook.getCategory().equals("")) {
+			System.out.println(
+					"The system returned a book with an empty Category. There was something wrong, please try again");
+			throw new Exception("");
+		}
+		if (retrievedBook.getPrice() == 0) {
+			System.out.println(
+					"The system returned a book with a price of $0. There was something wrong, please try again");
+			throw new Exception("");
+		}
+
+		queryResult.add(retrievedBook.getTitle());
+		queryResult.add(String.valueOf(retrievedBook.getPrice()));
+
+		return queryResult;
 	}
 	
+	public BookBean retrieveSingleBookBOOKBEAN(String bid) throws SQLException, Exception {
+		return bookInfo.retrieveAnyBookOrBooks(bid, "", null).get(0);
+	}
+
 	// returns arraylist of POBean that has all books
-	public ArrayList<BookBean> retrieveAllBooks() throws Exception{
-		return bookinfo.retrieveAnyBookOrBooks("", "", null);
+	public ArrayList<BookBean> retrieveAllBooks() throws Exception {
+		return bookInfo.retrieveAnyBookOrBooks("", "", null);
 
 	}
-	
-	// returns arraylist of BookBean that matches the category provided 
-	public ArrayList<BookBean> retrieveBookCat(String category) throws Exception{
-		return bookinfo.retrieveAnyBookOrBooks("", category, null);
-	}
-	
-	// returns arraylist of BookBean that matches the category provided 
-	public ArrayList<BookBean> retrieveShoppingCart(ArrayList<String> bids) throws Exception{
-		return bookinfo.retrieveAnyBookOrBooks("", "", bids);
+
+	//
+	/**
+	 * This method returns an arrayList of BookBeans that matches the category
+	 * provided from the Controller
+	 * 
+	 * 
+	 * @param category category, by which the books are to be retrieved from the
+	 *                 database
+	 * @return ArrayList populated BookBeans or thrown an Exception if empty
+	 * @throws SQLException this exception is thrown in case if there is a database
+	 *                      error coming in from BookDAO
+	 * @throws Exception    this exception is thrown in case if the resulting
+	 *                      ArrayList turns out to be empty with no BookBeans
+	 */
+	public HashMap<String, String> retrieveBookCat(String category) throws SQLException, Exception {
+		HashMap<String, String> queryResult = new HashMap<String, String>();
+		ArrayList<BookBean> booksByCategory = bookInfo.retrieveAnyBookOrBooks("", category, null);
+
+		if (checkResultArraySize(booksByCategory)) {
+			System.out.println(
+					"The query results came out empty. Please choose another category of books and try again.");
+			throw new Exception("");
+		}
+
+		for (BookBean b : booksByCategory) {
+			queryResult.put(b.getBid(), b.getTitle());
+
+		}
+
+		return queryResult;
+
 	}
 
-	public ArrayList<BookBean> searchBooks(String search) throws Exception{
-		return bookinfo.findBooks(search);
+	// returns arraylist of BookBean that matches the category provided
+	public ArrayList<BookBean> retrieveShoppingCart(ArrayList<String> bids) throws Exception {
+		return bookInfo.retrieveAnyBookOrBooks("", "", bids);
 	}
-	// END OF BOOK DB COMMANDS											   //
-	/////////////////////////////////////////////////////////////////////////
-	
-	/////////////////////////////////////////////////////////////////////////
-	// ADDRESS PO														   //
-	// returns arraylist of POBean that matches the id provided 
-	public POBean retrieveSinglePO(String id) throws Exception{
-	return poinfo.retrievePOUsingID(id).get(0);
+
+	public ArrayList<BookBean> searchBooks(String search) throws Exception {
+		return bookInfo.findBooks(search);
 	}
-	
-	//Adds the PO to the table and returns the id(number) of the PO added
-	public int addPO(String lname, String fname, String status, String address) throws Exception{
-	return poinfo.addPO(lname, fname, status, address);
-	}
-	// END OF PO DB COMMANDS										   //
+	// END OF BOOK DB COMMANDS //
 	/////////////////////////////////////////////////////////////////////////
-	
+
+	/**
+	 * Check if the query return an empty array of BookBeans
+	 * 
+	 * @param queryArray the ArrayList containing the BookBeans returned by the
+	 *                   query
+	 * @return true if the resulting Array is empty, false otherwise
+	 */
+	private boolean checkResultArraySize(ArrayList<BookBean> queryArray) {
+		return queryArray.isEmpty();
+	}
+
+	/////////////////////////////////////////////////////////////////////////
+	// PO DB //
+	// returns arraylist of POBean that matches the id provided
+	public POBean retrieveSinglePO(String id) throws Exception {
+		return poInfo.retrievePOUsingID(id).get(0);
+	}
+
+	// Adds the PO to the table and returns the id(number) of the PO added
+	public int addPO(String lname, String fname, String status, String address) throws Exception {
+		return poInfo.addPO(lname, fname, status, address);
+	}
+	// END OF PO DB COMMANDS //
+	/////////////////////////////////////////////////////////////////////////
+
+	/////////////////////////////////////////////////////////////////////////
+	// ACCOUNT COMMANDS //
+	// returns arraylist of POBean that matches the id provided
+	public AccountBean createAccount(String username, String password, String street, String prov, String country,
+			String post, String phone) throws Exception {
+
+		return accountInfo.addAccount(username, password, addAddress(street, prov, country, post, phone));
+	}
+
+	// returns an account bean that holds the account Info(username and address)
+	public AccountBean login(String username, String password) throws Exception {
+		return accountInfo.verifyAccount(username, password);
+	}
+	// END OF ACCOUNT COMMANDS //
+	/////////////////////////////////////////////////////////////////////////
+
+	/////////////////////////////////////////////////////////////////////////
+	// POItem COMMANDS //
+	// Added an item to the POITEM table and return true if sucessful
+	public boolean addItemsToPO(int id, ArrayList<String> bids, double price) throws Exception {
+
+		for (String bid : bids) {
+			poItemInfo.addItemToPO(id, bid, price);
+		}
+		return true;
+	}
+	// END OF POITEM COMMANDS //
+	/////////////////////////////////////////////////////////////////////////
+
 }
+

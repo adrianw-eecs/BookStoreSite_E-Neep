@@ -80,8 +80,7 @@ public class BookDAO {
 				arraylist.add(book);
 			}
 		} catch (SQLException e) {
-			System.out.println("Query parsing and results in BOOKDAO failed");
-			throw new SQLException("");
+			throw new SQLException("Failed to retrieve books");
 		}
 
 		sanatizedQuery.close();
@@ -112,8 +111,7 @@ public class BookDAO {
 				arraylist.add(book);
 			}
 		} catch (SQLException e) {
-			System.out.println("Query parsing and results in BOOKDAO failed");
-			throw new SQLException("");
+			throw new SQLException("Query parsing and results in BOOKDAO failed");
 		}
 
 		sanatizedQuery.close();
