@@ -1,0 +1,227 @@
+body{
+    margin: 0;
+    padding: 0;
+	background-image: url(../images/librarybg.jpg);
+	background-size: cover;
+	font-family: sans-serif;
+}
+
+.createBox{
+	width: 500px;
+	height: 550px;
+	text-align: center;
+	background: rgb(41, 86, 100);
+	color: #fff;
+	top: 50%;
+	left: 50%;
+	position: absolute;
+	transform: translate(-50%, -50%);
+	box-sizing: border-box;
+	padding: 70px 30px;
+	border-radius: 20px;
+	opacity: 0.9;
+	box-shadow: 0 0 20px #fff;
+}
+
+.loginBox{
+	width: 320px;
+	height: 400px;
+	background: rgb(41, 86, 100);
+	color: #fff;
+	top: 50%;
+	left: 50%;
+	position: absolute;
+	transform: translate(-50%, -50%);
+	box-sizing: border-box;
+	padding: 70px 30px;
+	border-radius: 20px;
+	opacity: 0.9;
+	box-shadow: 0 0 10px #fff;
+}
+
+.info{
+	width: 330px;
+	height: 490px;
+	padding: 70px 30px 70px 10px;
+	transform: translate(-50%, -50%);
+	background: rgb(41, 86, 100);
+	color: #fff;
+	top: 50%;
+	left: 50%;
+	position: absolute;
+	box-sizing: border-box;
+	border-radius: 20px;
+	opacity: 0.9;
+	box-shadow: 0 0 20px #fff;
+}
+
+.credit{
+	width: 330px;
+	height: 200px;
+	padding: 70px 30px;
+	transform: translate(-50%, -50%);
+	background: rgb(41, 86, 100);
+	color: #fff;
+	top: 50%;
+	left: 50%;
+	position: absolute;
+	box-sizing: border-box;
+	border-radius: 20px;
+	opacity: 0.9;
+	box-shadow: 0 0 20px #fff;
+}
+
+.avatar{
+	width: 100px;
+	height: 100px;
+	border-radius: 50%;
+	position: absolute;
+	top: -50px;
+	left: calc(50% - 50px);
+}
+
+h1{
+	margin: 0;
+	padding: 0 0 10px;
+	text-align: center;
+	font-size: 22px;
+}
+
+.info > h1{
+	padding: 0 0 20px 30px;
+}
+
+.loginBox p{
+	margin: 5;
+	padding: 0;
+	font-weight: bold;
+}
+
+.info label{
+	margin-bottom: 10px;
+	width: 100%;
+	padding: 10px;
+	display: inline-block;
+	text-align: center;
+	background: rgba(48, 184, 139, .3);
+	font-size: 16px;
+	outline: none;
+	border: none;
+}
+
+.createBox input{
+	margin-bottom: 20px;
+	width: 45%;
+	padding: 10px;
+	display: inline-block;
+	text-align: center;
+	background: rgba(48, 184, 139, .3);
+	font-size: 16px;
+	outline: none;
+	border: none;
+}
+
+.credit input{
+	margin-bottom: 20px;
+	width: 100%;
+	padding: 10px;
+	text-align: center;
+	background: rgba(48, 184, 139, .3);
+	font-size: 16px;
+	outline: none;
+	border: none;
+	box-shadow: 0 0 5px #000;
+}
+
+.createBox input:focus, .credit input:focus{
+	background: rgba(48, 184, 139, .9);
+	box-shadow: 0 0 5px #fff;
+}
+
+.createBox #fnameInp, #provInp, #zipInp{
+	float: left;
+}
+
+.createBox #lnameInp, #ctInp, #phnInp{
+	float: right;
+}
+
+.loginBox input, .createBox #username, .createBox #pwd{
+	width: 95%;
+	margin-bottom: 10px;
+}
+
+.createBox #streetNameInp{
+	width: 95%;
+}
+
+.loginBox input[type="text"]::placeholder, input[type="password"]::placeholder{
+	color: rgb(150, 150, 150);
+}
+
+.createBox input::placeholder, .credit input::placeholder{
+	color: rgb(199, 196, 196);
+}
+
+.loginBox input[type="text"], .loginBox input[type="password"], 
+	.createBox #username, .createBox #pwd{
+	border: none;
+	border-bottom: 1px solid #fff;
+	background: transparent;
+	outline: none;
+	height: 40px;
+	width: 250px;
+	color: #fff;
+	font-size: 16px;
+}
+
+.createBox #username:focus, .createBox #pwd:focus{
+	transition: all .5s ease;
+	width: 95%;
+	box-shadow: 0 0 0px #fff;
+}
+
+.loginBox input[type="button"], .createBox input[type="button"],
+.info input[type="button"], .credit input[type="button"]{
+	border: none;
+	outline: none;
+	height: 40px;
+	background: rgb(48, 184, 139);
+	color: #fff;
+	font-size: 18px;
+	border-radius: 20px;
+	box-shadow: 0 0 0px #fff;
+	margin-bottom: 5px;
+}
+
+.info input[type="button"], .credit input[type="button"]{
+	position: absolute;
+	right: 10px;
+	bottom: 10px;
+	height: 20px;
+	font-size: 14px;
+}
+
+.credit input[type="button"]{
+	height: 20px;
+	width: 30%;
+	margin-bottom: 0px;
+	padding: 0px;
+}
+
+.loginBox input[type="button"]:hover, .createBox input[type="button"]:hover,
+.info input[type="button"]:hover, .credit input[type="button"]:hover{
+	cursor: pointer;
+	background: rgb(16, 180, 245);
+}
+
+.loginBox a, .createBox a{
+	text-decoration: none;
+	font-size: 12px;
+	line-height: 20px;
+	color: pink;
+}
+
+.loginBox a:hover, .createBox a:hover{
+	color: chocolate;
+}
