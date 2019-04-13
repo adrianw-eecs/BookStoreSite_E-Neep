@@ -90,7 +90,7 @@ public class model {
 
 		return queryResult;
 	}
-	
+
 	public BookBean retrieveSingleBookBOOKBEAN(String bid) throws SQLException, Exception {
 		return bookInfo.retrieveAnyBookOrBooks(bid, "", null).get(0);
 	}
@@ -174,14 +174,27 @@ public class model {
 	// ACCOUNT COMMANDS //
 	// returns arraylist of POBean that matches the id provided
 	public AccountBean createAccount(String username, String password, String street, String prov, String country,
-			String post, String phone) throws Exception {
+			String post, String phone, Boolean admin) throws Exception {
 
-		return accountInfo.addAccount(username, password, addAddress(street, prov, country, post, phone));
+		return accountInfo.addAccount(username, password, addAddress(street, prov, country, post, phone), admin);
 	}
 
 	// returns an account bean that holds the account Info(username and address)
 	public AccountBean login(String username, String password) throws Exception {
 		return accountInfo.verifyAccount(username, password);
+	}
+
+	/**
+	 * Method that checks if the user name is taken or not
+	 * 
+	 * @param username the username to be verified
+	 * @return empty String if the username does not exist, otherwise, return the
+	 *         username from the database
+	 * @throws SQLException exception is thrown in case of some errors on DAO level
+	 */
+	public String checkUserName(String username) throws SQLException {
+		String result = accountInfo.verifyUserName(username);
+		return result;
 	}
 	// END OF ACCOUNT COMMANDS //
 	/////////////////////////////////////////////////////////////////////////
@@ -200,4 +213,3 @@ public class model {
 	/////////////////////////////////////////////////////////////////////////
 
 }
-

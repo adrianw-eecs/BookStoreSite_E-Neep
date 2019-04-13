@@ -5,12 +5,14 @@ public class AccountBean {
 	private String username;
 //	private String password;
 	private int address;
+	private boolean admin;
 	
 //	public AccountBean(int id, String username, String password, int address) {
-	public AccountBean(String username, int address) {
+	public AccountBean(String username, int address, boolean admin) {
 		this.username = username;
 //		this.password = password;
 		this.address = address;
+		this.admin = admin;
 	}
 	
 	public String getUsername() {

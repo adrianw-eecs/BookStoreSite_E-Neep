@@ -26,6 +26,37 @@ public class AccountDAO {
 
 	}
 
+	/**
+	 * Method that checks the database if the given username exists already or not
+	 * 
+	 * @param username the username to check
+	 * @return empty String if username does not exist, or the username itself, if it exists
+	 * @throws SQLException in case if there was some problem with the database
+	 */
+	public String verifyUserName(String username) throws SQLException {
+
+		String query = "SELECT * FROM ACCOUNT WHERE USERNAME = ?";
+		Connection con = this.ds.getConnection();
+		PreparedStatement sanatizedQuery = con.prepareStatement(query);
+
+		String userName = "";
+		try {
+			sanatizedQuery.setString(1, username);
+
+			ResultSet r = sanatizedQuery.executeQuery();
+			if (r.next()) {
+				userName = r.getString("USERNAME");
+			}
+		} catch (SQLException e) {
+
+			throw new SQLException("Verification in AccountDAO failed");
+		}
+
+		sanatizedQuery.close();
+		con.close();
+		return userName;
+	}
+
 	public AccountBean verifyAccount(String username, String password) throws SQLException {
 
 		AccountBean account = null;
@@ -40,8 +71,9 @@ public class AccountDAO {
 			if (r.next()) {
 				String result_name = r.getString("USERNAME");
 				int result_addr_id = r.getInt("ADDRESS");
+				boolean result_admin = r.getBoolean("ADMIN");
 				// CHANGE Querey for the current credits
-				account = new AccountBean(result_name, result_addr_id);
+				account = new AccountBean(result_name, result_addr_id, result_admin);
 			}
 		} catch (SQLException e) {
 //			System.out.println("Verification in AccountDAO failed");
@@ -53,19 +85,20 @@ public class AccountDAO {
 		return account;
 	}
 
-	public AccountBean addAccount(String username, String password, int address) throws SQLException {
+	public AccountBean addAccount(String username, String password, int address, boolean admin) throws SQLException {
 		AccountBean acc = null;
-		String query = "INSERT INTO ACCOUNT (username, password, address) VALUES (?,?,?)";
+		String query = "INSERT INTO ACCOUNT (username, password, address) VALUES (?,?,?,?)";
 		Connection con = this.ds.getConnection();
 		PreparedStatement sanatizedQuery = con.prepareStatement(query);
 		try {
 			sanatizedQuery.setString(1, username);
 			sanatizedQuery.setString(2, password);
 			sanatizedQuery.setInt(3, address);
+			sanatizedQuery.setBoolean(4, admin);
 
 			sanatizedQuery.executeUpdate();
 
-			acc = new AccountBean(username, address);
+			acc = new AccountBean(username, address, admin);
 
 		} catch (SQLException e) {
 //			System.out.println("Create account in AccountDAO failed");
