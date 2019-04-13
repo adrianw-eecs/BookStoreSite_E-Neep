@@ -1,0 +1,152 @@
+body{
+    margin: 0;
+    padding: 0;
+	background-image: url(../images/librarybg.jpg);
+	background-size: cover;
+    font-family: sans-serif;
+}
+
+.pageTitle{
+    width: 600px;
+    position: absolute;
+    top: 0%;
+    left: 50%;
+    transform: translate(-50%);
+    text-transform: uppercase;
+    color: #fff;
+    font-size: 40px;
+    text-align: center;
+    font-weight: bold;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    text-shadow: -1px 0 rgb(41, 86, 100), 0 1px rgb(41, 86, 100),
+                 1px 0 rgb(41, 86, 100), 0 -1px rgb(41, 86, 100);
+}
+
+form {
+    width: 600px;
+    height: 400px;
+    background-color: rgb(41, 86, 100);
+    color: #fff;
+    top: 50%;
+	left: 50%;
+	position: absolute;
+	transform: translate(-50%, -50%);
+	opacity: 0.9;
+    border-radius: 5px;
+    box-sizing: border-box;
+    padding: 16px;
+    box-shadow: 0 0 20px #fff;
+}
+
+select{
+    position: absolute;
+    top: 20%;
+    left: 20%;
+    transform: translate(-50%, -50%);
+    background: rgb(48, 184, 139);
+    color: #fff;
+    padding: 10px;
+    width: 150px;
+    height: 50px;
+    border: none;
+    font-size: 20px;
+    box-shadow: 0 5px 25px rgba(0,0,0,0.5);
+    outline: none;
+}
+
+.bookTitles{
+    top: 50%;
+    left: 20%;
+}
+
+select:hover, select:focus{
+    background: rgb(28, 212, 151);
+    color: rgb(0,0,0);
+}
+
+#shoppingCart button{
+	position: absolute;
+	top: 10px;
+    right: 10px;
+    background: url(../images/shoppingcarticon.png) no-repeat;
+    background-size: cover;
+    background-position: center;
+    width: 40px;
+    height: 40px;
+    border: 2px outset white;
+    border-radius: 5px;
+}
+
+.bookInfo{
+    position: absolute;
+    max-height: 68%;
+    max-width: 30%;
+    top: 13%;
+    left: 45%;
+    text-align: center;
+    background: rgba(48, 184, 139, 0.65);
+    border-radius: 5px;
+    font-size: 20px;
+    padding: 15px;
+    box-shadow: 0 0 10px #000;
+}
+
+#bookInfo .title, #bookInfo .price, #bookInfo .rating{
+    padding: 10px;
+}
+
+#bookInfo #review input{
+	width: 60%;
+	margin-bottom: 20px;
+}
+
+#bookInfo #review input[type="text"]::placeholder{
+	color: rgb(219, 218, 218);
+}
+
+#bookInfo #review input[type="text"]{
+	border: none;
+	border-bottom: 1px solid #fff;
+	background: transparent;
+	outline: none;
+	height: 40px;
+	color: #fff;
+    font-size: 14px;
+    text-align: center;
+    
+}
+
+#bookInfo #review input[type="text"]:focus{
+    transition: all .5s ease;
+    width: 100%;
+}
+
+#bookInfo #review input[type="submit"]{
+	border: none;
+	outline: none;
+	height: 20px;
+	border-radius: 20px;
+}
+
+#bookInfo #review input[type="submit"]:hover{
+	background: rgb(103, 200, 238);
+}
+
+#bookInfo #review #bookResult{
+    font-size: 14px;
+    color: goldenrod;
+}
+
+/* #bookInfo #review input[type="submit"]:focus{ */
+/*     pointer-events: none; */
+/*     cursor: default; */
+/*     background: rgba(0, 0, 0, 0); */
+/* } */
+
+#addToCart button{
+    position: absolute;
+    bottom: 3%;
+    right: 2%;
+    width: 100px;
+    border-radius: 10px;
+}

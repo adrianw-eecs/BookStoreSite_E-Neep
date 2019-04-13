@@ -32,28 +32,20 @@ function validate(){
 	if (ok) document.getElementById("periodError").innerHTML = "";
 	return ok;
 }
-
 function login(address){
-	document.getElementById("pTable").style.display = "";
-	document.getElementById("infoTable").style.display = "none";
-	document.getElementById("loginNow").hidden = false;
-	document.getElementById("createNow").hidden = true;
-	document.getElementById("accResult").hidden = true;
+    hideEverything();
+    document.getElementById("loginBox").hidden = false;
+    document.getElementById("createBox").hidden = true;
 }
 
 function create(address){
-	document.getElementById("pTable").style.display = "";
-	document.getElementById("infoTable").style.display = "none";
-	document.getElementById("loginNow").hidden = true;
-	document.getElementById("createNow").hidden = false;
-	document.getElementById("accResult").hidden = true;
+    hideEverything();
+    document.getElementById("loginBox").hidden = true;
+    document.getElementById("createBox").hidden = false;
 }
 
 function login2(address){
-	//validate();
-	document.getElementById("infoTable").style.display = "";
-	hideRest();
-	hideCreateDisplay();
+    //validate();
 
 	var un = document.getElementById("userName").value;
 	var pwd = document.getElementById("pwd").value;
@@ -63,17 +55,11 @@ function login2(address){
 	request.onreadystatechange = function() {
 		loginInfoHandler(request);
 	};
+	
+	hideEverything();
+	document.getElementById("info").hidden = false;
 	request.send();
 
-	document.getElementById("fnameLabel").hidden = false;
-	document.getElementById("lnameLabel").hidden = false;
-	document.getElementById("streetNameLabel").hidden = false;
-	document.getElementById("provLabel").hidden = false;
-	document.getElementById("ctLabel").hidden = false;
-	document.getElementById("zipLabel").hidden = false;
-	document.getElementById("phnLabel").hidden = false;
-
-	document.getElementById("confirmAndPay").hidden = false;
 }
 
 function loginInfoHandler(request){
@@ -81,14 +67,13 @@ function loginInfoHandler(request){
 		var responseInfo = request.responseText;
 		var info = responseInfo.split('|');
 
-		showSectionNames();
-		document.getElementById("fnameLabel").innerHTML = info[0].trim();
-		document.getElementById("lnameLabel").innerHTML = info[1].trim();
-		document.getElementById("streetNameLabel").innerHTML = info[2].trim();
-		document.getElementById("provLabel").innerHTML = info[3].trim();
-		document.getElementById("ctLabel").innerHTML = info[4].trim();
-		document.getElementById("zipLabel").innerHTML = info[5].trim();
-		document.getElementById("phnLabel").innerHTML = info[6].trim();
+		document.getElementById("fnameLabel").innerHTML += info[0].trim();
+		document.getElementById("lnameLabel").innerHTML += info[1].trim();
+		document.getElementById("streetNameLabel").innerHTML += info[2].trim();
+		document.getElementById("provLabel").innerHTML += info[3].trim();
+		document.getElementById("ctLabel").innerHTML += info[4].trim();
+		document.getElementById("zipLabel").innerHTML += info[5].trim();
+		document.getElementById("phnLabel").innerHTML += info[6].trim();
 	}
 
 
@@ -96,12 +81,44 @@ function loginInfoHandler(request){
 
 function create2(address){
 	//validate();
-	document.getElementById("infoTable").style.display = "";
-	hideRest();
-	hideLoginDisplay();
+
+	var taken = false;
+	var done = false;
 
 	var un = document.getElementById("userName").value;
 	var pwd = document.getElementById("pwd").value;
+
+	var request = new XMLHttpRequest();
+	request.open("GET", (address + "?verify=true&username=" + un + "&password=" + pwd), true);
+	request.onreadystatechange = function() {
+		if ((request.readyState == 4) && (request.status == 200)){
+			taken = request.responseText == "taken";
+			done = true;
+		}
+	};
+
+	var interval = setInterval(function(){getTaken(address)}, 10);
+
+	function getTaken(address){
+		if (done){
+			interval = clearInterval(interval);
+			if (taken && un != "") {
+				alert("Username taken, please choose another one");
+			}
+			else if (!taken){
+				validUsername(address, un, pwd);
+			}
+		}
+	}
+	request.send();				
+
+}
+
+function validUsername(address, un, pwd){
+
+//  validate();
+    hideEverything();
+    document.getElementById("createBox").hidden = false;
 
 	var request = new XMLHttpRequest();
 	request.open("POST", (address + "?username=" + un + "&password=" + pwd), true);
@@ -110,48 +127,17 @@ function create2(address){
 	};
 	request.send();
 
-	showSectionNames();
-	document.getElementById("fnameInp").hidden = false;
-	document.getElementById("lnameInp").hidden = false;
-	document.getElementById("streetNameInp").hidden = false;
-	document.getElementById("provInp").hidden = false;
-	document.getElementById("ctInp").hidden = false;
-	document.getElementById("zipInp").hidden = false;
-	document.getElementById("phnInp").hidden = false;
-
-	document.getElementById("confirmAndPay").hidden = false;
-
 }
 
 function createInfoHandler(request){
 	if ((request.readyState == 4) && (request.status == 200)){
-		alert("Username Valid");
+		alert("Account added!");
 	}
-}
-
-function hideLoginDisplay(){
-	document.getElementById("fnameLabel").hidden = true;
-	document.getElementById("lnameLabel").hidden = true;
-	document.getElementById("streetNameLabel").hidden = true;
-	document.getElementById("provLabel").hidden = true;
-	document.getElementById("ctLabel").hidden = true;
-	document.getElementById("zipLabel").hidden = true;
-	document.getElementById("phnLabel").hidden = true;
-}
-
-function hideCreateDisplay(){
-	document.getElementById("fnameInp").hidden = true;
-	document.getElementById("lnameInp").hidden = true;
-	document.getElementById("streetNameInp").hidden = true;
-	document.getElementById("provInp").hidden = true;
-	document.getElementById("ctInp").hidden = true;
-	document.getElementById("zipInp").hidden = true;
-	document.getElementById("phnInp").hidden = true;	
 }
 
 function showCreditCard(address){
 	//validate();
-	if (!document.getElementById("fnameInp").hidden){
+	if (!document.getElementById("createBox").hidden){
 		var fname = document.getElementById("fnameInp").value;
 		var lname = document.getElementById("lnameInp").value;
 		var street = document.getElementById("streetNameInp").value;
@@ -173,25 +159,25 @@ function showCreditCard(address){
 			submitInfoHandler(request);
 		};
 		request.send();
-
-		document.getElementById("accResult").hidden = false;
-	}
-
-	hideEverythingElse();
+        document.getElementById("confirmNewOrder").hidden = false;
+        document.getElementById("confirmOrder").hidden = true;
+	}else{
+        document.getElementById("confirmOrder").hidden = false;
+        document.getElementById("confirmNewOrder").hidden = true;
+    }
+	hideEverything();
 	document.getElementById("creditNum").value = null;
 	document.getElementById("credit").hidden = false;
-	document.getElementById("creditNum").hidden = false;
-	document.getElementById("confirmOrder").hidden = false;
 
 }
 
 function submitInfoHandler(request){
 	if ((request.readyState == 4) && (request.status == 200)){
-		document.getElementById("accResult").innerHTML = "Account successfully created!";
-	}
+        alert("Account successfully created!");
+    }
 }
 
-function finalize(address){
+function addCredit(address){
 	var cnum = document.getElementById("creditNum").value;
 	document.getElementById("creditNum").value = null;
 	var request = new XMLHttpRequest();
@@ -200,50 +186,36 @@ function finalize(address){
 		submitCreditNum(request);
 	};
 	request.send();
-	
+
 }
 
 function submitCreditNum(request){
 	if ((request.readyState == 4) && (request.status == 200)){
-		
-		document.getElementById("creditResult").innerHTML = "Thank you!";
-		document.getElementById("creditResult").hidden = false;
+        alert("Thank you for your patronage!");
 	}
 }
 
-function hideEverythingElse(){
-	hideCreateDisplay();
-	hideLoginDisplay();
-	hideSectionNames();
+function finalize(address){
+	var cnum = document.getElementById("creditNum").value;
+	document.getElementById("creditNum").value = null;
+	var request = new XMLHttpRequest();
+	request.open("GET", (address + "?creditNum=" + cnum), true);
+	request.onreadystatechange = function() {
+		checkCreditNum(request);
+	};
+	request.send();
+
 }
 
-function showSectionNames(){
-	document.getElementById("fname").hidden = false;
-	document.getElementById("lname").hidden = false;
-	document.getElementById("stname").hidden = false;
-	document.getElementById("zipname").hidden = false;
-	document.getElementById("ctname").hidden = false;
-	document.getElementById("provname").hidden = false;
-	document.getElementById("phnname").hidden = false;
-	document.getElementById("confirmAndPay").hidden = false;
+function checkCreditNum(request){
+	if ((request.readyState == 4) && (request.status == 200)){
+        alert(request.responseText);
+	}
 }
 
-function hideSectionNames(){
-	document.getElementById("fname").hidden = true;
-	document.getElementById("lname").hidden = true;
-	document.getElementById("stname").hidden = true;
-	document.getElementById("zipname").hidden = true;
-	document.getElementById("ctname").hidden = true;
-	document.getElementById("provname").hidden = true;
-	document.getElementById("phnname").hidden = true;
-	document.getElementById("confirmAndPay").hidden = true;
-}
-
-function hideRest(){
-	document.getElementById("pTable").style.display = "none";
-	document.getElementById("credit").hidden = true;
-	document.getElementById("creditNum").hidden = true;
-	document.getElementById("confirmOrder").hidden = true;
-	document.getElementById("accResult").hidden = true;
-	document.getElementById("creditResult").hidden = true;
+function hideEverything(){
+    document.getElementById("createBox").hidden = true;
+    document.getElementById("loginBox").hidden = true;
+    document.getElementById("credit").hidden = true;
+    document.getElementById("info").hidden = true;
 }

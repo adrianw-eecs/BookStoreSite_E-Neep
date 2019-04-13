@@ -41,7 +41,8 @@ function populateAndShow(s1, s2, address){
 	l_s2.innerHTML = "";
 	//validate();
 	document.getElementById(s2).hidden = false;
-	document.getElementById("btable").style.display = "none";
+	document.getElementById("bookInfo").hidden = true;
+	document.getElementById("addToCart").hidden = true;
 	var request = new XMLHttpRequest();
 	if(l_s1.value == "Science"){
 		request.open("GET", (address + "?category=Science"), true);
@@ -83,8 +84,9 @@ function createTableForBook(bookId, address){
 	var request = new XMLHttpRequest();
 	request.open("GET", (address + "?bid=" + id.value), true);
 	request.onreadystatechange = function() {
-		document.getElementById("btable").style.display = "";
+		document.getElementById("bookInfo").hidden = false;
 		document.getElementById("bookResult").innerHTML = "";
+		document.getElementById("addToCart").hidden = false;
 		tableHandler(request);
 	};
 	request.send();
@@ -100,11 +102,11 @@ function tableHandler(request){
 	}
 }
 
-function addReview(address, bookId){
+function addReview(address){
 	var request = new XMLHttpRequest();
 	var review = document.getElementById("bookReview").value;
 	document.getElementById("bookReview").value = "";
-	var bid = document.getElementById(bookId);
+	var bid = document.getElementById("bookTitles");
 	if (review != ""){
 		request.open("POST", (address + "?review=" + review + "&bid=" + bid.value), true);
 		request.onreadystatechange = function(){
@@ -116,7 +118,8 @@ function addReview(address, bookId){
 
 function reviewHandler(request){
 	if ((request.readyState == 4) && (request.status == 200)){
-		document.getElementById("bookResult").innerHTML = "Thank You or submitting a review!"; 
+		document.getElementById("bookResult").hidden = false;
+		document.getElementById("bookResult").innerHTML = "Thank You for submitting a review!"; 
 	}
 }
 

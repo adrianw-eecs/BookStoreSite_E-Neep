@@ -12,7 +12,7 @@
 	<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <link rel="StyleSheet"
-	href="${pageContext.request.contextPath}/res/mc.css" type="text/css"
+	href="${pageContext.request.contextPath}/res/css/mc.css" type="text/css"
 	title="cse4413" media="screen, print" />
 <script type="text/javascript" src="res/mc.js">
 	;
@@ -20,62 +20,49 @@
 <title>Bookstore Main Page</title>
 </head>
 <body>
+	<div class="pageTitle">
+		<p>Welcome to <br/> E-Neep's <br/> Bookstore!</p>
+	</div>
 	<form action='' method='POST'>
-		<legend>Selecting a Book</legend>
 
-		<button type='submit' name='shoppingCart' label='shoppingCart'
-			class='shoppingCart'>Shopping Cart</button>
+		
 
-		<select id="bookCategories" name="bookCategories"
-			onchange="populateAndShow(this.id, 'bookTitles', '/BookStoreSite_E-Neep/Start/Ajax')">
-			<option selected="selected"></option>
+		<div id='shoppingCart'>
+			<button type='submit' name='shoppingCart' label='shoppingCart'></button>
+		</div>
+		
+		<select id="bookCategories" name="bookCategories" class="bookCategories"
+		onchange="populateAndShow(this.id, 'bookTitles', '/BookStoreSite_E-Neep/Start/Ajax')">
+			<option hidden="hidden">Category</option>
 			<option value="Science">Science</option>
 			<option value="Fiction">Fiction</option>
 			<option value="Engineering">Engineering</option>
-
-		</select> <select id="bookTitles" name="bookTitles" hidden="true"
-			onchange="createTableForBook(this.id, '/BookStoreSite_E-Neep/Start/Ajax')">
-			<option></option>
 		</select>
 
-		<table style="display: none" id="btable" class="btable">
 
+		<select id="bookTitles" name="bookTitles" class="bookTitles"
+		onchange="createTableForBook(this.id, '/BookStoreSite_E-Neep/Start/Ajax')"
+		hidden="true">
+			<option hidden="hidden">Title</option>
+		</select>
+
+		<div class="bookInfo" id="bookInfo" hidden="true">
+			<div class="title" id="btitle">Building Memes</div>
+			<div class="rating" id="brating">5/7</div>
+			<div class="price" id="bprice">$69</div>
+			<div class="review" id="review">
+				<input id="bookReview" type="text" name="" placeholder="Leave a Review!"/>
+				<br/><p id='bookResult' hidden="true"><br/></p>
+				<input type="button" name="" value="Submit Review" 
+				onclick="addReview('/BookStoreSite_E-Neep/Start/Ajax')"/>
+			</div>
 			
-			<tr>
-				<td><b>Title</b></td>
-				<td><label for="btitle" id="btitle"></label></td>
-			</tr>
-			<tr>
-				<td><b>Rating</b></td>
-				<td><label id="brating" for="brating"></label></td>
-			</tr>
-			<tr>
-				<td><b>Price</b></td>
-				<td><label for="bprice" id="bprice"></label></td>
-			</tr>
-
-			<tr>
-				<td><input id="bookReview" name="bookReview" type="text" /></td>
-				<td>
-					<button type='submit' name='review' label='review'
-						onclick="addReview('/BookStoreSite_E-Neep/Start/Ajax', 'bookTitles');return false;">Submit
-						Review</button>
-				</td>
-			</tr>
-			<tr>
-				<td><p id='bookResult' style="color: #0C3; font-size: 15px"></p></td>
-			</tr>
-
-			<tr>
-				<td></td>
-				<td align="right">
-					<button type='submit' name='cart' label='cart'
-						onclick="addToCart('/BookStoreSite_E-Neep/Start/Ajax', 'bookTitles');return false;">Add
-						to Shopping Cart</button>
-				</td>
-			</tr>
-
-		</table>
+		</div>
+		<div id="addToCart" hidden="true">
+			<button type='submit' name='cart' label='cart'
+			onclick="addToCart('/BookStoreSite_E-Neep/Start/Ajax', 'bookTitles');return false;">
+				Add to Cart!</button>
+		</div>
 
 	</form>
 </body>
