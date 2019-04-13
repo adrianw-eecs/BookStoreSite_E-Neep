@@ -90,7 +90,7 @@ public class model {
 
 		return queryResult;
 	}
-	
+
 	public BookBean retrieveSingleBookBOOKBEAN(String bid) throws SQLException, Exception {
 		return bookInfo.retrieveAnyBookOrBooks(bid, "", null).get(0);
 	}
@@ -183,11 +183,13 @@ public class model {
 	public AccountBean login(String username, String password) throws Exception {
 		return accountInfo.verifyAccount(username, password);
 	}
-	
+
 	/**
 	 * Method that checks if the user name is taken or not
+	 * 
 	 * @param username the username to be verified
-	 * @return empty String if the username does not exist, otherwise, return the username from the database
+	 * @return empty String if the username does not exist, otherwise, return the
+	 *         username from the database
 	 * @throws SQLException exception is thrown in case of some errors on DAO level
 	 */
 	public String checkUserName(String username) throws SQLException {
@@ -211,4 +213,3 @@ public class model {
 	/////////////////////////////////////////////////////////////////////////
 
 }
-
