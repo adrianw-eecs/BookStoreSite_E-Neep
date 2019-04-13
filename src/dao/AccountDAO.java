@@ -26,6 +26,37 @@ public class AccountDAO {
 
 	}
 
+	/**
+	 * Method that checks the database if the given username exists already or not
+	 * 
+	 * @param username the username to check
+	 * @return empty String if username does not exist, or the username itself, if it exists
+	 * @throws SQLException in case if there was some problem with the database
+	 */
+	public String verifyUserName(String username) throws SQLException {
+
+		String query = "SELECT * FROM ACCOUNT WHERE USERNAME = ?";
+		Connection con = this.ds.getConnection();
+		PreparedStatement sanatizedQuery = con.prepareStatement(query);
+
+		String userName = "";
+		try {
+			sanatizedQuery.setString(1, username);
+
+			ResultSet r = sanatizedQuery.executeQuery();
+			if (r.next()) {
+				userName = r.getString("USERNAME");
+			}
+		} catch (SQLException e) {
+
+			throw new SQLException("Verification in AccountDAO failed");
+		}
+
+		sanatizedQuery.close();
+		con.close();
+		return userName;
+	}
+
 	public AccountBean verifyAccount(String username, String password) throws SQLException {
 
 		AccountBean account = null;
