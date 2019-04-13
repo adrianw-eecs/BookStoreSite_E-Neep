@@ -1,46 +1,11 @@
-function validate(){
-	var ok = true;
-	var p = document.getElementById("principal").value;
-	if (isNaN(p) || p <= 0){
-		alert("Principal invalid!");
-		document.getElementById("principalError").innerHTML = "Principal must be greater than 0!";
-		ok = false;
-	}
-	if (!ok) {
-		document.getElementById("interestError").innerHTML = "";
-		document.getElementById("periodError").innerHTML = "";
-		return false;
-	}
-	else document.getElementById("principalError").innerHTML = "";
-	p = document.getElementById("interest").value;
-	if (isNaN(p) || p <= 0 || p >= 100){
-		alert("Interest invalid. Must be in [0,100].");
-		document.getElementById("interestError").innerHTML = "Interest must be between 0 and 100!";
-		ok = false;
-	}
-	if (!ok) {
-		document.getElementById("periodError").innerHTML = "";
-		return false;
-	}
-	else document.getElementById("interestError").innerHTML = "";
-	p = document.getElementById("period").value;
-	if (isNaN(p) || p <= 0){
-		alert("Period invalid!");
-		document.getElementById("periodError").innerHTML = "Period must be greater than 0!";
-		ok = false;
-	}
-	if (ok) document.getElementById("periodError").innerHTML = "";
-	return ok;
-}
-
-
-
 function populateAndShow(s1, s2, address){
 	var l_s1 = document.getElementById(s1);
 	var l_s2 = document.getElementById(s2);
-	l_s2.innerHTML = "";
-	//validate();
-	document.getElementById(s2).hidden = false;
+	var length = l_s2.options.length;
+	for (i = 1; i < length; i++) {
+	  l_s2.options[i] = null;
+	}
+	l_s2.hidden = true;
 	document.getElementById("bookInfo").hidden = true;
 	document.getElementById("addToCart").hidden = true;
 	var request = new XMLHttpRequest();
@@ -63,18 +28,22 @@ function populateAndShow(s1, s2, address){
 function dropDownHandler(request, target){
 	if ((request.readyState == 4) && (request.status == 200)){
 		var responseArray = request.responseText;
-		responseArray = responseArray.substring(1, responseArray.length - 1);
-		var elements = responseArray.split(',');
-		var newOption = document.createElement('option');
-		newOption.value="";
-		newOption.innerHTML = "";
-		target.options.add(newOption);
-		for (var book in elements){
-			var pair = elements[book].split('|');
-			var newOption = document.createElement('option');
-			newOption.value = pair[0].trim();
-			newOption.innerHTML = pair[1].trim();
-			target.options.add(newOption);
+		if (responseArray != ""){
+
+			target.hidden = false;
+			responseArray = responseArray.substring(1, responseArray.length - 1);
+			var elements = responseArray.split(',');
+			
+			for (var book in elements){
+				var pair = elements[book].split('|');
+				var newOption = document.createElement('option');
+				newOption.value = pair[0].trim();
+				newOption.innerHTML = pair[1].trim();
+				target.options.add(newOption);
+			}
+			
+		}else{
+			alert("Sorry, no books of that category have been found!");
 		}
 	}
 }
@@ -119,7 +88,7 @@ function addReview(address){
 function reviewHandler(request){
 	if ((request.readyState == 4) && (request.status == 200)){
 		document.getElementById("bookResult").hidden = false;
-		document.getElementById("bookResult").innerHTML = "Thank You for submitting a review!"; 
+		document.getElementById("bookResult").innerHTML = "Your review has been submitted!"; 
 	}
 }
 
