@@ -174,9 +174,9 @@ public class model {
 	// ACCOUNT COMMANDS //
 	// returns arraylist of POBean that matches the id provided
 	public AccountBean createAccount(String username, String password, String street, String prov, String country,
-			String post, String phone) throws Exception {
+			String post, String phone, Boolean admin) throws Exception {
 
-		return accountInfo.addAccount(username, password, addAddress(street, prov, country, post, phone));
+		return accountInfo.addAccount(username, password, addAddress(street, prov, country, post, phone), admin);
 	}
 
 	// returns an account bean that holds the account Info(username and address)
