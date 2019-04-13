@@ -12,7 +12,7 @@
 	<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <link rel="StyleSheet"
-	href="${pageContext.request.contextPath}/res/mc.css" type="text/css"
+	href="${pageContext.request.contextPath}/res/css/lp.css" type="text/css"
 	title="cse4413" media="screen, print" />
 <script type="text/javascript" src="res/payment.js">
 	;
@@ -20,135 +20,69 @@
 <title>Payment Page</title>
 </head>
 <body>
-	<form action='' method='POST'>
+	<div id="loginBox" class="loginBox">
+		<img src="res/images/bookicon.png" class="avatar"/>
+		<h1>Login Here</h1>
+		<form>
+			<p>Username</p>
+			<input type="text" name="" placeholder="Enter Username" id="userName"/>
+			<p>Password</p>
+			<input type="password" name="" placeholder="Enter Password" id="pwd"/>
+			<input type="button" name="" value="Login"
+			onclick="login2('/BookStoreSite_E-Neep/Start/Ajax')"/>
+			<a href="#" onclick="create('/BookStoreSite_E-Neep/Start/Ajax');return false;">
+				Don't have an account?</a>
+		</form>
+	</div>
 
-		<legend>Payment</legend>
+	<div class="info" id="info" hidden="true">
+		<img src="res/images/bookicon.png" class="avatar"/>
+		<h1>Account Details</h1>
+		<label id="fnameLabel">First Name: </label>
+		<label id="lnameLabel">Last Name: </label>
+		<label id="streetNameLabel">Street Name: </label>
+		<label id="provLabel">Province: </label>
+		<label id="ctLabel">Country: </label>
+		<label id="zipLabel">ZIP Code: </label>
+		<label id="phnLabel">Phone Number: </label>
+		<input type="button" name="confirmAndPay"
+				value="Confirm Information" id="confirmAndPay"
+				onclick="showCreditCard('/BookStoreSite_E-Neep/Start/Ajax')"/>
+	</div>
 
-		<table>
+	<div id="createBox" class="createBox" hidden="true">
+		<img src="res/images/bookicon.png" class="avatar"/>
+		<h1>Sign Up</h1>
+		<form>
+			<input type="text" id="username" placeholder="Username"
+				onblur="create2('/BookStoreSite_E-Neep/Start/Ajax')"/>
+			<input type="password" id="pwd" placeholder="Password"/>
+			<input type="text" id="fnameInp" placeholder="First Name"/>
+			<input type="text" id="lnameInp" placeholder="Last Name"/>
+			<input type="text" id="streetNameInp" placeholder="Street Name"/>
+			<input type="text" id="provInp" placeholder="Province"/>
+			<input type="text" id="ctInp" placeholder="Country"/>
+			<input type="text" id="zipInp" placeholder="ZIP Code"/>
+			<input type="number" id="phnInp" placeholder="Phone Number"/>
+			<input type="button" name="" value="Create"
+			onclick="showCreditCard('/BookStoreSite_E-Neep/Start/Ajax')"/> <br/>
+			<a href="#" onclick="login('/BookStoreSite_E-Neep/Start/Ajax');return false;">
+				Already have an account?</a>
+		</form>
+	</div>
 
-			<tr>
-				<td>
-					<button type='button' name='loginButton' label='loginButton'
-						class='loginButton'
-						onclick="login('/BookStoreSite_E-Neep/Start/Ajax');return false;">
-						Already have an account?<br />Login!
-					</button>
-				</td>
-
-				<td>
-					<button type='button' name='createButton' label='createButton'
-						class='createButton'
-						onclick="create('/BookStoreSite_E-Neep/Start/Ajax')">
-						Don't have an account?<br />Create one now!
-					</button>
-				</td>
-			</tr>
-
-		</table>
-		<table style="display: none" id="pTable" class="pTable">
-			<tr>
-				<td colspan="2" align="center">User Name:</td>
-			</tr>
-			<tr>
-				<td colspan="2" align="center"><input id="userName"
-					name="userName" type="text" /></td>
-			</tr>
-			<tr>
-				<td colspan="2" align="center">Password:</td>
-			</tr>
-			<tr>
-				<td colspan="2" align="center"><input id="pwd" name="pwd"
-					type="password" /></td>
-			</tr>
-			<tr>
-				<td></td>
-				<td align="right"><button type='button' name='createNow'
-						label='createNow' class='createNow' id="createNow" hidden="true"
-						onclick="create2('/BookStoreSite_E-Neep/Start/Ajax')">
-						Create!</button>
-
-					<button type='button' name='loginNow' label='loginNow'
-						class='loginNow' id="loginNow" hidden="true"
-						onclick="login2('/BookStoreSite_E-Neep/Start/Ajax')">
-						Login!</button></td>
-			</tr>
-		</table>
-
-		<table style="display: none" id="infoTable" class="infoTable">
-			<tr>
-				<td><label id="fname" for="fname">First Name:</label></td>
-				<td><label id="lname" for="lname">Last Name:</label></td>
-			</tr>
-			<tr>
-				<td><input id="fnameInp" name="fnameInp" type="text"
-					hidden="true" /> <label id="fnameLabel" for="fnameLabel"
-					hidden="true"></label></td>
-				<td><input id="lnameInp" name="lnameInp" type="text"
-					hidden="true" /> <label id="lnameLabel" for="lnameLabel"
-					hidden="true"></label></td>
-			</tr>
-
-			<tr>
-				<td colspan="2"><label id="stname" for="stname">Street
-						Name:</label></td>
-			</tr>
-			<tr>
-				<td colspan="2"><input id="streetNameInp" name="streetNameInp"
-					type="text" hidden="true" /> <label id="streetNameLabel"
-					for="streetNameLabel" hidden="true"></label></td>
-			</tr>
-			<tr>
-				<td><label id="provname" for="provname">Province:</label></td>
-				<td><label id="ctname" for="ctname">Country:</label></td>
-			</tr>
-			<tr>
-				<td><input id="provInp" name="provInp" type="text"
-					hidden="true" /> <label id="provLabel" for="provLabel"
-					hidden="true"></label></td>
-				<td><input id="ctInp" name="ctInp" type="text" hidden="true" />
-					<label id="ctLabel" for="ctLabel" hidden="true"></label></td>
-			</tr>
-
-			<tr>
-				<td><label id="zipname" for="zipname">ZIP Code:</label></td>
-				<td><label id="phnname" for="phnname">Phone Number:</label></td>
-			</tr>
-
-			<tr>
-				<td><input id="zipInp" name="zipInp" type="text" hidden="true" />
-					<label id="zipLabel" for="zipLabel" hidden="true"></label></td>
-				<td><input id="phnInp" name="phnInp" type="text" hidden="true" />
-					<label id="phnLabel" for="phnLabel" hidden="true"></label></td>
-			</tr>
-
-			<tr>
-				<td><p id='accResult' style="color: #0C3; font-size: 15px"
-						hidden="true"></p></td>
-				<td align="right"><button type='button' name='confirmAndPay'
-						label='confirmAndPay' class='confirmAndPay' id="confirmAndPay"
-						hidden="true"
-						onclick="showCreditCard('/BookStoreSite_E-Neep/Start/Ajax')">
-						Confirm Information</button></td>
-			</tr>
-
-			<tr>
-				<td colspan="2"><label id="credit" for="credit" hidden="true">Credit
-						Card Number:</label> <br /> <input id="creditNum" name="creditNum"
-					type="number" hidden="true" /></td>
-			</tr>
-			<tr>
-				<td><p id='creditResult' style="color: #0C3; font-size: 15px"
-						hidden="true"></p></td>
-				<td align="right"><button type='button' name='confirmOrder'
-						label='confirmOrder' class='confirmOrder' id="confirmOrder"
-						hidden="true"
-						onclick="finalize('/BookStoreSite_E-Neep/Start/Ajax')">
-						Confirm Order</button></td>
-			</tr>
-		</table>
-
-
-	</form>
+	<div class="credit" id="credit" hidden="true">
+			<img src="res/images/bookicon.png" class="avatar"/>
+			<h1>Credit Card Confirmation</h1>
+			<input type="number" id="creditNum" placeholder="Credit Card Number"/>
+			<input type="button" name="confirmNewOrder" class="confirmNewOrder"
+				id="confirmNewOrder" value="Confirm Order" 
+				onclick="addCredit('/BookStoreSite_E-Neep/Start/Ajax')"
+				hidden="true"/>
+			<input type="button" name="confirmOrder" class="confirmOrder"
+				id="confirmOrder" value="Confirm Order" hidden="true"
+				onclick="finalize('/BookStoreSite_E-Neep/Start/Ajax')"/>
+	</div>
 </body>
 	</html>
 </jsp:root>
