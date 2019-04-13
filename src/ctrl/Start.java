@@ -168,8 +168,35 @@ public class Start extends HttpServlet {
 
 				// Here we check if the username entered on the login page already exists or not
 			} else if (request.getParameter("verify") != null) {
+
 				checkUserNameTakenOrNot(request, response);
-			} else if (request.getParameter("username") != null) {
+//				response.getWriter().write("");
+			}else if (request.getParameter("verifyAdmin") != null) {
+				
+				
+				response.getWriter().write("valid");
+//				response.getWriter().write("");
+			}else if (request.getParameter("topTen") != null) {
+				System.out.println("topTen");
+				
+				String[] out = new String[4];
+				int i = 0;
+				while (i < 4) {
+					out[i] = "building meme " + i + "|" + (i+1);
+					i++;
+				}
+				response.getWriter().write(Arrays.toString(out));
+			} else if (request.getParameter("allBooks") != null) {
+				System.out.println("allBooks");
+				
+				String[] out = new String[4];
+				int i = 0;
+				while (i < 4) {
+					out[i] = "building meme " + i + "|" + (i+1);
+					i++;
+				}
+				response.getWriter().write(Arrays.toString(out));
+			}else if (request.getParameter("username") != null) {
 				/*
 				 * get address info based on username and password and then convert it to String
 				 * array
