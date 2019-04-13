@@ -183,6 +183,17 @@ public class model {
 	public AccountBean login(String username, String password) throws Exception {
 		return accountInfo.verifyAccount(username, password);
 	}
+	
+	/**
+	 * Method that checks if the user name is taken or not
+	 * @param username the username to be verified
+	 * @return empty String if the username does not exist, otherwise, return the username from the database
+	 * @throws SQLException exception is thrown in case of some errors on DAO level
+	 */
+	public String checkUserName(String username) throws SQLException {
+		String result = accountInfo.verifyUserName(username);
+		return result;
+	}
 	// END OF ACCOUNT COMMANDS //
 	/////////////////////////////////////////////////////////////////////////
 
