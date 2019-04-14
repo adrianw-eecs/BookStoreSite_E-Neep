@@ -101,7 +101,7 @@ function topTenHandler(request){
 				var toBeUsed = elements[qty].trim();
 				var info = toBeUsed.split('|');
 				var row = table.insertRow(+qty + +1);
-				row.insertCell(0).innerHTML = qty;
+				row.insertCell(0).innerHTML = +qty + +1;
 				row.insertCell(1).innerHTML = info[0].trim();
 				row.insertCell(2).innerHTML = info[1].trim();
 			}
@@ -127,7 +127,7 @@ function allBooksHandler(request){
 				var toBeUsed = elements[qty].trim();
 				var info = toBeUsed.split('|');
 				var row = table.insertRow(+qty + +1);
-				row.insertCell(0).innerHTML = qty;
+				row.insertCell(0).innerHTML = +qty + +1;
 				row.insertCell(1).innerHTML = info[0].trim();
 				row.insertCell(2).innerHTML = info[1].trim();
 			}
