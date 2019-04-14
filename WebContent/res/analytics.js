@@ -87,21 +87,24 @@ function topTenHandler(request){
 		var table = document.getElementById("top-ten-table");
 		var responseArray = request.responseText;
 		if (responseArray != ""){
-			for(var i = table. rows. length - 1; i > 0; i--)
+			for(var i = table.rows.length - 1; i > 0; i--)
 			{
 				table. deleteRow(i);
 			}
+			
 			
 			responseArray = responseArray.substring(1, responseArray.length - 1);
 
 			var elements = responseArray.split(',');
 
+			
 			for (var qty in elements){
 				
 				var toBeUsed = elements[qty].trim();
+				if (toBeUsed === "null") break;
 				var info = toBeUsed.split('|');
 				var row = table.insertRow(+qty + +1);
-				row.insertCell(0).innerHTML = qty;
+				row.insertCell(0).innerHTML = +qty + +1;
 				row.insertCell(1).innerHTML = info[0].trim();
 				row.insertCell(2).innerHTML = info[1].trim();
 			}
@@ -127,7 +130,7 @@ function allBooksHandler(request){
 				var toBeUsed = elements[qty].trim();
 				var info = toBeUsed.split('|');
 				var row = table.insertRow(+qty + +1);
-				row.insertCell(0).innerHTML = qty;
+				row.insertCell(0).innerHTML = +qty + +1;
 				row.insertCell(1).innerHTML = info[0].trim();
 				row.insertCell(2).innerHTML = info[1].trim();
 			}

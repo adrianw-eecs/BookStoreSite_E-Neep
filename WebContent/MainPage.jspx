@@ -51,7 +51,7 @@
 			<div class="rating" id="brating">5/7</div>
 			<div class="price" id="bprice">$69</div>
 			<div class="review" id="review">
-				<input id="bookReview" type="text" name="" placeholder="Leave a Review!"/>
+				<input id="bookReview" type="text" name="" placeholder="Leave a Review!" maxlength="80"/>
 				<br/><p id='bookResult' hidden="true"><br/></p>
 				<input type="button" name="" value="Submit Review" 
 				onclick="addReview('/BookStoreSite_E-Neep/Start/Ajax')"/>
