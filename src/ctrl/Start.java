@@ -16,6 +16,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import bean.AccountBean;
+import bean.AddressBean;
 import bean.BookBean;
 import bean.POBean;
 import model.model;
@@ -31,6 +33,9 @@ public class Start extends HttpServlet {
 	String creditNumber = "";
 	private String[] topTen = null;
 	private String[] allBooks = null;
+	private AccountBean currentAccount;
+	private AddressBean currentAddress;
+	private int failedCreditCard = 1;
 
 	private int bookCategoryError = 0;
 	private int singleBookInfoError = 0;
@@ -204,22 +209,32 @@ public class Start extends HttpServlet {
 					purchaseConfirmed(request);
 					updateAllBooks();
 				}
-//				System.out.println(request.getAttribute("allBooks"));
 				response.getWriter().write(Arrays.toString(allBooks));
-			} else if (request.getParameter("username") != null) {
-				/*
-				 * get address info based on username and password and then convert it to String
-				 * array
-				 */
+				
+				
+			} else if (request.getParameter("username") != null && request.getParameter("password") != null) {
 				String out = "";
-//				out += "Steve|Irwin|42 Wallaby Way|Sydney|Australia|L4J 4Z5|647-989-5484";
-
+				try {
+					currentAccount = theModel.login(request.getParameter("username"), request.getParameter("password"));
+					if(currentAccount == null) {
+						out = "";
+					} else {
+					currentAddress = theModel.retrieveAddress(currentAccount.getAddress());
+					out = currentAccount.getFname() + "|" + currentAccount.getFname() + "|" + currentAddress.getStreet() + "|"
+							+ currentAddress.getProvince() + "|" + currentAddress.getCountry() + "|" + currentAddress.getZip() + "|"
+							+ currentAddress.getphone();
+					}
+					System.out.println(out);
+				} catch (Exception e) {
+					System.out.println("Failed to verify account");
+					out = "";
+				}
 				response.getWriter().write(out);
 
 			}
-		
+
 		} else if (request.getPathInfo() != null && request.getPathInfo().contains("Analytic")) {
-			
+
 			request.getRequestDispatcher("/Analytics.jspx").forward(request, response);
 		} else if (request.getParameter("shoppingCart") != null) {
 			// when shopping cart button is clicked, we move to shopping cart page
@@ -280,19 +295,34 @@ public class Start extends HttpServlet {
 					+ prov + "\nCountry: " + country + "\nZIP Code: " + zip + "\nPhone Number: " + phone);
 		} else if (request.getParameter("creditNum") != null) {
 			creditNumber = request.getParameter("creditNum");
+			String out = "";
+			if(failedCreditCard % 3 == 0) {
+				out = "Credit Card Denied";
+			} else {
+				try {
+					int POID = theModel.addPO(currentAccount.getLname(), currentAccount.getFname(), "ORDERED", currentAccount.getAddress());
+					ArrayList<String> books = userSessionToShoppingCart.get(request.getSession().getId());
+					System.out.println(books);
+//					theModel.addItemsToPO(POID, bids, price)
+					out = "Success";
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					out = "QUERIES FAILED:" + e.getMessage();
+//					e.printStackTrace();
+				}	
+			}
+			response.getWriter().write(out);
 		}
 
 		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
 
-	
-
 	private void purchaseConfirmed(HttpServletRequest request) {
 		request.setAttribute("purchaseFlag", 1);
 		request.setAttribute("purchaseFlag", 0);
 	}
-	
+
 	private void updateTopTenTable() {
 		try {
 			topTen = theModel.analyticsTopTen();
@@ -469,7 +499,7 @@ public class Start extends HttpServlet {
 			userNameCheckError = 1;
 			request.setAttribute("userNameCheckError", userNameCheckError);
 		}
-		
+
 		if (checkIfUserExists.equals("")) {
 			response.getWriter().write("");
 		} else {
