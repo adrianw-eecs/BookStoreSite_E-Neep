@@ -27,15 +27,15 @@ public class POItemDAO {
 
 	}
 
-	public boolean addItemToPO(int id, String bid, double price) throws SQLException {
-		String query = "INSERT INTO POItem (id, bid, price) VALUES (?,?,?)";
+	public boolean addItemToPO(int id, String bid, double price, int month) throws SQLException {
+		String query = "INSERT INTO POItem (id, bid, price, month) VALUES (?,?,?,?)";
 		Connection con = this.ds.getConnection();
 		PreparedStatement sanatizedQuery = con.prepareStatement(query);
 		try {
 			sanatizedQuery.setInt(1, id);
 			sanatizedQuery.setString(2, bid);
 			sanatizedQuery.setDouble(3, price);
-
+			sanatizedQuery.setInt(4, month);
 			sanatizedQuery.executeUpdate();
 		} catch (SQLException e) {
 			throw new SQLException("Create POItem in POItemDAO failed");
@@ -44,6 +44,34 @@ public class POItemDAO {
 		sanatizedQuery.close();
 		con.close();
 		return true;
+	}
+	
+	public String[] perMonth(int month) throws SQLException{
+		String[] results = new String[100];
+		String query = "Select bid, count(bid) as quantity FROM POITEM  where month = ? group by bid order by bid desc";
+
+		try {
+			Connection con = this.ds.getConnection();
+			PreparedStatement sanatizedQuery = con.prepareStatement(query);
+			sanatizedQuery.setInt(1, month);
+			ResultSet r = sanatizedQuery.executeQuery();
+			int i = 0;
+			while (r.next()) {
+				int result_quantity = r.getInt("QUANTITY");
+				String result_bid = r.getString("BID");
+				// CHANGE Querey for the current credits
+				results[i] = result_bid + "|" + result_quantity;
+				i++;
+				
+			}
+			sanatizedQuery.close();
+			con.close();
+		} catch (SQLException e) {
+			throw new SQLException("Analytics query failed");
+		}
+
+		
+		return results;
 	}
 
 	public String[] topTen() throws SQLException{
