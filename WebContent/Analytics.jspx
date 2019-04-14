@@ -52,7 +52,7 @@
 	<div class="all-books-container" id="all-books-container" hidden="true">
 		<img src="res/images/bookicon.png" class="avatar" />
 		<h1>
-			All Books Sold <br /> (past month)
+			All Books Sold <br /> (this month)
 		</h1>
 		<table id="all-books-table" class="all-books-table">
 			<th>Rank</th>

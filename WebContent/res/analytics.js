@@ -159,6 +159,7 @@ function allBooksHandler(request){
 
 			for (var qty in elements){
 				var toBeUsed = elements[qty].trim();
+				if (toBeUsed === "null") break;
 				var info = toBeUsed.split('|');
 				var row = table.insertRow(+qty + +1);
 				row.insertCell(0).innerHTML = +qty + +1;
