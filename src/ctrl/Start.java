@@ -28,6 +28,7 @@ public class Start extends HttpServlet {
 	private model theModel;
 	ArrayList<String> dummyInfo = new ArrayList<String>();
 	String creditNumber = "";
+	String[] topTen = null;
 
 	private int bookCategoryError = 0;
 	private int singleBookInfoError = 0;
@@ -75,7 +76,6 @@ public class Start extends HttpServlet {
 		// TODO Auto-generated method stub
 
 		/// For the purposes of testing Adrians Part
-
 		try {
 			theModel.retrieveAddress("1");
 			theModel.retrieveSingleBook("b002");
@@ -171,32 +171,41 @@ public class Start extends HttpServlet {
 
 				checkUserNameTakenOrNot(request, response);
 //				response.getWriter().write("");
-			}else if (request.getParameter("verifyAdmin") != null) {
-				
-				
-				response.getWriter().write("valid");
-//				response.getWriter().write("");
-			}else if (request.getParameter("topTen") != null) {
-				System.out.println("topTen");
-				
-				String[] out = new String[4];
-				int i = 0;
-				while (i < 4) {
-					out[i] = "building meme " + i + "|" + (i+1);
-					i++;
+			} else if (request.getParameter("verifyAdmin") != null) {
+				try {
+					Boolean login = theModel.adminlogin(request.getParameter("username"),
+							request.getParameter("password"));
+					if (login) {
+						response.getWriter().write("valid");
+					} else {
+						response.getWriter().write("incorrect");
+					}
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+					response.getWriter().write("incorrect");
 				}
-				response.getWriter().write(Arrays.toString(out));
+
+//				response.getWriter().write("");
+			} else if (request.getParameter("topTen") != null) {
+				System.out.println("topTen");
+				if (topTen == null) {
+					updateTopTenTable();
+				}
+				System.out.println(Arrays.toString(topTen));
+				response.getWriter().write(Arrays.toString(topTen));
+
 			} else if (request.getParameter("allBooks") != null) {
 				System.out.println("allBooks");
-				
+
 				String[] out = new String[4];
 				int i = 0;
 				while (i < 4) {
-					out[i] = "building meme " + i + "|" + (i+1);
+					out[i] = "building meme " + i + "|" + (i + 1);
 					i++;
 				}
 				response.getWriter().write(Arrays.toString(out));
-			}else if (request.getParameter("username") != null) {
+			} else if (request.getParameter("username") != null) {
 				/*
 				 * get address info based on username and password and then convert it to String
 				 * array
@@ -275,15 +284,14 @@ public class Start extends HttpServlet {
 		doGet(request, response);
 	}
 
-	private String[] updateTopTenTable() {
+	private void updateTopTenTable() {
 		String[] data = null;
 		try {
-		data = theModel.analyticsTopTen();
-		
+			topTen = theModel.analyticsTopTen();
+
 		} catch (Exception e) {
 			System.out.println("Failed to get top ten analytics");
 		}
-		return data;
 	}
 
 	private void purchaseConfirmed(HttpServletRequest request) {

@@ -183,6 +183,11 @@ public class model {
 	public AccountBean login(String username, String password) throws Exception {
 		return accountInfo.verifyAccount(username, password);
 	}
+	
+	// returns an account bean that holds the account Info(username and address)
+	public boolean adminlogin(String username, String password) throws Exception {
+		return accountInfo.verifyAdminAccount(username, password);
+	}
 
 	/**
 	 * Method that checks if the user name is taken or not
