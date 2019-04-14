@@ -174,14 +174,19 @@ public class model {
 	// ACCOUNT COMMANDS //
 	// returns arraylist of POBean that matches the id provided
 	public AccountBean createAccount(String username, String password, String street, String prov, String country,
-			String post, String phone) throws Exception {
+			String post, String phone, Boolean admin) throws Exception {
 
-		return accountInfo.addAccount(username, password, addAddress(street, prov, country, post, phone));
+		return accountInfo.addAccount(username, password, addAddress(street, prov, country, post, phone), admin);
 	}
 
 	// returns an account bean that holds the account Info(username and address)
 	public AccountBean login(String username, String password) throws Exception {
 		return accountInfo.verifyAccount(username, password);
+	}
+	
+	// returns an account bean that holds the account Info(username and address)
+	public boolean adminlogin(String username, String password) throws Exception {
+		return accountInfo.verifyAdminAccount(username, password);
 	}
 
 	/**
@@ -208,6 +213,10 @@ public class model {
 			poItemInfo.addItemToPO(id, bid, price);
 		}
 		return true;
+	}
+	
+	public String[] analyticsTopTen( ) throws SQLException {
+		return poItemInfo.topTen();
 	}
 	// END OF POITEM COMMANDS //
 	/////////////////////////////////////////////////////////////////////////
