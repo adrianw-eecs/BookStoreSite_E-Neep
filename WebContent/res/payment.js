@@ -179,9 +179,10 @@ function create2(address){
 			if (done){
 				interval = clearInterval(interval);
 				if (taken && un != "") {
-					alert("Username taken, please choose another one");
+					document.getElementById("username").style.boxShadow = "0 0 10px red";
 				}
 				else if (!taken){
+					document.getElementById("username").style.boxShadow = "0 0 0 red";
 					validUsername(address, un, pwd);
 				}
 			}
@@ -213,9 +214,10 @@ function createInfoHandler(request){
 }
 
 function showCreditCard(address){
-	if (!validateCreate()) return;
+	
 
 	if (!document.getElementById("createBox").hidden){
+		if (!validateCreate()) return;
 		var fname = document.getElementById("fnameInp").value;
 		var lname = document.getElementById("lnameInp").value;
 		var street = document.getElementById("streetNameInp").value;
@@ -257,6 +259,10 @@ function submitInfoHandler(request){
 
 function addCredit(address){
 	var cnum = document.getElementById("creditNum").value;
+	if (cnum === "") {
+		blinkObj(document.getElementById("creditNum"));
+		return;
+	}
 	document.getElementById("creditNum").value = null;
 	var request = new XMLHttpRequest();
 	request.open("POST", (address + "?creditNum=" + cnum), true);
@@ -275,6 +281,10 @@ function submitCreditNum(request){
 
 function finalize(address){
 	var cnum = document.getElementById("creditNum").value;
+	if (cnum === "") {
+		blinkObj(document.getElementById("creditNum"));
+		return;
+	}
 	document.getElementById("creditNum").value = null;
 	var request = new XMLHttpRequest();
 	request.open("GET", (address + "?creditNum=" + cnum), true);
