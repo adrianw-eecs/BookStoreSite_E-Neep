@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Random;
 
@@ -28,7 +29,8 @@ public class Start extends HttpServlet {
 	private model theModel;
 	ArrayList<String> dummyInfo = new ArrayList<String>();
 	String creditNumber = "";
-	String[] topTen = null;
+	private String[] topTen = null;
+	private String[] allBooks = null;
 
 	private int bookCategoryError = 0;
 	private int singleBookInfoError = 0;
@@ -189,22 +191,21 @@ public class Start extends HttpServlet {
 //				response.getWriter().write("");
 			} else if (request.getParameter("topTen") != null) {
 				System.out.println("topTen");
-				if (topTen == null) {
+				if (request.getAttribute("topTen") == null) {
+					purchaseConfirmed(request);
 					updateTopTenTable();
 				}
-				System.out.println(Arrays.toString(topTen));
+//				System.out.println(request.getAttribute("topTen"));
 				response.getWriter().write(Arrays.toString(topTen));
 
 			} else if (request.getParameter("allBooks") != null) {
 				System.out.println("allBooks");
-
-				String[] out = new String[4];
-				int i = 0;
-				while (i < 4) {
-					out[i] = "building meme " + i + "|" + (i + 1);
-					i++;
+				if (request.getAttribute("allBooks") == null) {
+					purchaseConfirmed(request);
+					updateAllBooks();
 				}
-				response.getWriter().write(Arrays.toString(out));
+//				System.out.println(request.getAttribute("allBooks"));
+				response.getWriter().write(Arrays.toString(allBooks));
 			} else if (request.getParameter("username") != null) {
 				/*
 				 * get address info based on username and password and then convert it to String
@@ -276,16 +277,20 @@ public class Start extends HttpServlet {
 					+ prov + "\nCountry: " + country + "\nZIP Code: " + zip + "\nPhone Number: " + phone);
 		} else if (request.getParameter("creditNum") != null) {
 			creditNumber = request.getParameter("creditNum");
-			// For analytics page update
-			purchaseConfirmed(request);
 		}
 
 		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
 
+	
+
+	private void purchaseConfirmed(HttpServletRequest request) {
+		request.setAttribute("purchaseFlag", 1);
+		request.setAttribute("purchaseFlag", 0);
+	}
+	
 	private void updateTopTenTable() {
-		String[] data = null;
 		try {
 			topTen = theModel.analyticsTopTen();
 
@@ -294,9 +299,12 @@ public class Start extends HttpServlet {
 		}
 	}
 
-	private void purchaseConfirmed(HttpServletRequest request) {
-		request.setAttribute("purchaseFlag", 1);
-		request.setAttribute("purchaseFlag", 0);
+	private void updateAllBooks() {
+		try {
+			allBooks = theModel.analyticsSalesMonth(Calendar.getInstance().get(Calendar.MONTH));
+		} catch (Exception e) {
+			System.out.println("Failed to get all books for the month analytics");
+		}
 	}
 
 	/**

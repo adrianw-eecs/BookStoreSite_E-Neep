@@ -27,15 +27,15 @@ public class POItemDAO {
 
 	}
 
-	public boolean addItemToPO(int id, String bid, double price) throws SQLException {
-		String query = "INSERT INTO POItem (id, bid, price) VALUES (?,?,?)";
+	public boolean addItemToPO(int id, String bid, double price, int month) throws SQLException {
+		String query = "INSERT INTO POItem (id, bid, price, month) VALUES (?,?,?,?)";
 		Connection con = this.ds.getConnection();
 		PreparedStatement sanatizedQuery = con.prepareStatement(query);
 		try {
 			sanatizedQuery.setInt(1, id);
 			sanatizedQuery.setString(2, bid);
 			sanatizedQuery.setDouble(3, price);
-
+			sanatizedQuery.setInt(4, month);
 			sanatizedQuery.executeUpdate();
 		} catch (SQLException e) {
 			throw new SQLException("Create POItem in POItemDAO failed");

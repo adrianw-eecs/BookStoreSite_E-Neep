@@ -2,6 +2,7 @@ package model;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 
 import bean.AccountBean;
@@ -210,13 +211,17 @@ public class model {
 	public boolean addItemsToPO(int id, ArrayList<String> bids, double price) throws Exception {
 
 		for (String bid : bids) {
-			poItemInfo.addItemToPO(id, bid, price);
+			poItemInfo.addItemToPO(id, bid, price, Calendar.getInstance().get(Calendar.MONTH));
 		}
 		return true;
 	}
 	
 	public String[] analyticsTopTen( ) throws SQLException {
 		return poItemInfo.topTen();
+	}
+	
+	public String[] analyticsSalesMonth(int month) throws SQLException {
+		return poItemInfo.perMonth(month);
 	}
 	// END OF POITEM COMMANDS //
 	/////////////////////////////////////////////////////////////////////////
