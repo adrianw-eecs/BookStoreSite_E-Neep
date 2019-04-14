@@ -12,8 +12,8 @@
 	<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <link rel="StyleSheet"
-	href="${pageContext.request.contextPath}/res/css/lp.css" type="text/css"
-	title="cse4413" media="screen, print" />
+	href="${pageContext.request.contextPath}/res/css/lp.css"
+	type="text/css" title="cse4413" media="screen, print" />
 <script type="text/javascript" src="res/payment.js">
 	;
 </script>
@@ -21,42 +21,45 @@
 </head>
 <body>
 	<div id="loginBox" class="loginBox">
-		<img src="res/images/bookicon.png" class="avatar"/>
+		<img src="res/images/bookicon.png" class="avatar" />
 		<h1>Login Here</h1>
 		<form>
-			<p>Username</p>
-			<input type="text" name="" placeholder="Enter Username" id="userName"/>
-			<p>Password</p>
-			<input type="password" name="" placeholder="Enter Password" id="pwd"/>
-			<input type="button" name="" value="Login"
-			onclick="login2('/BookStoreSite_E-Neep/Start/Ajax')"/>
-			<a href="#" onclick="create('/BookStoreSite_E-Neep/Start/Ajax');return false;">
+			<p>
+				Username<span id="userNameLoginError" style="color: deeppink">
+				</span>
+			</p>
+			<input type="text" name="" placeholder="Enter Username"
+				id="userNameLogin" autocomplete="off" autofocus="autofocus" />
+			<p>
+				Password<span id="pwdLoginError" style="color: deeppink"> </span>
+			</p>
+			<input type="password" name="" placeholder="Enter Password"
+				id="pwdLogin" autocomplete="off" /> <input type="button" name=""
+				value="Login" onclick="login2('/BookStoreSite_E-Neep/Start/Ajax')" />
+			<a href="#"
+				onclick="create('/BookStoreSite_E-Neep/Start/Ajax');return false;">
 				Don't have an account?</a>
 		</form>
 	</div>
 
 	<div class="info" id="info" hidden="true">
-		<img src="res/images/bookicon.png" class="avatar"/>
+		<img src="res/images/bookicon.png" class="avatar" />
 		<h1>Account Details</h1>
-		<label id="fnameLabel">First Name: </label>
-		<label id="lnameLabel">Last Name: </label>
-		<label id="streetNameLabel">Street Name: </label>
-		<label id="provLabel">Province: </label>
-		<label id="ctLabel">Country: </label>
-		<label id="zipLabel">ZIP Code: </label>
-		<label id="phnLabel">Phone Number: </label>
-		<input type="button" name="confirmAndPay"
-				value="Confirm Information" id="confirmAndPay"
-				onclick="showCreditCard('/BookStoreSite_E-Neep/Start/Ajax')"/>
+		<label id="fnameLabel">First Name: </label> <label id="lnameLabel">Last
+			Name: </label> <label id="streetNameLabel">Street Name: </label> <label
+			id="provLabel">Province: </label> <label id="ctLabel">Country:
+		</label> <label id="zipLabel">ZIP Code: </label> <label id="phnLabel">Phone
+			Number: </label> <input type="button" name="confirmAndPay"
+			value="Confirm Information" id="confirmAndPay"
+			onclick="showCreditCard('/BookStoreSite_E-Neep/Start/Ajax')" />
 	</div>
 
 	<div id="createBox" class="createBox" hidden="true">
-		<img src="res/images/bookicon.png" class="avatar"/>
+		<img src="res/images/bookicon.png" class="avatar" />
 		<h1>Sign Up</h1>
 		<form>
-			<input type="text" id="username" placeholder="Username"
-				onblur="create2('/BookStoreSite_E-Neep/Start/Ajax')"/>
-			<input type="password" id="pwd" placeholder="Password"/>
+			<input type="text" id="username" placeholder="Username"	oninput="create2('/BookStoreSite_E-Neep/Start/Ajax')" autocomplete="off" />				
+			<input type="password" id="pwd" placeholder="Password" autocomplete="off" />
 			<input type="text" id="fnameInp" placeholder="First Name"/>
 			<input type="text" id="lnameInp" placeholder="Last Name"/>
 			<input type="text" id="streetNameInp" placeholder="Street Name"/>
