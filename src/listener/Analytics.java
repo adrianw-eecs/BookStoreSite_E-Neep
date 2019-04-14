@@ -4,6 +4,10 @@ import javax.servlet.annotation.WebListener;
 import javax.servlet.http.HttpSessionAttributeListener;
 import javax.servlet.http.HttpSessionBindingEvent;
 
+import model.model;
+
+
+
 /**
  * Application Lifecycle Listener implementation class Analytics
  *
@@ -16,6 +20,8 @@ public class Analytics implements HttpSessionAttributeListener {
      */
     public Analytics() {
         // TODO Auto-generated constructor stub
+    	
+    	
     }
 
 	/**
@@ -40,13 +46,9 @@ public class Analytics implements HttpSessionAttributeListener {
     }
     
     public void updatePopularBooks(HttpSessionBindingEvent arg0) {
-//    	if(arg0.getName().equals("popularBooks")){
-//    		if(theDouble > maxPrincipal) {
-//    			setMaxPrincipal(theDouble);
-////    			System.out.println(getMaxPrincipal());
-//    			arg0.getSession().getServletContext().setAttribute("maxPrincipal", getMaxPrincipal());
-//    		}
-//    	}
+    	if(arg0.getName().equals("purchaseFlag")){
+    		
+    	}
     }
 	
 }

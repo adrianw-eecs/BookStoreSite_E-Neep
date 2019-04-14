@@ -110,4 +110,31 @@ public class AccountDAO {
 		return acc;
 	}
 
+	public boolean verifyAdminAccount(String username, String password) throws SQLException {
+		AccountBean account = null;
+		String query = "SELECT * FROM ACCOUNT WHERE USERNAME = ? and PASSWORD = ?";
+		Connection con = this.ds.getConnection();
+		PreparedStatement sanatizedQuery = con.prepareStatement(query);
+		try {
+			sanatizedQuery.setString(1, username);
+			sanatizedQuery.setString(2, password);
+
+			ResultSet r = sanatizedQuery.executeQuery();
+			if (r.next()) {
+				String result_name = r.getString("USERNAME");
+				int result_addr_id = r.getInt("ADDRESS");
+				boolean result_admin = r.getBoolean("ADMIN");
+				// CHANGE Querey for the current credits
+				return result_admin;
+			}
+		} catch (SQLException e) {
+//			System.out.println("Verification in AccountDAO failed");
+			throw new SQLException("Verification in AccountDAO failed");
+		}
+
+		sanatizedQuery.close();
+		con.close();
+		return false;
+	}
+
 }

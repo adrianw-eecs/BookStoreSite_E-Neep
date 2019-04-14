@@ -11,6 +11,7 @@ import java.util.*;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
+import bean.AddressBean;
 import bean.POItemBean;
 
 public class POItemDAO {
@@ -43,6 +44,33 @@ public class POItemDAO {
 		sanatizedQuery.close();
 		con.close();
 		return true;
+	}
+
+	public String[] topTen() throws SQLException{
+		String[] results = new String[10];
+		String query = "Select bid, count(bid) as quantity FROM POITEM group by bid order by quantity desc";
+
+		try {
+			Connection con = this.ds.getConnection();
+			PreparedStatement sanatizedQuery = con.prepareStatement(query);
+			ResultSet r = sanatizedQuery.executeQuery();
+			int i = 0;
+			while (r.next() && i < 10) {
+				int result_quantity = r.getInt("QUANTITY");
+				String result_bid = r.getString("BID");
+				// CHANGE Querey for the current credits
+				results[i] = result_bid + "|" + result_quantity;
+				i++;
+				
+			}
+			sanatizedQuery.close();
+			con.close();
+		} catch (SQLException e) {
+			throw new SQLException("Analytics query failed");
+		}
+
+		
+		return results;
 	}
 
 }
