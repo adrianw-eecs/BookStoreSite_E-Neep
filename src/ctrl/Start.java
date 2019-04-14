@@ -202,7 +202,7 @@ public class Start extends HttpServlet {
 				 * array
 				 */
 				String out = "";
-				out += "Steve|Irwin|42 Wallaby Way|Sydney|Australia|L4J 4Z5|647-989-5484";
+//				out += "Steve|Irwin|42 Wallaby Way|Sydney|Australia|L4J 4Z5|647-989-5484";
 
 				response.getWriter().write(out);
 
@@ -429,7 +429,7 @@ public class Start extends HttpServlet {
 			userNameCheckError = 1;
 			request.setAttribute("userNameCheckError", userNameCheckError);
 		}
-
+		
 		if (checkIfUserExists.equals("")) {
 			response.getWriter().write("");
 		} else {

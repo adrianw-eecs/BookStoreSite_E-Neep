@@ -87,7 +87,7 @@ function topTenHandler(request){
 		var table = document.getElementById("top-ten-table");
 		var responseArray = request.responseText;
 		if (responseArray != ""){
-			for(var i = table. rows. length - 1; i > 0; i--)
+			for(var i = table.rows.length - 1; i > 0; i--)
 			{
 				table. deleteRow(i);
 			}

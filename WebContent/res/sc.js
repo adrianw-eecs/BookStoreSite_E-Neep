@@ -12,9 +12,9 @@ function quantityHandler(request){
 	if ((request.readyState == 4) && (request.status == 200)){
 		var table = document.getElementById("scTable");
 		var responseArray = request.responseText;
-		if (responseArray != ""){
 			responseArray = responseArray.substring(1, responseArray.length - 1);
-
+			
+		if (responseArray != ""){
 			var elements = responseArray.split(',');
 
 			var row = table.insertRow(0);

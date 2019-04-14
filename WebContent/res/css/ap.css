@@ -117,7 +117,7 @@ h1{
 
 .top-ten-table tr, .all-books-table tr{
     background-color: rgba(48, 184, 139, .3);
-    transition: all .4s ease;
+    transition: all .3s ease;
 }
 
 .top-ten-table tr:hover, .all-books-table tr:hover{
