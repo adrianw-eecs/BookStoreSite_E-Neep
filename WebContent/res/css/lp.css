@@ -109,9 +109,10 @@ h1{
 	border: none;
 }
 
+
 .createBox input{
 	margin-bottom: 20px;
-	width: 45%;
+	width: 40%;
 	padding: 10px;
 	display: inline-block;
 	text-align: center;
@@ -140,10 +141,12 @@ h1{
 
 .createBox #fnameInp, #provInp, #zipInp{
 	float: left;
+	transition: all .5s ease;
 }
 
 .createBox #lnameInp, #ctInp, #phnInp{
 	float: right;
+	transition: all .5s ease;
 }
 
 .loginBox input, .createBox #username, .createBox #pwd{
@@ -153,6 +156,7 @@ h1{
 
 .createBox #streetNameInp{
 	width: 95%;
+	transition: all .5s ease;
 }
 
 .loginBox input[type="text"]::placeholder, input[type="password"]::placeholder{
@@ -173,11 +177,12 @@ h1{
 	width: 250px;
 	color: #fff;
 	font-size: 16px;
+	transition: all .3s ease;
 }
 
 .createBox #username:focus, .createBox #pwd:focus{
 	transition: all .5s ease;
-	width: 95%;
+	width: 90%;
 	box-shadow: 0 0 0px #fff;
 }
 
