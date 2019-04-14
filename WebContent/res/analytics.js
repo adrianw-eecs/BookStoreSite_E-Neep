@@ -1,6 +1,37 @@
 var interval;
 
+
+function validate(){
+	var ok = true;
+	var p = document.getElementById("userName").value;
+
+	if (p === ""){
+		alert("Please enter a valid username!")
+		blinkObj(document.getElementById("userName"));
+		ok = false;
+	}
+
+
+	p = document.getElementById("pwd").value;
+	if (p === ""){
+		if (ok) alert("Please enter a valid password!");
+		blinkObj(document.getElementById("pwd"));
+		ok = false;
+	}
+	return ok;
+}
+
+function blinkObj(obj){
+	var orig = obj.style.boxShadow;
+	obj.style.boxShadow = "0 0 5px white";
+	setTimeout(function(){
+		obj.style.boxShadow = orig;
+	}, 700);
+}
+
 function confirmAdmin(address){
+	if (!validate()) return;
+	
 	var valid = false;
 	var done = false;
 
@@ -92,16 +123,19 @@ function topTenHandler(request){
 				table. deleteRow(i);
 			}
 			
+			
 			responseArray = responseArray.substring(1, responseArray.length - 1);
 
 			var elements = responseArray.split(',');
 
+			
 			for (var qty in elements){
 				
 				var toBeUsed = elements[qty].trim();
+				if (toBeUsed === "null") break;
 				var info = toBeUsed.split('|');
 				var row = table.insertRow(+qty + +1);
-				row.insertCell(0).innerHTML = qty;
+				row.insertCell(0).innerHTML = +qty + +1;
 				row.insertCell(1).innerHTML = info[0].trim();
 				row.insertCell(2).innerHTML = info[1].trim();
 			}
@@ -127,7 +161,7 @@ function allBooksHandler(request){
 				var toBeUsed = elements[qty].trim();
 				var info = toBeUsed.split('|');
 				var row = table.insertRow(+qty + +1);
-				row.insertCell(0).innerHTML = qty;
+				row.insertCell(0).innerHTML = +qty + +1;
 				row.insertCell(1).innerHTML = info[0].trim();
 				row.insertCell(2).innerHTML = info[1].trim();
 			}

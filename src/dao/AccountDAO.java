@@ -124,7 +124,7 @@ public class AccountDAO {
 				String result_name = r.getString("USERNAME");
 				int result_addr_id = r.getInt("ADDRESS");
 				boolean result_admin = r.getBoolean("ADMIN");
-				// CHANGE Querey for the current credits
+				// CHANGE Query for the current credits
 				return result_admin;
 			}
 		} catch (SQLException e) {
