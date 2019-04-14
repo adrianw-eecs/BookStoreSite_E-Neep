@@ -217,7 +217,10 @@ public class Start extends HttpServlet {
 				response.getWriter().write(out);
 
 			}
-
+		
+		} else if (request.getPathInfo() != null && request.getPathInfo().contains("Analytic")) {
+			
+			request.getRequestDispatcher("/Analytics.jspx").forward(request, response);
 		} else if (request.getParameter("shoppingCart") != null) {
 			// when shopping cart button is clicked, we move to shopping cart page
 			request.getRequestDispatcher("/ShoppingCart.jspx").forward(request, response);
