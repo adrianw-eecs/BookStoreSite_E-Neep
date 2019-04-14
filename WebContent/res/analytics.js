@@ -1,6 +1,37 @@
 var interval;
 
+
+function validate(){
+	var ok = true;
+	var p = document.getElementById("userName").value;
+
+	if (p === ""){
+		alert("Please enter a valid username!")
+		blinkObj(document.getElementById("userName"));
+		ok = false;
+	}
+
+
+	p = document.getElementById("pwd").value;
+	if (p === ""){
+		if (ok) alert("Please enter a valid password!");
+		blinkObj(document.getElementById("pwd"));
+		ok = false;
+	}
+	return ok;
+}
+
+function blinkObj(obj){
+	var orig = obj.style.boxShadow;
+	obj.style.boxShadow = "0 0 5px white";
+	setTimeout(function(){
+		obj.style.boxShadow = orig;
+	}, 700);
+}
+
 function confirmAdmin(address){
+	if (!validate()) return;
+	
 	var valid = false;
 	var done = false;
 
