@@ -3,7 +3,10 @@ package listener;
 import javax.servlet.annotation.WebListener;
 import javax.servlet.http.HttpSessionAttributeListener;
 import javax.servlet.http.HttpSessionBindingEvent;
+
 import model.model;
+
+
 
 /**
  * Application Lifecycle Listener implementation class Analytics
@@ -17,6 +20,8 @@ public class Analytics implements HttpSessionAttributeListener {
      */
     public Analytics() {
         // TODO Auto-generated constructor stub
+    	
+    	
     }
 
 	/**
