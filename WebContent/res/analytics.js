@@ -105,10 +105,10 @@ function startQueryTimer(tableName, request){
 	clearInterval(interval);
 	if (tableName === "topTen"){
 		topTenHandler(request);
-		interval = setInterval(function(){topTenHandler(request)}, 1000);
+		interval = setInterval(function(){topTenHandler(request)}, 5000);
 	}else if (tableName === "allBooks"){
 		allBooksHandler(request)
-		interval = setInterval(function(){allBooksHandler(request)}, 1000);
+		interval = setInterval(function(){allBooksHandler(request)}, 5000);
 	}
 }
 
