@@ -14,14 +14,14 @@
 <link rel="StyleSheet"
 	href="${pageContext.request.contextPath}/res/css/lp.css"
 	type="text/css" title="cse4413" media="screen, print" />
-<script type="text/javascript" src="res/payment.js">
+<script type="text/javascript" src="${pageContext.request.contextPath}/res/payment.js">
 	;
 </script>
 <title>Payment Page</title>
 </head>
 <body>
 	<div id="loginBox" class="loginBox">
-		<img src="res/images/bookicon.png" class="avatar" />
+		<img src="${pageContext.request.contextPath}/res/images/bookicon.png" class="avatar" />
 		<h1>Login Here</h1>
 		<form>
 			<p>
@@ -43,7 +43,7 @@
 	</div>
 
 	<div class="info" id="info" hidden="true">
-		<img src="res/images/bookicon.png" class="avatar" />
+		<img src="${pageContext.request.contextPath}/res/images/bookicon.png" class="avatar" />
 		<h1>Account Details</h1>
 		<label id="fnameLabel">First Name: </label> <label id="lnameLabel">Last
 			Name: </label> <label id="streetNameLabel">Street Name: </label> <label
@@ -55,7 +55,7 @@
 	</div>
 
 	<div id="createBox" class="createBox" hidden="true">
-		<img src="res/images/bookicon.png" class="avatar" />
+		<img src="${pageContext.request.contextPath}/res/images/bookicon.png" class="avatar" />
 		<h1>Sign Up</h1>
 		<form>
 			<input type="text" id="username" placeholder="Username"	oninput="create2('/BookStoreSite_E-Neep/Start/Ajax')" autocomplete="off" />				
@@ -75,7 +75,7 @@
 	</div>
 
 	<div class="credit" id="credit" hidden="true">
-			<img src="res/images/bookicon.png" class="avatar"/>
+			<img src="${pageContext.request.contextPath}/res/images/bookicon.png" class="avatar"/>
 			<h1>Credit Card Confirmation</h1>
 			<input type="number" id="creditNum" placeholder="Credit Card Number"/>
 			<input type="button" name="confirmNewOrder" class="confirmNewOrder"

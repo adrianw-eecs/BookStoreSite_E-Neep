@@ -9,16 +9,16 @@
 	<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <link rel="StyleSheet"
-	href="${pageContext.request.contextPath}/res/css/ap.css" type="text/css"
-	title="cse4413" media="screen, print" />
-<script type="text/javascript" src="res/analytics.js">
+	href="${pageContext.request.contextPath}/res/css/ap.css"
+	type="text/css" title="cse4413" media="screen, print" />
+<script type="text/javascript" src="${pageContext.request.contextPath}/res/analytics.js">
 	;
 </script>
 <title>Analytics Page</title>
 </head>
 <body>
 	<div id="loginBox" class="loginBox">
-		<img src="res/images/bookicon.png" class="avatar" />
+		<img src="${pageContext.request.contextPath}/res/images/bookicon.png" class="avatar" />
 		<h1>Administrator Login</h1>
 		<form>
 			<p>Username</p>
@@ -27,21 +27,19 @@
 			<input type="password" name="" placeholder="Enter Password" id="pwd" />
 			<input type="button" name="" value="Login"
 				onclick="confirmAdmin('/BookStoreSite_E-Neep/Start/Ajax')" />
-		
-
-			</form>
+		</form>
 	</div>
 	<div class="buttons" id="buttons" hidden="true">
-		<img src="res/images/bookicon.png" class="avatar" />
+		<img src="${pageContext.request.contextPath}/res/images/bookicon.png" class="avatar"/>
 		<h1>Please Pick an Option</h1>
 		<input type="button" name="" value="Top 10 Books"
-			onclick="showTopTen('/BookStoreSite_E-Neep/Start/Ajax')" /> <input
-			type="button" name="" value="Books Sold this Month"
+			onclick="showTopTen('/BookStoreSite_E-Neep/Start/Ajax')" />
+		<input type="button" name="" value="Books Sold this Month"
 			onclick="showMonthBooks('/BookStoreSite_E-Neep/Start/Ajax')" />
 	</div>
 	<div class="top-ten-table-container" id="top-ten-container"
 		hidden="true">
-		<img src="res/images/bookicon.png" class="avatar"/>
+		<img src="${pageContext.request.contextPath}/res/images/bookicon.png" class="avatar" />
 		<h1>Top 10 Books Sold</h1>
 		<table id="top-ten-table" class="top-ten-table">
 			<th>Rank</th>
@@ -50,7 +48,7 @@
 		</table>
 	</div>
 	<div class="all-books-container" id="all-books-container" hidden="true">
-		<img src="res/images/bookicon.png" class="avatar" />
+		<img src="${pageContext.request.contextPath}/res/images/bookicon.png" class="avatar" />
 		<h1>
 			All Books Sold <br /> (this month)
 		</h1>
@@ -58,11 +56,7 @@
 			<th>Rank</th>
 			<th>Title</th>
 			<th>Quantity</th>
-			<tr>
-				<td>10</td>
-				<td>Building Memes</td>
-				<td>4</td>
-			</tr>
+
 		</table>
 	</div>
 </body>

@@ -14,7 +14,7 @@
 <link rel="StyleSheet"
 	href="${pageContext.request.contextPath}/res/css/sc.css" type="text/css"
 	title="cse4413" media="screen, print" />
-<script type="text/javascript" src="res/sc.js">
+<script type="text/javascript" src="${pageContext.request.contextPath}/res/sc.js">
 	;
 </script>
 <title>Shopping Cart Page</title>
