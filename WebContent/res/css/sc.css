@@ -161,7 +161,7 @@ header{
 }
 
 .total{
-    padding: 5px;
+    padding: 5px 5px 10px;
     background: rgba(48, 184, 139, .4);
     height: 3%;
     width: 150px;

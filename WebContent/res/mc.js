@@ -82,6 +82,13 @@ function addReview(address){
 			reviewHandler(request);
 		}
 		request.send();
+	}else{
+		var obj = document.getElementById("bookReview");
+		var orig = obj.style.boxShadow;
+		obj.style.boxShadow = "0 0 5px white";
+		setTimeout(function(){
+			obj.style.boxShadow = orig;
+		}, 700);
 	}
 }
 
