@@ -20,11 +20,7 @@ function validateCreateUN(){
 	var ok = true;
 	var p = document.getElementById("username").value;
 
-
-	if (p === ""){
-		blinkObj(document.getElementById("username"));
-		ok = false;
-	}
+	ok = (p != "");
 
 	return ok;
 }
@@ -32,9 +28,14 @@ function validateCreateUN(){
 function validateCreate(){
 	var ok = true;
 	var p = document.getElementById("username").value;
-
+	
+	if (document.getElementById("username").style.boxShadow === "red 0px 0px 10px"){
+		alert("Username is taken. Choose another one!");
+		ok = false;
+	}
+	
 	if (p === ""){
-		alert("Username cannot be empty!");
+		if (ok) alert("Username cannot be empty!");
 		blinkObj(document.getElementById("username"));
 		ok = false;
 	}
@@ -156,7 +157,6 @@ function loginInfoHandler(request){
 function create2(address){
 	validateCreateUN();
 
-
 	var taken = false;
 	var done = false;
 
@@ -164,6 +164,7 @@ function create2(address){
 	
 
 	if (un != ""){
+		
 		var request = new XMLHttpRequest();
 		request.open("GET", (address + "?verify=true&username=" + un), true);
 		request.onreadystatechange = function() {
