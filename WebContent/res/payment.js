@@ -272,7 +272,7 @@ function finalize(address){
 	}
 	document.getElementById("creditNum").value = null;
 	var request = new XMLHttpRequest();
-	request.open("GET", (address + "?creditNum=" + cnum), true);
+	request.open("POST", (address + "?creditNum=" + cnum), true);
 	request.onreadystatechange = function() {
 		checkCreditNum(request);
 	};
