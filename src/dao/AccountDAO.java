@@ -94,10 +94,11 @@ public class AccountDAO {
 		try {
 			sanatizedQuery.setString(1, username);
 			sanatizedQuery.setString(2, password);
-			sanatizedQuery.setInt(3, address);
-			sanatizedQuery.setBoolean(4, admin);
-			sanatizedQuery.setString(5, fname);
-			sanatizedQuery.setString(6, lname);
+			sanatizedQuery.setString(3, fname);
+			sanatizedQuery.setString(4, lname);
+			sanatizedQuery.setInt(5, address);
+			sanatizedQuery.setBoolean(6, admin);
+			
 			sanatizedQuery.executeUpdate();
 
 			acc = new AccountBean(username, address, admin, fname, lname);
