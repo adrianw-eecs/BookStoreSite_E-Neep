@@ -29,7 +29,6 @@ import model.model;
 public class Start extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private model theModel;
-	ArrayList<String> dummyInfo = new ArrayList<String>();
 	String creditNumber = "";
 	private String[] topTen = null;
 	private String[] allBooks = null;
@@ -210,19 +209,19 @@ public class Start extends HttpServlet {
 					updateAllBooks();
 				}
 				response.getWriter().write(Arrays.toString(allBooks));
-				
-				
+
 			} else if (request.getParameter("username") != null && request.getParameter("password") != null) {
 				String out = "";
 				try {
 					currentAccount = theModel.login(request.getParameter("username"), request.getParameter("password"));
-					if(currentAccount == null) {
+					if (currentAccount == null) {
 						out = "";
 					} else {
-					currentAddress = theModel.retrieveAddress(currentAccount.getAddress());
-					out = currentAccount.getFname() + "|" + currentAccount.getFname() + "|" + currentAddress.getStreet() + "|"
-							+ currentAddress.getProvince() + "|" + currentAddress.getCountry() + "|" + currentAddress.getZip() + "|"
-							+ currentAddress.getphone();
+						currentAddress = theModel.retrieveAddress(currentAccount.getAddress());
+						out = currentAccount.getFname() + "|" + currentAccount.getFname() + "|"
+								+ currentAddress.getStreet() + "|" + currentAddress.getProvince() + "|"
+								+ currentAddress.getCountry() + "|" + currentAddress.getZip() + "|"
+								+ currentAddress.getphone();
 					}
 					System.out.println(out);
 				} catch (Exception e) {
@@ -283,6 +282,8 @@ public class Start extends HttpServlet {
 			shoppingCart.add(request.getParameter("addBid"));
 			userSessionToShoppingCart.put(request.getSession().getId(), shoppingCart);
 		} else if (request.getParameter("fname") != null) {
+			String uname = request.getParameter("username");
+			String pwd = request.getParameter("password");
 			String fname = request.getParameter("fname");
 			String lname = request.getParameter("lname");
 			String street = request.getParameter("street");
@@ -290,26 +291,36 @@ public class Start extends HttpServlet {
 			String country = request.getParameter("country");
 			String zip = request.getParameter("zip");
 			String phone = request.getParameter("phone");
+			
+			try {
+				theModel.createAccount(uname, pwd, street, prov, country, zip, phone, false, fname, lname);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 
-			dummyInfo.add("First name: " + fname + "\nLast Name: " + lname + "\nStreet: " + street + "\nProvince: "
-					+ prov + "\nCountry: " + country + "\nZIP Code: " + zip + "\nPhone Number: " + phone);
+//			dummyInfo.add("First name: " + fname + "\nLast Name: " + lname + "\nStreet: " + street + "\nProvince: "
+//					+ prov + "\nCountry: " + country + "\nZIP Code: " + zip + "\nPhone Number: " + phone);
 		} else if (request.getParameter("creditNum") != null) {
 			creditNumber = request.getParameter("creditNum");
 			String out = "";
-			if(failedCreditCard % 3 == 0) {
+			if (failedCreditCard % 3 == 0) {
 				out = "Credit Card Denied";
 			} else {
 				try {
-					int POID = theModel.addPO(currentAccount.getLname(), currentAccount.getFname(), "ORDERED", currentAccount.getAddress());
+					int POID = theModel.addPO(currentAccount.getLname(), currentAccount.getFname(), "ORDERED",
+							currentAccount.getAddress());
 					ArrayList<String> books = userSessionToShoppingCart.get(request.getSession().getId());
-					System.out.println(books);
-//					theModel.addItemsToPO(POID, bids, price)
+//					System.out.println(books);
+					for (String bid : books) {
+						theModel.addItemsToPO(POID, bid, theModel.retrieveSingleBookBOOKBEAN(bid).getPrice());
+					}
 					out = "Success";
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					out = "QUERIES FAILED:" + e.getMessage();
 //					e.printStackTrace();
-				}	
+				}
 			}
 			response.getWriter().write(out);
 		}
