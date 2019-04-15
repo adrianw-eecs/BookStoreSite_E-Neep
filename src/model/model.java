@@ -2,6 +2,7 @@ package model;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 
 import bean.AccountBean;
@@ -33,7 +34,7 @@ public class model {
 
 	/////////////////////////////////////////////////////////////////////////
 	// ADDRESS DB //
-	public ArrayList<AddressBean> retrieveAddress(String id) throws Exception {
+	public AddressBean retrieveAddress(String id) throws Exception {
 		return addressInfo.retrieveAddressUsingID(id);
 
 	}
@@ -174,9 +175,9 @@ public class model {
 	// ACCOUNT COMMANDS //
 	// returns arraylist of POBean that matches the id provided
 	public AccountBean createAccount(String username, String password, String street, String prov, String country,
-			String post, String phone, Boolean admin) throws Exception {
+			String post, String phone, Boolean admin, String fname, String lname) throws Exception {
 
-		return accountInfo.addAccount(username, password, addAddress(street, prov, country, post, phone), admin);
+		return accountInfo.addAccount(username, password, addAddress(street, prov, country, post, phone), admin, fname, lname);
 	}
 
 	// returns an account bean that holds the account Info(username and address)
@@ -207,16 +208,17 @@ public class model {
 	/////////////////////////////////////////////////////////////////////////
 	// POItem COMMANDS //
 	// Added an item to the POITEM table and return true if sucessful
-	public boolean addItemsToPO(int id, ArrayList<String> bids, double price) throws Exception {
-
-		for (String bid : bids) {
-			poItemInfo.addItemToPO(id, bid, price);
-		}
+	public boolean addItemsToPO(int id, String bids, double price) throws Exception {
+			poItemInfo.addItemToPO(id, bids, price, Calendar.getInstance().get(Calendar.MONTH));
 		return true;
 	}
 	
 	public String[] analyticsTopTen( ) throws SQLException {
 		return poItemInfo.topTen();
+	}
+	
+	public String[] analyticsSalesMonth(int month) throws SQLException {
+		return poItemInfo.perMonth(month);
 	}
 	// END OF POITEM COMMANDS //
 	/////////////////////////////////////////////////////////////////////////

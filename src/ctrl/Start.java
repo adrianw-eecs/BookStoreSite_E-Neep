@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Random;
 
@@ -15,6 +16,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import bean.AccountBean;
+import bean.AddressBean;
 import bean.BookBean;
 import bean.POBean;
 import model.model;
@@ -28,7 +31,11 @@ public class Start extends HttpServlet {
 	private model theModel;
 	ArrayList<String> dummyInfo = new ArrayList<String>();
 	String creditNumber = "";
-	String[] topTen = null;
+	private String[] topTen = null;
+	private String[] allBooks = null;
+	private AccountBean currentAccount;
+	private AddressBean currentAddress;
+	private int failedCreditCard = 1;
 
 	private int bookCategoryError = 0;
 	private int singleBookInfoError = 0;
@@ -189,34 +196,46 @@ public class Start extends HttpServlet {
 //				response.getWriter().write("");
 			} else if (request.getParameter("topTen") != null) {
 				System.out.println("topTen");
-				if (topTen == null) {
+				if (request.getAttribute("topTen") == null) {
+					purchaseConfirmed(request);
 					updateTopTenTable();
 				}
-				System.out.println(Arrays.toString(topTen));
+//				System.out.println(request.getAttribute("topTen"));
 				response.getWriter().write(Arrays.toString(topTen));
 
 			} else if (request.getParameter("allBooks") != null) {
 				System.out.println("allBooks");
-
-				String[] out = new String[4];
-				int i = 0;
-				while (i < 4) {
-					out[i] = "building meme " + i + "|" + (i + 1);
-					i++;
+				if (request.getAttribute("allBooks") == null) {
+					purchaseConfirmed(request);
+					updateAllBooks();
 				}
-				response.getWriter().write(Arrays.toString(out));
-			} else if (request.getParameter("username") != null) {
-				/*
-				 * get address info based on username and password and then convert it to String
-				 * array
-				 */
+				response.getWriter().write(Arrays.toString(allBooks));
+				
+				
+			} else if (request.getParameter("username") != null && request.getParameter("password") != null) {
 				String out = "";
-//				out += "Steve|Irwin|42 Wallaby Way|Sydney|Australia|L4J 4Z5|647-989-5484";
-
+				try {
+					currentAccount = theModel.login(request.getParameter("username"), request.getParameter("password"));
+					if(currentAccount == null) {
+						out = "";
+					} else {
+					currentAddress = theModel.retrieveAddress(currentAccount.getAddress());
+					out = currentAccount.getFname() + "|" + currentAccount.getFname() + "|" + currentAddress.getStreet() + "|"
+							+ currentAddress.getProvince() + "|" + currentAddress.getCountry() + "|" + currentAddress.getZip() + "|"
+							+ currentAddress.getphone();
+					}
+					System.out.println(out);
+				} catch (Exception e) {
+					System.out.println("Failed to verify account");
+					out = "";
+				}
 				response.getWriter().write(out);
 
 			}
 
+		} else if (request.getPathInfo() != null && request.getPathInfo().contains("Analytic")) {
+
+			request.getRequestDispatcher("/Analytics.jspx").forward(request, response);
 		} else if (request.getParameter("shoppingCart") != null) {
 			// when shopping cart button is clicked, we move to shopping cart page
 			request.getRequestDispatcher("/ShoppingCart.jspx").forward(request, response);
@@ -276,16 +295,35 @@ public class Start extends HttpServlet {
 					+ prov + "\nCountry: " + country + "\nZIP Code: " + zip + "\nPhone Number: " + phone);
 		} else if (request.getParameter("creditNum") != null) {
 			creditNumber = request.getParameter("creditNum");
-			// For analytics page update
-			purchaseConfirmed(request);
+			String out = "";
+			if(failedCreditCard % 3 == 0) {
+				out = "Credit Card Denied";
+			} else {
+				try {
+					int POID = theModel.addPO(currentAccount.getLname(), currentAccount.getFname(), "ORDERED", currentAccount.getAddress());
+					ArrayList<String> books = userSessionToShoppingCart.get(request.getSession().getId());
+					System.out.println(books);
+//					theModel.addItemsToPO(POID, bids, price)
+					out = "Success";
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					out = "QUERIES FAILED:" + e.getMessage();
+//					e.printStackTrace();
+				}	
+			}
+			response.getWriter().write(out);
 		}
 
 		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
 
+	private void purchaseConfirmed(HttpServletRequest request) {
+		request.setAttribute("purchaseFlag", 1);
+		request.setAttribute("purchaseFlag", 0);
+	}
+
 	private void updateTopTenTable() {
-		String[] data = null;
 		try {
 			topTen = theModel.analyticsTopTen();
 
@@ -294,9 +332,12 @@ public class Start extends HttpServlet {
 		}
 	}
 
-	private void purchaseConfirmed(HttpServletRequest request) {
-		request.setAttribute("purchaseFlag", 1);
-		request.setAttribute("purchaseFlag", 0);
+	private void updateAllBooks() {
+		try {
+			allBooks = theModel.analyticsSalesMonth(Calendar.getInstance().get(Calendar.MONTH));
+		} catch (Exception e) {
+			System.out.println("Failed to get all books for the month analytics");
+		}
 	}
 
 	/**
@@ -458,7 +499,7 @@ public class Start extends HttpServlet {
 			userNameCheckError = 1;
 			request.setAttribute("userNameCheckError", userNameCheckError);
 		}
-		
+
 		if (checkIfUserExists.equals("")) {
 			response.getWriter().write("");
 		} else {
