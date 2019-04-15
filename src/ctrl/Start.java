@@ -297,14 +297,13 @@ public class Start extends HttpServlet {
 			String phone = request.getParameter("phone");
 			
 			try {
-				theModel.createAccount(uname, pwd, street, prov, country, zip, phone, false, fname, lname);
+				currentAccount = theModel.createAccount(uname, pwd, street, prov, country, zip, phone, false, fname, lname);
+				response.getWriter().write("Successfully created account");
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+				response.getWriter().write("Failed to create account");
+				System.out.println("Failed to create account");
 			}
-
-//			dummyInfo.add("First name: " + fname + "\nLast Name: " + lname + "\nStreet: " + street + "\nProvince: "
-//					+ prov + "\nCountry: " + country + "\nZIP Code: " + zip + "\nPhone Number: " + phone);
 		} else if (request.getParameter("creditNum") != null) {
 			
 			creditNumber = request.getParameter("creditNum");
