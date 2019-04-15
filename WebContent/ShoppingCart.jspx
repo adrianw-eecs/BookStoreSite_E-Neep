@@ -12,28 +12,30 @@
 	<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <link rel="StyleSheet"
-	href="${pageContext.request.contextPath}/res/css/mc.css" type="text/css"
+	href="${pageContext.request.contextPath}/res/css/sc.css" type="text/css"
 	title="cse4413" media="screen, print" />
-<script type="text/javascript" src="res/sc.js">
+<script type="text/javascript" src="${pageContext.request.contextPath}/res/sc.js">
 	;
 </script>
 <title>Shopping Cart Page</title>
 </head>
 <body onload="toShoppingCart('/BookStoreSite_E-Neep/Start/Ajax')">
+	<header>Shopping Cart</header>
 	<form action='' method='POST'>
-		<legend>Shopping Cart </legend>
 		
-		<button type='submit' name='checkOut' label='checkOut'
-			class='checkOut'>Proceed to Check-Out</button>
+		<input type='submit' name='checkOut' label='checkOut'
+			class='checkOut' value="Proceed to Check-Out"/>
 			
-		<table id="scTable" class="scTable">
-		</table>
-		
-		<label id="totalPriceLabel" for="totalPriceLabel">
-			Total:
-		</label>
-		<label id="totalPrice" for="totalPrice">
-		</label>
+			
+		<div class="total">
+            <label id="totalPriceLabel" for="totalPriceLabel">
+                Total:
+            </label>
+            <label id="totalPrice" for="totalPrice">
+            </label>
+        </div>
+        <ul class="books" id="books">
+        </ul>
 	</form>
 </body>
 </html>

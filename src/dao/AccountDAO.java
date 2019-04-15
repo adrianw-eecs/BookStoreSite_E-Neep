@@ -69,14 +69,15 @@ public class AccountDAO {
 
 			ResultSet r = sanatizedQuery.executeQuery();
 			if (r.next()) {
-				String result_name = r.getString("USERNAME");
+				String result_uname = r.getString("USERNAME");
 				int result_addr_id = r.getInt("ADDRESS");
 				boolean result_admin = r.getBoolean("ADMIN");
+				String result_fname = r.getString("FNAME");
+				String result_lname = r.getString("LNAME");
 				// CHANGE Querey for the current credits
-				account = new AccountBean(result_name, result_addr_id, result_admin);
+				account = new AccountBean(result_uname, result_addr_id, result_admin, result_fname, result_lname);
 			}
 		} catch (SQLException e) {
-//			System.out.println("Verification in AccountDAO failed");
 			throw new SQLException("Verification in AccountDAO failed");
 		}
 
@@ -85,20 +86,22 @@ public class AccountDAO {
 		return account;
 	}
 
-	public AccountBean addAccount(String username, String password, int address, boolean admin) throws SQLException {
+	public AccountBean addAccount(String username, String password, int address, boolean admin, String fname, String lname) throws SQLException {
 		AccountBean acc = null;
-		String query = "INSERT INTO ACCOUNT (username, password, address) VALUES (?,?,?,?)";
+		String query = "INSERT INTO ACCOUNT (username, password, fname, lname, address, admin) VALUES (?,?,?,?,?,?)";
 		Connection con = this.ds.getConnection();
 		PreparedStatement sanatizedQuery = con.prepareStatement(query);
 		try {
 			sanatizedQuery.setString(1, username);
 			sanatizedQuery.setString(2, password);
-			sanatizedQuery.setInt(3, address);
-			sanatizedQuery.setBoolean(4, admin);
-
+			sanatizedQuery.setString(3, fname);
+			sanatizedQuery.setString(4, lname);
+			sanatizedQuery.setInt(5, address);
+			sanatizedQuery.setBoolean(6, admin);
+			
 			sanatizedQuery.executeUpdate();
 
-			acc = new AccountBean(username, address, admin);
+			acc = new AccountBean(username, address, admin, fname, lname);
 
 		} catch (SQLException e) {
 //			System.out.println("Create account in AccountDAO failed");

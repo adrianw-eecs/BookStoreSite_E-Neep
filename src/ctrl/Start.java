@@ -16,6 +16,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import bean.AccountBean;
+import bean.AddressBean;
 import bean.BookBean;
 import bean.POBean;
 import model.model;
@@ -27,10 +29,12 @@ import model.model;
 public class Start extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private model theModel;
-	ArrayList<String> dummyInfo = new ArrayList<String>();
 	String creditNumber = "";
 	private String[] topTen = null;
 	private String[] allBooks = null;
+	private AccountBean currentAccount;
+	private AddressBean currentAddress;
+	private int failedCreditCard = 1;
 
 	private int bookCategoryError = 0;
 	private int singleBookInfoError = 0;
@@ -135,7 +139,7 @@ public class Start extends HttpServlet {
 		 * I don't know what to do with the reviews but we're saving it for later
 		 */
 
-		System.out.println(request.getPathInfo() + " " + request.getQueryString());
+		System.out.println("URL: " + request.getRequestURL() + " PATH: " + request.getPathInfo() + " QUERY: " + request.getQueryString());
 		if (request.getPathInfo() != null && request.getPathInfo().contains("Ajax")) {
 //			System.out.println(bookReviews);
 			// System.out.println("global shopping cart:" + shoppingCart);
@@ -204,27 +208,44 @@ public class Start extends HttpServlet {
 					purchaseConfirmed(request);
 					updateAllBooks();
 				}
-//				System.out.println(request.getAttribute("allBooks"));
 				response.getWriter().write(Arrays.toString(allBooks));
-			} else if (request.getParameter("username") != null) {
-				/*
-				 * get address info based on username and password and then convert it to String
-				 * array
-				 */
-				String out = "";
-//				out += "Steve|Irwin|42 Wallaby Way|Sydney|Australia|L4J 4Z5|647-989-5484";
 
+			} else if (request.getParameter("username") != null && request.getParameter("password") != null) {
+				String out = "";
+				try {
+					currentAccount = theModel.login(request.getParameter("username"), request.getParameter("password"));
+					if (currentAccount == null) {
+						out = "";
+					} else {
+						currentAddress = theModel.retrieveAddress(currentAccount.getAddress());
+						out = currentAccount.getFname() + "|" + currentAccount.getFname() + "|"
+								+ currentAddress.getStreet() + "|" + currentAddress.getProvince() + "|"
+								+ currentAddress.getCountry() + "|" + currentAddress.getZip() + "|"
+								+ currentAddress.getphone();
+					}
+					System.out.println(out);
+				} catch (Exception e) {
+					System.out.println("Failed to verify account");
+					out = "";
+				}
 				response.getWriter().write(out);
 
 			}
 
+		} else if (request.getPathInfo() != null && request.getPathInfo().contains("Analytic")) {
+
+			request.getRequestDispatcher("/Analytics.jspx").forward(request, response);
 		} else if (request.getParameter("shoppingCart") != null) {
 			// when shopping cart button is clicked, we move to shopping cart page
 			request.getRequestDispatcher("/ShoppingCart.jspx").forward(request, response);
 		} else if (request.getParameter("checkOut") != null) {
 			// when check out button is clicked, we move to payment page
 			request.getRequestDispatcher("/Payment.jspx").forward(request, response);
-		} else {
+		} else if (request.getPathInfo() != null){
+			
+			response.sendRedirect(request.getContextPath() + "/Start");
+			
+		}else {
 
 			request.getRequestDispatcher("/MainPage.jspx").forward(request, response); // always redirect to the main
 																						// bookstore page
@@ -265,6 +286,8 @@ public class Start extends HttpServlet {
 			shoppingCart.add(request.getParameter("addBid"));
 			userSessionToShoppingCart.put(request.getSession().getId(), shoppingCart);
 		} else if (request.getParameter("fname") != null) {
+			String uname = request.getParameter("username");
+			String pwd = request.getParameter("password");
 			String fname = request.getParameter("fname");
 			String lname = request.getParameter("lname");
 			String street = request.getParameter("street");
@@ -272,24 +295,52 @@ public class Start extends HttpServlet {
 			String country = request.getParameter("country");
 			String zip = request.getParameter("zip");
 			String phone = request.getParameter("phone");
-
-			dummyInfo.add("First name: " + fname + "\nLast Name: " + lname + "\nStreet: " + street + "\nProvince: "
-					+ prov + "\nCountry: " + country + "\nZIP Code: " + zip + "\nPhone Number: " + phone);
+			
+			try {
+				currentAccount = theModel.createAccount(uname, pwd, street, prov, country, zip, phone, false, fname, lname);
+				response.getWriter().write("Successfully created account");
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				response.getWriter().write("Failed to create account");
+				System.out.println("Failed to create account");
+			}
 		} else if (request.getParameter("creditNum") != null) {
+			
 			creditNumber = request.getParameter("creditNum");
+			
+			String out = "";
+			if (failedCreditCard % 3 == 0) {
+				out = "Credit Card Denied";
+			} else {
+				try {
+					int POID = theModel.addPO(currentAccount.getLname(), currentAccount.getFname(), "ORDERED",
+							currentAccount.getAddress());
+					
+					ArrayList<String> books = userSessionToShoppingCart.getOrDefault(request.getSession().getId(), new ArrayList<String>());
+//					System.out.println("HEEERRRREEE " + books);
+//					System.out.println(books);
+					for (String bid : books) {
+						theModel.addItemsToPO(POID, bid, theModel.retrieveSingleBookBOOKBEAN(bid).getPrice());
+					}
+					out = "Success";
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					out = "QUERIES FAILED:" + e.getMessage();
+//					e.printStackTrace();
+				}
+			}
+			response.getWriter().write(out);
 		}
 
 		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
 
-	
-
 	private void purchaseConfirmed(HttpServletRequest request) {
 		request.setAttribute("purchaseFlag", 1);
 		request.setAttribute("purchaseFlag", 0);
 	}
-	
+
 	private void updateTopTenTable() {
 		try {
 			topTen = theModel.analyticsTopTen();
@@ -466,7 +517,7 @@ public class Start extends HttpServlet {
 			userNameCheckError = 1;
 			request.setAttribute("userNameCheckError", userNameCheckError);
 		}
-		
+
 		if (checkIfUserExists.equals("")) {
 			response.getWriter().write("");
 		} else {

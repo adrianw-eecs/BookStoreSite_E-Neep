@@ -27,11 +27,9 @@ public class AddressDAO {
 
 	}
 	
-	public ArrayList<AddressBean> retrieveAddressUsingID(String id) throws SQLException {
-		//String query = "select * from students where surname like ? and credit_taken >= ?";
+	public AddressBean retrieveAddressUsingID(String id) throws SQLException {
 		String query = "Select * FROM ADDRESS WHERE ID = ?";
-//		Map<String, AddressBean> rv = new HashMap<String, AddressBean>();
-		ArrayList<AddressBean> arraylist = new ArrayList<AddressBean>();
+		AddressBean person = null;
 		Connection con = this.ds.getConnection();
 		PreparedStatement sanatizedQuery = con.prepareStatement(query);
 		try {
@@ -45,19 +43,17 @@ public class AddressDAO {
 				String result_zip = r.getString("ZIP");
 				String result_phone = r.getString("PHONE");
 
-				//CHANGE Query for the current credits
-				AddressBean person = new AddressBean(result_id, result_street, result_province, result_country, result_zip, result_phone);
-				arraylist.add(person);
+				person = new AddressBean(result_id, result_street, result_province, result_country, result_zip, result_phone);
+
 			}
 		} catch(SQLException e){
-//			System.out.println("Query in AddressDAO failed");
 			throw new SQLException("Query in AddressDAO failed");
 		}
 		
 		
 		sanatizedQuery.close();
 		con.close();
-		return arraylist;
+		return person;
 	}
 	
 	public int addAddress(String street, String prov, String country, String post, String phone) throws SQLException {

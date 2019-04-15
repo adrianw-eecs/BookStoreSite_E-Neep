@@ -14,7 +14,7 @@
 <link rel="StyleSheet"
 	href="${pageContext.request.contextPath}/res/css/mc.css" type="text/css"
 	title="cse4413" media="screen, print" />
-<script type="text/javascript" src="res/mc.js">
+<script type="text/javascript" src="${pageContext.request.contextPath}/res/mc.js">
 	;
 </script>
 <title>Bookstore Main Page</title>
@@ -47,11 +47,11 @@
 		</select>
 
 		<div class="bookInfo" id="bookInfo" hidden="true">
-			<div class="title" id="btitle">Building Memes</div>
-			<div class="rating" id="brating">5/7</div>
-			<div class="price" id="bprice">$69</div>
+			<div class="title" id="btitle">`</div>
+			<div class="rating" id="brating">`</div>
+			<div class="price" id="bprice">`</div>
 			<div class="review" id="review">
-				<input id="bookReview" type="text" name="" placeholder="Leave a Review!" maxlength="80"/>
+				<input id="bookReview" type="text" name="" placeholder="Leave a Review!" maxlength="80" autocomplete="off"/>
 				<br/><p id='bookResult' hidden="true"><br/></p>
 				<input type="button" name="" value="Submit Review" 
 				onclick="addReview('/BookStoreSite_E-Neep/Start/Ajax')"/>

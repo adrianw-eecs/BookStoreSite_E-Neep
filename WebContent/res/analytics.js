@@ -1,6 +1,5 @@
 var interval;
 
-
 function validate(){
 	var ok = true;
 	var p = document.getElementById("userName").value;
@@ -106,10 +105,10 @@ function startQueryTimer(tableName, request){
 	clearInterval(interval);
 	if (tableName === "topTen"){
 		topTenHandler(request);
-		interval = setInterval(function(){topTenHandler(request)}, 1000);
+		interval = setInterval(function(){topTenHandler(request)}, 5000);
 	}else if (tableName === "allBooks"){
 		allBooksHandler(request)
-		interval = setInterval(function(){allBooksHandler(request)}, 1000);
+		interval = setInterval(function(){allBooksHandler(request)}, 5000);
 	}
 }
 
@@ -159,6 +158,7 @@ function allBooksHandler(request){
 
 			for (var qty in elements){
 				var toBeUsed = elements[qty].trim();
+				if (toBeUsed === "null") break;
 				var info = toBeUsed.split('|');
 				var row = table.insertRow(+qty + +1);
 				row.insertCell(0).innerHTML = +qty + +1;

@@ -20,11 +20,7 @@ function validateCreateUN(){
 	var ok = true;
 	var p = document.getElementById("username").value;
 
-
-	if (p === ""){
-		blinkObj(document.getElementById("username"));
-		ok = false;
-	}
+	ok = (p != "");
 
 	return ok;
 }
@@ -32,9 +28,14 @@ function validateCreateUN(){
 function validateCreate(){
 	var ok = true;
 	var p = document.getElementById("username").value;
-
+	
+	if (document.getElementById("username").style.boxShadow === "red 0px 0px 10px"){
+		alert("Username is taken. Choose another one!");
+		ok = false;
+	}
+	
 	if (p === ""){
-		alert("Username cannot be empty!");
+		if (ok) alert("Username cannot be empty!");
 		blinkObj(document.getElementById("username"));
 		ok = false;
 	}
@@ -156,16 +157,16 @@ function loginInfoHandler(request){
 function create2(address){
 	validateCreateUN();
 
-
 	var taken = false;
 	var done = false;
 
 	var un = document.getElementById("username").value;
-	var pwd = document.getElementById("pwd").value;
+	
 
 	if (un != ""){
+		
 		var request = new XMLHttpRequest();
-		request.open("GET", (address + "?verify=true&username=" + un + "&password=" + pwd), true);
+		request.open("GET", (address + "?verify=true&username=" + un), true);
 		request.onreadystatechange = function() {
 			if ((request.readyState == 4) && (request.status == 200)){
 				taken = request.responseText == "taken";
@@ -179,10 +180,10 @@ function create2(address){
 			if (done){
 				interval = clearInterval(interval);
 				if (taken && un != "") {
-					alert("Username taken, please choose another one");
+					document.getElementById("username").style.boxShadow = "0 0 10px red";
 				}
 				else if (!taken){
-					validUsername(address, un, pwd);
+					document.getElementById("username").style.boxShadow = "0 0 0 red";
 				}
 			}
 		}
@@ -192,30 +193,14 @@ function create2(address){
 
 }
 
-function validUsername(address, un, pwd){
-
-	hideEverything();
-	document.getElementById("createBox").hidden = false;
-
-	var request = new XMLHttpRequest();
-	request.open("POST", (address + "?username=" + un + "&password=" + pwd), true);
-	request.onreadystatechange = function() {
-		createInfoHandler(request);
-	};
-	request.send();
-
-}
-
-function createInfoHandler(request){
-	if ((request.readyState == 4) && (request.status == 200)){
-//		alert("Account added!");
-	}
-}
-
 function showCreditCard(address){
-	if (!validateCreate()) return;
+	
 
 	if (!document.getElementById("createBox").hidden){
+		create2(address);
+		if (!validateCreate()) return;
+		var un = document.getElementById("username").value;
+		var pwd = document.getElementById("pwd").value;
 		var fname = document.getElementById("fnameInp").value;
 		var lname = document.getElementById("lnameInp").value;
 		var street = document.getElementById("streetNameInp").value;
@@ -226,7 +211,9 @@ function showCreditCard(address){
 
 		var request = new XMLHttpRequest();
 		request.open("POST", (address 
-				+ "?fname=" + fname 
+				+ "?username=" + un
+				+ "&password=" + pwd
+				+ "&fname=" + fname 
 				+ "&lname=" + lname
 				+ "&street=" + street
 				+ "&prov=" + prov
@@ -257,6 +244,10 @@ function submitInfoHandler(request){
 
 function addCredit(address){
 	var cnum = document.getElementById("creditNum").value;
+	if (cnum === "") {
+		blinkObj(document.getElementById("creditNum"));
+		return;
+	}
 	document.getElementById("creditNum").value = null;
 	var request = new XMLHttpRequest();
 	request.open("POST", (address + "?creditNum=" + cnum), true);
@@ -275,9 +266,13 @@ function submitCreditNum(request){
 
 function finalize(address){
 	var cnum = document.getElementById("creditNum").value;
+	if (cnum === "") {
+		blinkObj(document.getElementById("creditNum"));
+		return;
+	}
 	document.getElementById("creditNum").value = null;
 	var request = new XMLHttpRequest();
-	request.open("GET", (address + "?creditNum=" + cnum), true);
+	request.open("POST", (address + "?creditNum=" + cnum), true);
 	request.onreadystatechange = function() {
 		checkCreditNum(request);
 	};

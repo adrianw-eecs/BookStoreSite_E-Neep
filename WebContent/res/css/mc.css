@@ -98,6 +98,7 @@ select:hover, select:focus{
 #bookInfo #review input{
 	width: 60%;
 	margin-bottom: 20px;
+	
 }
 
 #bookInfo #review input[type="text"]::placeholder{
@@ -113,7 +114,7 @@ select:hover, select:focus{
 	color: #fff;
     font-size: 14px;
     text-align: center;
-    
+    transition: all .3s ease;
 }
 
 #bookInfo #review input[type="text"]:focus{
@@ -121,27 +122,24 @@ select:hover, select:focus{
     width: 100%;
 }
 
-#bookInfo #review input[type="submit"]{
+#bookInfo #review input[type="button"]{
 	border: none;
 	outline: none;
 	height: 20px;
 	border-radius: 20px;
 }
 
-#bookInfo #review input[type="submit"]:hover{
+#bookInfo #review input[type="button"]:hover{
 	background: rgb(103, 200, 238);
+	cursor: pointer;
 }
 
 #bookInfo #review #bookResult{
     font-size: 14px;
     color: goldenrod;
+    margin-top: -10px;
+    margin-bottom: 2px;
 }
-
-/* #bookInfo #review input[type="submit"]:focus{ */
-/*     pointer-events: none; */
-/*     cursor: default; */
-/*     background: rgba(0, 0, 0, 0); */
-/* } */
 
 #addToCart button{
     position: absolute;
