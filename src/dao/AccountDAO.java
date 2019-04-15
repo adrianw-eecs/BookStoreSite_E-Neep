@@ -88,7 +88,7 @@ public class AccountDAO {
 
 	public AccountBean addAccount(String username, String password, int address, boolean admin, String fname, String lname) throws SQLException {
 		AccountBean acc = null;
-		String query = "INSERT INTO ACCOUNT (username, password, address, admin, fname, lname) VALUES (?,?,?,?,?,?)";
+		String query = "INSERT INTO ACCOUNT (username, password, fname, lname, address, admin) VALUES (?,?,?,?,?,?)";
 		Connection con = this.ds.getConnection();
 		PreparedStatement sanatizedQuery = con.prepareStatement(query);
 		try {
