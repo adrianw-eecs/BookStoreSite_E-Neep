@@ -161,11 +161,11 @@ function create2(address){
 	var done = false;
 
 	var un = document.getElementById("username").value;
-	var pwd = document.getElementById("pwd").value;
+	
 
 	if (un != ""){
 		var request = new XMLHttpRequest();
-		request.open("GET", (address + "?verify=true&username=" + un + "&password=" + pwd), true);
+		request.open("GET", (address + "?verify=true&username=" + un), true);
 		request.onreadystatechange = function() {
 			if ((request.readyState == 4) && (request.status == 200)){
 				taken = request.responseText == "taken";
@@ -183,7 +183,6 @@ function create2(address){
 				}
 				else if (!taken){
 					document.getElementById("username").style.boxShadow = "0 0 0 red";
-					validUsername(address, un, pwd);
 				}
 			}
 		}
@@ -193,31 +192,14 @@ function create2(address){
 
 }
 
-function validUsername(address, un, pwd){
-
-	hideEverything();
-	document.getElementById("createBox").hidden = false;
-
-	var request = new XMLHttpRequest();
-	request.open("POST", (address + "?username=" + un + "&password=" + pwd), true);
-	request.onreadystatechange = function() {
-		createInfoHandler(request);
-	};
-	request.send();
-
-}
-
-function createInfoHandler(request){
-	if ((request.readyState == 4) && (request.status == 200)){
-//		alert("Account added!");
-	}
-}
-
 function showCreditCard(address){
 	
 
 	if (!document.getElementById("createBox").hidden){
+		create2(address);
 		if (!validateCreate()) return;
+		var un = document.getElementById("username").value;
+		var pwd = document.getElementById("pwd").value;
 		var fname = document.getElementById("fnameInp").value;
 		var lname = document.getElementById("lnameInp").value;
 		var street = document.getElementById("streetNameInp").value;
@@ -228,7 +210,9 @@ function showCreditCard(address){
 
 		var request = new XMLHttpRequest();
 		request.open("POST", (address 
-				+ "?fname=" + fname 
+				+ "?username=" + un
+				+ "&password=" + pwd
+				+ "&fname=" + fname 
 				+ "&lname=" + lname
 				+ "&street=" + street
 				+ "&prov=" + prov
