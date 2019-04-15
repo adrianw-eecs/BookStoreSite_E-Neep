@@ -200,6 +200,11 @@ h1{
 	margin-bottom: 5px;
 }
 
+.credit #backToStart{
+	background: rgb(184, 48, 132);
+	top: 10px;
+}
+
 .info input[type="button"], .credit input[type="button"]{
 	position: absolute;
 	right: 10px;
@@ -219,6 +224,10 @@ h1{
 .info input[type="button"]:hover, .credit input[type="button"]:hover{
 	cursor: pointer;
 	background: rgb(16, 180, 245);
+}
+
+.credit #backToStart:hover{
+	background: rgb(173, 32, 56);
 }
 
 .loginBox a, .createBox a{

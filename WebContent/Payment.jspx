@@ -80,6 +80,9 @@
 			<input type="button" name="confirmOrder" class="confirmOrder"
 				id="confirmOrder" value="Confirm Order" hidden="true"
 				onclick="finalize('/BookStoreSite_E-Neep/Start/Ajax')"/>
+			<input type="button" name="backToStart" class="backToStart"
+			id="backToStart" value="Start Again?" 
+			onclick="restart('/BookStoreSite_E-Neep/Start')"/>
 	</div>
 </body>
 	</html>

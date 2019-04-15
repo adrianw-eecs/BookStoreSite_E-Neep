@@ -292,3 +292,7 @@ function hideEverything(){
 	document.getElementById("credit").hidden = true;
 	document.getElementById("info").hidden = true;
 }
+
+function restart(address){
+	window.location = address;
+}
