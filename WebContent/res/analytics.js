@@ -1,6 +1,5 @@
 var interval;
 
-
 function validate(){
 	var ok = true;
 	var p = document.getElementById("userName").value;

@@ -139,7 +139,7 @@ public class Start extends HttpServlet {
 		 * I don't know what to do with the reviews but we're saving it for later
 		 */
 
-		System.out.println(request.getPathInfo() + " " + request.getQueryString());
+		System.out.println("URL: " + request.getRequestURL() + " PATH: " + request.getPathInfo() + " QUERY: " + request.getQueryString());
 		if (request.getPathInfo() != null && request.getPathInfo().contains("Ajax")) {
 //			System.out.println(bookReviews);
 			// System.out.println("global shopping cart:" + shoppingCart);
@@ -241,7 +241,11 @@ public class Start extends HttpServlet {
 		} else if (request.getParameter("checkOut") != null) {
 			// when check out button is clicked, we move to payment page
 			request.getRequestDispatcher("/Payment.jspx").forward(request, response);
-		} else {
+		} else if (request.getPathInfo() != null){
+			
+			response.sendRedirect(request.getContextPath() + "/Start");
+			
+		}else {
 
 			request.getRequestDispatcher("/MainPage.jspx").forward(request, response); // always redirect to the main
 																						// bookstore page
@@ -302,7 +306,9 @@ public class Start extends HttpServlet {
 //			dummyInfo.add("First name: " + fname + "\nLast Name: " + lname + "\nStreet: " + street + "\nProvince: "
 //					+ prov + "\nCountry: " + country + "\nZIP Code: " + zip + "\nPhone Number: " + phone);
 		} else if (request.getParameter("creditNum") != null) {
+			
 			creditNumber = request.getParameter("creditNum");
+			
 			String out = "";
 			if (failedCreditCard % 3 == 0) {
 				out = "Credit Card Denied";
@@ -310,7 +316,9 @@ public class Start extends HttpServlet {
 				try {
 					int POID = theModel.addPO(currentAccount.getLname(), currentAccount.getFname(), "ORDERED",
 							currentAccount.getAddress());
-					ArrayList<String> books = userSessionToShoppingCart.get(request.getSession().getId());
+					
+					ArrayList<String> books = userSessionToShoppingCart.getOrDefault(request.getSession().getId(), new ArrayList<String>());
+//					System.out.println("HEEERRRREEE " + books);
 //					System.out.println(books);
 					for (String bid : books) {
 						theModel.addItemsToPO(POID, bid, theModel.retrieveSingleBookBOOKBEAN(bid).getPrice());
