@@ -1,14 +1,14 @@
 package bean;
 
 public class AddressBean {
-	
+
 	private int id;
 	private String street;
 	private String province;
 	private String country;
 	private String zip;
 	private String phone;
-	
+
 	public AddressBean(int id, String street, String province, String country, String zip, String phone) {
 		this.id = id;
 		this.street = street;
@@ -17,7 +17,7 @@ public class AddressBean {
 		this.zip = zip;
 		this.phone = phone;
 	}
-	
+
 	public AddressBean() {
 		this.id = 0;
 		this.street = "";
@@ -27,7 +27,7 @@ public class AddressBean {
 		this.phone = "000000000";
 		System.out.println("Bean not populated");
 	}
-	
+
 	public int getId() {
 		return id;
 	}

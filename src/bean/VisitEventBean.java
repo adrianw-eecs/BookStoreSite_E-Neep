@@ -1,19 +1,18 @@
 package bean;
 
 public class VisitEventBean {
-	
+
 	private String day;
 	private String bid;
 	private String eventtype;
-	
-	
+
 	public VisitEventBean(String day, String bid, String eventtype) {
 		super();
 		this.day = day;
 		this.bid = bid;
 		this.eventtype = eventtype;
 	}
-	
+
 	public VisitEventBean() {
 		this.day = "";
 		this.bid = "";
@@ -43,7 +42,5 @@ public class VisitEventBean {
 	public void setEventtype(String eventtype) {
 		this.eventtype = eventtype;
 	}
-	
 
-	
 }

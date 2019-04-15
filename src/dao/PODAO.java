@@ -21,7 +21,7 @@ public class PODAO {
 		try {
 			ds = (DataSource) (new InitialContext()).lookup("java:/comp/env/jdbc/EECS");
 		} catch (NamingException e) {
-			e.printStackTrace();
+			System.out.println(e.getMessage());
 		}
 
 	}
