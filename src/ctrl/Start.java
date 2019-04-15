@@ -294,8 +294,10 @@ public class Start extends HttpServlet {
 			
 			try {
 				currentAccount = theModel.createAccount(uname, pwd, street, prov, country, zip, phone, false, fname, lname);
+				response.getWriter().write("Successfully created account");
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
+				response.getWriter().write("Failed to create account");
 				System.out.println("Failed to create account");
 			}
 		} else if (request.getParameter("creditNum") != null) {
