@@ -24,17 +24,12 @@
 		<img src="${pageContext.request.contextPath}/res/images/bookicon.png" class="avatar" />
 		<h1>Login Here</h1>
 		<form>
-			<p>
-				Username<span id="userNameLoginError" style="color: deeppink">
-				</span>
-			</p>
+			<p>Username</p>
 			<input type="text" name="" placeholder="Enter Username"
-				id="userNameLogin" autocomplete="off" autofocus="autofocus" />
-			<p>
-				Password<span id="pwdLoginError" style="color: deeppink"> </span>
-			</p>
+				id="userNameLogin" autocomplete="off" autofocus="autofocus" maxlength="25" />
+			<p>Password</p>
 			<input type="password" name="" placeholder="Enter Password"
-				id="pwdLogin" autocomplete="off" /> <input type="button" name=""
+				id="pwdLogin" autocomplete="off" /> <input type="button" name="" maxlength="25"
 				value="Login" onclick="login2('/BookStoreSite_E-Neep/Start/Ajax')" />
 			<a href="#"
 				onclick="create('/BookStoreSite_E-Neep/Start/Ajax');return false;">
@@ -58,15 +53,15 @@
 		<img src="${pageContext.request.contextPath}/res/images/bookicon.png" class="avatar" />
 		<h1>Sign Up</h1>
 		<form>
-			<input type="text" id="username" placeholder="Username"	oninput="create2('/BookStoreSite_E-Neep/Start/Ajax')" autocomplete="off" />				
-			<input type="password" id="pwd" placeholder="Password" autocomplete="off" />
-			<input type="text" id="fnameInp" placeholder="First Name"/>
-			<input type="text" id="lnameInp" placeholder="Last Name"/>
-			<input type="text" id="streetNameInp" placeholder="Street Name"/>
-			<input type="text" id="provInp" placeholder="Province"/>
-			<input type="text" id="ctInp" placeholder="Country"/>
-			<input type="text" id="zipInp" placeholder="ZIP Code"/>
-			<input type="number" id="phnInp" placeholder="Phone Number"/>
+			<input type="text" id="username" placeholder="Username"	oninput="create2('/BookStoreSite_E-Neep/Start/Ajax')" autocomplete="off" maxlength="25"/>				
+			<input type="password" id="pwd" placeholder="Password" autocomplete="off" maxlength="25"/>
+			<input type="text" id="fnameInp" placeholder="First Name" maxlength="25"/>
+			<input type="text" id="lnameInp" placeholder="Last Name" maxlength="25"/>
+			<input type="text" id="streetNameInp" placeholder="Street Name" maxlength="50"/>
+			<input type="text" id="provInp" placeholder="Province" maxlength="15"/>
+			<input type="text" id="ctInp" placeholder="Country" maxlength="15"/>
+			<input type="text" id="zipInp" placeholder="ZIP Code" maxlength="7"/>
+			<input type="number" id="phnInp" placeholder="Phone Number" maxlength="12"/>
 			<input type="button" name="" value="Create"
 			onclick="showCreditCard('/BookStoreSite_E-Neep/Start/Ajax')"/> <br/>
 			<a href="#" onclick="login('/BookStoreSite_E-Neep/Start/Ajax');return false;">
@@ -77,7 +72,7 @@
 	<div class="credit" id="credit" hidden="true">
 			<img src="${pageContext.request.contextPath}/res/images/bookicon.png" class="avatar"/>
 			<h1>Credit Card Confirmation</h1>
-			<input type="number" id="creditNum" placeholder="Credit Card Number"/>
+			<input type="number" id="creditNum" placeholder="Credit Card Number" maxlength="16"/>
 			<input type="button" name="confirmNewOrder" class="confirmNewOrder"
 				id="confirmNewOrder" value="Confirm Order" 
 				onclick="addCredit('/BookStoreSite_E-Neep/Start/Ajax')"

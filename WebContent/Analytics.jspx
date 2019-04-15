@@ -22,9 +22,9 @@
 		<h1>Administrator Login</h1>
 		<form>
 			<p>Username</p>
-			<input type="text" name="" placeholder="Enter Username" id="userName" />
+			<input type="text" name="" placeholder="Enter Username" id="userName" maxlength="25"/>
 			<p>Password</p>
-			<input type="password" name="" placeholder="Enter Password" id="pwd" />
+			<input type="password" name="" placeholder="Enter Password" id="pwd" maxlength="25"/>
 			<input type="button" name="" value="Login"
 				onclick="confirmAdmin('/BookStoreSite_E-Neep/Start/Ajax')" />
 		</form>
