@@ -23,15 +23,13 @@ public class BookDAO {
 		try {
 			ds = (DataSource) (new InitialContext()).lookup("java:/comp/env/jdbc/EECS");
 		} catch (NamingException e) {
-			e.printStackTrace();
+			System.out.println(e.getMessage());
 		}
 
 	}
 
 	public ArrayList<BookBean> retrieveAnyBookOrBooks(String bid, String category, ArrayList<String> bids)
 			throws SQLException {
-		// String query = "select * from students where surname like ? and credit_taken
-		// >= ?";
 		String query = "Select * FROM BOOK ";
 		Connection con = this.ds.getConnection();
 		String queryValueString = "";
@@ -48,12 +46,11 @@ public class BookDAO {
 			}
 			query = query.substring(0, query.length() - 1);
 			query = query + ")";
-			
+
 		} else {
 			System.out.println("Requesting all Books");
 		}
 
-//		Map<String, AddressBean> rv = new HashMap<String, AddressBean>();
 		ArrayList<BookBean> arraylist = new ArrayList<BookBean>();
 
 		PreparedStatement sanatizedQuery = con.prepareStatement(query);
@@ -64,8 +61,8 @@ public class BookDAO {
 				}
 			} else if (bids != null || !bid.equals("") || !category.equals("")) {
 				sanatizedQuery.setString(1, queryValueString);
-			}	else {
-				//No preperation needed
+			} else {
+				// No preperation needed
 			}
 
 			ResultSet r = sanatizedQuery.executeQuery();
@@ -74,8 +71,6 @@ public class BookDAO {
 				String result_bid = r.getString("BID");
 				String result_title = r.getString("TITLE");
 				String result_category = r.getString("CATEGORY");
-
-				// CHANGE Query for the current credits
 				BookBean book = new BookBean(result_bid, result_title, result_price, result_category);
 				arraylist.add(book);
 			}
@@ -89,8 +84,6 @@ public class BookDAO {
 	}
 
 	public ArrayList<BookBean> findBooks(String searchStr) throws SQLException {
-		// String query = "select * from students where surname like ? and credit_taken
-		// >= ?";
 		String query = "Select * FROM BOOK WHERE TITLE like ?";
 		Connection con = this.ds.getConnection();
 		searchStr = "%" + searchStr + "%";
@@ -105,8 +98,6 @@ public class BookDAO {
 				String result_bid = r.getString("BID");
 				String result_title = r.getString("TITLE");
 				String result_category = r.getString("CATEGORY");
-
-				// CHANGE Query for the current credits
 				BookBean book = new BookBean(result_bid, result_title, result_price, result_category);
 				arraylist.add(book);
 			}

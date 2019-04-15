@@ -21,7 +21,7 @@ public class AccountDAO {
 		try {
 			ds = (DataSource) (new InitialContext()).lookup("java:/comp/env/jdbc/EECS");
 		} catch (NamingException e) {
-			e.printStackTrace();
+			System.out.println(e.getMessage());
 		}
 
 	}
@@ -30,7 +30,8 @@ public class AccountDAO {
 	 * Method that checks the database if the given username exists already or not
 	 * 
 	 * @param username the username to check
-	 * @return empty String if username does not exist, or the username itself, if it exists
+	 * @return empty String if username does not exist, or the username itself, if
+	 *         it exists
 	 * @throws SQLException in case if there was some problem with the database
 	 */
 	public String verifyUserName(String username) throws SQLException {
@@ -74,7 +75,6 @@ public class AccountDAO {
 				boolean result_admin = r.getBoolean("ADMIN");
 				String result_fname = r.getString("FNAME");
 				String result_lname = r.getString("LNAME");
-				// CHANGE Querey for the current credits
 				account = new AccountBean(result_uname, result_addr_id, result_admin, result_fname, result_lname);
 			}
 		} catch (SQLException e) {
@@ -86,7 +86,8 @@ public class AccountDAO {
 		return account;
 	}
 
-	public AccountBean addAccount(String username, String password, int address, boolean admin, String fname, String lname) throws SQLException {
+	public AccountBean addAccount(String username, String password, int address, boolean admin, String fname,
+			String lname) throws SQLException {
 		AccountBean acc = null;
 		String query = "INSERT INTO ACCOUNT (username, password, fname, lname, address, admin) VALUES (?,?,?,?,?,?)";
 		Connection con = this.ds.getConnection();
@@ -98,13 +99,12 @@ public class AccountDAO {
 			sanatizedQuery.setString(4, lname);
 			sanatizedQuery.setInt(5, address);
 			sanatizedQuery.setBoolean(6, admin);
-			
+
 			sanatizedQuery.executeUpdate();
 
 			acc = new AccountBean(username, address, admin, fname, lname);
 
 		} catch (SQLException e) {
-//			System.out.println("Create account in AccountDAO failed");
 			throw new SQLException("Create account in AccountDAO failed");
 		}
 
@@ -127,11 +127,9 @@ public class AccountDAO {
 				String result_name = r.getString("USERNAME");
 				int result_addr_id = r.getInt("ADDRESS");
 				boolean result_admin = r.getBoolean("ADMIN");
-				// CHANGE Query for the current credits
 				return result_admin;
 			}
 		} catch (SQLException e) {
-//			System.out.println("Verification in AccountDAO failed");
 			throw new SQLException("Verification in AccountDAO failed");
 		}
 

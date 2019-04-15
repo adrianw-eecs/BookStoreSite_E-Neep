@@ -1,13 +1,13 @@
 package bean;
 
 public class POBean {
-	
+
 	private int id;
 	private String fname;
 	private String lname;
 	private String status;
 	private int address;
-	
+
 	public POBean(int id, String fname, String lname, String status, int address) {
 		super();
 		this.id = id;
@@ -64,7 +64,7 @@ public class POBean {
 	public void setAddress(int address) {
 		this.address = address;
 	}
-	
+
 	public String[] poStringArray() {
 		String[] stringArray = new String[5];
 		stringArray[0] = Integer.toString(this.id);
@@ -74,6 +74,5 @@ public class POBean {
 		stringArray[4] = Integer.toString(this.address);
 		return stringArray;
 	}
-	
 
 }

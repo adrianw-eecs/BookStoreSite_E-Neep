@@ -16,14 +16,20 @@ import model.model;
 public class Analytics implements HttpSessionAttributeListener {
 
 	private model theModel;
-	private String[] topTen = null;
-	private String[] allBooks = null;
+	private String[] topTen;
+	private String[] allBooks;
 
 	/**
 	 * Default constructor.
 	 */
 	public Analytics() {
-		// TODO Auto-generated constructor stub
+		try {
+			theModel = new model();
+		} catch (ClassNotFoundException e) {
+
+		}
+		topTen = null;
+		allBooks = null;
 
 	}
 
@@ -49,7 +55,7 @@ public class Analytics implements HttpSessionAttributeListener {
 	}
 
 	public void updatePopularBooks(HttpSessionBindingEvent arg0) {
-		System.out.println("---" +arg0);
+		System.out.println("---" + arg0);
 		if (arg0.getName().equals("purchaseFlag")) {
 			theModel = (model) arg0.getSession().getServletContext().getAttribute("model");
 			updateTopTenTable();

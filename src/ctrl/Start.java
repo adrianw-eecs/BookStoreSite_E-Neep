@@ -58,7 +58,6 @@ public class Start extends HttpServlet {
 	 */
 	public Start() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	public void init() throws ServletException {
@@ -67,7 +66,6 @@ public class Start extends HttpServlet {
 			theModel = new model();
 			context.setAttribute("model", theModel);
 		} catch (Exception e) {
-			e.printStackTrace();
 			System.out.println("Excpetion has occured");
 		}
 
@@ -79,43 +77,6 @@ public class Start extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// TODO Auto-generated method stub
-
-		/// For the purposes of testing Adrians Part
-		try {
-			theModel.retrieveAddress("1");
-			theModel.retrieveSingleBook("b002");
-			theModel.retrieveBookCat("Engineering");
-			theModel.retrieveAllBooks();
-			ArrayList<String> bids = new ArrayList<String>();
-			bids.add("b002");
-			bids.add("b003");
-			ArrayList<BookBean> data = theModel.retrieveShoppingCart(bids);
-			theModel.searchBooks(" ");
-			/*
-			 * System.out.println(data.get(0).toStringArray()[0]);
-			 * System.out.println(data.get(0).toStringArray()[1]);
-			 * System.out.println(data.get(0).toStringArray()[2]);
-			 */
-			int id = theModel.addAddress("ABC Street", "Test ON", "CANADA", "L4K3Y7", "905-434-5258");
-			// System.out.println(id);
-			int id2 = theModel.addPO("FakeNameHERE", "FakeFIRSTNameHERE", "PROCESSED", "2");
-			// System.out.println(id2);
-			POBean po = theModel.retrieveSinglePO("2");
-			/*
-			 * System.out.println(po.poStringArray()[0]);
-			 * System.out.println(po.poStringArray()[1]);
-			 * System.out.println(po.poStringArray()[2]);
-			 * System.out.println(po.poStringArray()[3]);
-			 * System.out.println(po.poStringArray()[4]);
-			 */
-
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			System.out.println(e.getMessage());
-		}
-
 		/*
 		 * Map containing bid -> quantity to be rerouted to response Check is the
 		 * session ID if it exists in the map, and make sure it is there before
@@ -139,12 +100,9 @@ public class Start extends HttpServlet {
 		 * I don't know what to do with the reviews but we're saving it for later
 		 */
 
-		System.out.println("URL: " + request.getRequestURL() + " PATH: " + request.getPathInfo() + " QUERY: " + request.getQueryString());
+		System.out.println("URL: " + request.getRequestURL() + " PATH: " + request.getPathInfo() + " QUERY: "
+				+ request.getQueryString());
 		if (request.getPathInfo() != null && request.getPathInfo().contains("Ajax")) {
-//			System.out.println(bookReviews);
-			// System.out.println("global shopping cart:" + shoppingCart);
-//			System.out.println(dummyInfo);
-//			System.out.println(creditNumber);
 			System.out.println("session map: " + userSessionToShoppingCart);
 			System.out.println(scInfo);
 			System.out.println(request.getQueryString());
@@ -176,7 +134,6 @@ public class Start extends HttpServlet {
 			} else if (request.getParameter("verify") != null) {
 
 				checkUserNameTakenOrNot(request, response);
-//				response.getWriter().write("");
 			} else if (request.getParameter("verifyAdmin") != null) {
 				try {
 					Boolean login = theModel.adminlogin(request.getParameter("username"),
@@ -187,19 +144,14 @@ public class Start extends HttpServlet {
 						response.getWriter().write("incorrect");
 					}
 				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
 					response.getWriter().write("incorrect");
 				}
-
-//				response.getWriter().write("");
 			} else if (request.getParameter("topTen") != null) {
 				System.out.println("topTen");
 				if (request.getAttribute("topTen") == null) {
 					purchaseConfirmed(request);
 					updateTopTenTable();
 				}
-//				System.out.println(request.getAttribute("topTen"));
 				response.getWriter().write(Arrays.toString(topTen));
 
 			} else if (request.getParameter("allBooks") != null) {
@@ -241,11 +193,11 @@ public class Start extends HttpServlet {
 		} else if (request.getParameter("checkOut") != null) {
 			// when check out button is clicked, we move to payment page
 			request.getRequestDispatcher("/Payment.jspx").forward(request, response);
-		} else if (request.getPathInfo() != null){
-			
+		} else if (request.getPathInfo() != null) {
+
 			response.sendRedirect(request.getContextPath() + "/Start");
-			
-		}else {
+
+		} else {
 
 			request.getRequestDispatcher("/MainPage.jspx").forward(request, response); // always redirect to the main
 																						// bookstore page
@@ -295,19 +247,19 @@ public class Start extends HttpServlet {
 			String country = request.getParameter("country");
 			String zip = request.getParameter("zip");
 			String phone = request.getParameter("phone");
-			
+
 			try {
-				currentAccount = theModel.createAccount(uname, pwd, street, prov, country, zip, phone, false, fname, lname);
+				currentAccount = theModel.createAccount(uname, pwd, street, prov, country, zip, phone, false, fname,
+						lname);
 				response.getWriter().write("Successfully created account");
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
 				response.getWriter().write("Failed to create account");
 				System.out.println("Failed to create account");
 			}
 		} else if (request.getParameter("creditNum") != null) {
-			
+
 			creditNumber = request.getParameter("creditNum");
-			
+
 			String out = "";
 			if (failedCreditCard % 3 == 0) {
 				out = "Credit Card Denied";
@@ -315,24 +267,19 @@ public class Start extends HttpServlet {
 				try {
 					int POID = theModel.addPO(currentAccount.getLname(), currentAccount.getFname(), "ORDERED",
 							currentAccount.getAddress());
-					
-					ArrayList<String> books = userSessionToShoppingCart.getOrDefault(request.getSession().getId(), new ArrayList<String>());
-//					System.out.println("HEEERRRREEE " + books);
-//					System.out.println(books);
+
+					ArrayList<String> books = userSessionToShoppingCart.getOrDefault(request.getSession().getId(),
+							new ArrayList<String>());
 					for (String bid : books) {
 						theModel.addItemsToPO(POID, bid, theModel.retrieveSingleBookBOOKBEAN(bid).getPrice());
 					}
 					out = "Success";
 				} catch (Exception e) {
-					// TODO Auto-generated catch block
 					out = "QUERIES FAILED:" + e.getMessage();
-//					e.printStackTrace();
 				}
 			}
 			response.getWriter().write(out);
 		}
-
-		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
 
@@ -452,7 +399,6 @@ public class Start extends HttpServlet {
 			int i = 0;
 			for (String k : outMap.keySet()) {
 				out[i] = k + "|" + outMap.get(k);
-				// System.out.println(out[i]);
 				i++;
 			}
 			response.getWriter().write(Arrays.toString(out));

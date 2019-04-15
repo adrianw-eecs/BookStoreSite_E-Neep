@@ -22,7 +22,7 @@ public class POItemDAO {
 		try {
 			ds = (DataSource) (new InitialContext()).lookup("java:/comp/env/jdbc/EECS");
 		} catch (NamingException e) {
-			e.printStackTrace();
+			System.out.println(e.getMessage());
 		}
 
 	}
@@ -45,8 +45,8 @@ public class POItemDAO {
 		con.close();
 		return true;
 	}
-	
-	public String[] perMonth(int month) throws SQLException{
+
+	public String[] perMonth(int month) throws SQLException {
 		String[] results = new String[100];
 		String query = "Select bid, count(bid) as quantity FROM POITEM  where month = ? group by bid order by bid desc";
 
@@ -59,10 +59,9 @@ public class POItemDAO {
 			while (r.next()) {
 				int result_quantity = r.getInt("QUANTITY");
 				String result_bid = r.getString("BID");
-				// CHANGE Querey for the current credits
 				results[i] = result_bid + "|" + result_quantity;
 				i++;
-				
+
 			}
 			sanatizedQuery.close();
 			con.close();
@@ -70,11 +69,10 @@ public class POItemDAO {
 			throw new SQLException("Analytics query failed");
 		}
 
-		
 		return results;
 	}
 
-	public String[] topTen() throws SQLException{
+	public String[] topTen() throws SQLException {
 		String[] results = new String[10];
 		String query = "Select bid, count(bid) as quantity FROM POITEM group by bid order by quantity desc";
 
@@ -86,10 +84,9 @@ public class POItemDAO {
 			while (r.next() && i < 10) {
 				int result_quantity = r.getInt("QUANTITY");
 				String result_bid = r.getString("BID");
-				// CHANGE Querey for the current credits
 				results[i] = result_bid + "|" + result_quantity;
 				i++;
-				
+
 			}
 			sanatizedQuery.close();
 			con.close();
@@ -97,7 +94,6 @@ public class POItemDAO {
 			throw new SQLException("Analytics query failed");
 		}
 
-		
 		return results;
 	}
 
